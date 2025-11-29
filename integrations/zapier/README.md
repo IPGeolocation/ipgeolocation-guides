@@ -1,4 +1,4 @@
-# Zapier
+# IPGeolocation Zapier Integration
 
 ## Overview
 
