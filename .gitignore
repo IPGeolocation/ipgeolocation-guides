@@ -1,0 +1,68 @@
+# -------------------------
+# IDE / Editor settings
+# -------------------------
+
+# JetBrains / IntelliJ / PhpStorm / WebStorm
+.idea/
+*.iml
+
+# VS Code workspace settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Vim / Emacs / other editor cruft
+*~
+*.swp
+*.swo
+.\#*
+\#*#
+
+# -------------------------
+# OS-generated files
+# -------------------------
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*.tmp
+
+# -------------------------
+# Logs & temp files
+# -------------------------
+
+*.log
+logs/
+tmp/
+.temp/
+.cache/
+
+# -------------------------
+# Python (if used for scripts)
+# -------------------------
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+venv/
+.venv/
