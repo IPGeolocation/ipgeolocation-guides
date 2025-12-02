@@ -1,10 +1,10 @@
 # **IP Geolocation Shopify Integration**
 
-## **1\. OverView**
+## Overview
 
 It is a powerful, free Shopify app that delivers a seamless international shopping experience for your customers. Whether you manage multiple markets within one Shopify store or operate separate stores, IP Geolocation automatically detects your visitors' locations and guides them to the right storefront, in their preferred language and with the correct experience.
 
-### **Who Is This App For?**
+### **Who is this App for?**
 
 IP Geolocation shopify app is designed for Shopify merchants expanding internationally. If you're selling to customers across different countries, regions, or languages, this app ensures every visitor lands on the right version of your store.
 
@@ -46,7 +46,7 @@ Our app includes both language-only translations and country-plus-language trans
 
 Head to the Getting Started guide to install IP Geolocation and configure your first market settings. Within minutes, you'll be delivering a personalized experience to every international visitor.
 
-## **2\. Getting Started**
+## Getting Started
 
 This guide will walk you through installing IP Geolocation and completing your initial setup. The entire process takes just a few minutes.
 
@@ -102,7 +102,7 @@ The market selector settings are also in the app embeds section. Customize its a
 
 Click Save in the top right corner of the theme editor to publish your changes.
 
-## **3\. Understanding Your Dashboard**
+## Understanding Your Dashboard
 
 The IP Geolocation dashboard is your command center for monitoring visitor activity, tracking performance, and managing your market settings. This page explains each section of the dashboard and what the metrics mean.
 
@@ -146,7 +146,7 @@ Check your dashboard regularly to monitor how visitors are interacting with your
 
 Use the metrics to inform decisions about your popup text, translation strategy, and rule configuration. The data on your dashboard is your best guide for optimizing the visitor experience.
 
-## **4\. Configuring Redirect Rules**
+## Configuring Redirect Rules
 
 The Rules page gives you precise control over when and where the geolocation popup appears. You can target specific countries, customize behavior for first-time and returning visitors, and exclude the popup from certain URLs.
 
@@ -198,7 +198,7 @@ Enter the URL path you want to exclude in the input field. You can use three typ
 
 **Multi-Level Wildcard**: Use a double asterisk (`**`) to match any number of URL segments. Example: `/blogs/**` will exclude all the subpages of blogs not including blogs in it
 
-## **5\. Managing Translations**
+## Managing Translations
 
 Custom translations allow you to display the popup in your visitors' native languages, creating a more welcoming and localized experience. You can create translations for specific languages, specific countries, or both.
 
@@ -274,7 +274,7 @@ If a visitor's language or country doesn't match any of your custom translations
 
 This fallback ensures that every visitor sees a popup, even if you haven't created a translation for their specific language or country.
 
-## **6\. Connecting Multiple Stores**
+## Connecting Multiple Stores
 
 If you operate separate Shopify stores for different countries or regions, the Connect Stores feature links them together into one seamless experience. Visitors can switch between connected stores without realizing they've moved to a different domain. After the connection is made, all features, rules, translations, and popup behavior are managed entirely from your group owner’s dashboard, keeping configuration simple and centralized.
 
@@ -380,7 +380,7 @@ The app preserves their choice, so if they return later, they'll automatically l
 
 Store connection is a powerful feature that extends the capabilities of IP Geolocation beyond single-store setups, enabling complex international operations while maintaining a simple, unified experience for visitors.
 
-## **7\. Geo Redirect Popup**
+## Geo Redirect Popup
 
 The geolocation popup is the primary way visitors interact with your app. Customizing its appearance and content ensures it matches your brand and delivers a clear, compelling message.
 
@@ -464,7 +464,7 @@ In addition to text, you can customize the popup's visual appearance to match yo
 
 These options allow you to create a popup that blends seamlessly with your store’s theme while providing a clear and intuitive experience for visitors.
 
-## **8\. Geo Market Selector**
+## Geo Market Selector
 
 The market selector gives visitors control over their shopping experience by allowing them to manually switch between available markets or connected stores at any time.
 
@@ -595,7 +595,7 @@ When a visitor clicks the selector, they see a list of all available markets or 
 
 The visitor clicks on their desired market, and the app redirects them to that storefront. Their choice is saved, so if they return to your store later, they'll automatically land on their selected market (depending on your returning visitor rules).
 
-## **9\. Troubleshooting**
+## Troubleshooting
 
 Even with careful setup, you may occasionally encounter issues with IP Geolocation shopif app. This section covers common problems and how to resolve them.
 
@@ -683,7 +683,7 @@ Your store URL and the approximate time the issue occurred.
 
 The [support](https://ipgeolocation.io/contact.html) team will investigate and help you resolve the issue as quickly as possible.
 
-## **10\. FAQ**
+## FAQs
 
 This section answers the most common questions about IP Geolocation.
 
