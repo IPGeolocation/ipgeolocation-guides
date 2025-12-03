@@ -196,7 +196,7 @@ The selector allows users to manually switch markets (e.g., in the Footer or Hea
 
 ---
 
-## FAQ
+## Frequently Asked Questions
 
 <details>
 <summary><strong>Is the IP Geolocation app really free?</strong></summary>
