@@ -1,20 +1,24 @@
 # Astronomy API Client Side Plugin 
 
+## Overview
+Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period times in combination with location information. One can get the [astronomy information](https://ipgeolocation.io/astronomy-api.html) from any IP address, geo-coordinates, or street address right in your web application. It is recommended to use the request origin feature (available only in paid plans) to ensure your API key is not exposed publicly. You can add your request origin (your website domain) by logging into your account at [IPGeolocation.io](https://app.ipgeolocation.io/login).
+
 ## Table of Contents
-1. [Requirements](#requirements)
-2. [How to Get Your API Key](#how-to-get-your-api-key)
-3. [Installation](#installation)
-4. [Plugin Configurations](#plugin-configurations)
-5. [Code Examples](#code-examples)
+1. [Overview](#overview) 
+2. [Requirements](#requirements)
+3. [How to Get Your API Key](#how-to-get-your-api-key)
+4. [Installation](#installation)
+5. [Plugin Configurations](#plugin-configurations)
+6. [Code Examples](#code-examples)
    - [Get Astronomical Information for a specific location](#get-astronomical-information-for-a-specific-location)
    - [Get Astronomical Information for Location Coordinates](#get-astronomical-information-for-location-coordinates)
    - [Get Astronomical Information for an IP Address](#get-astronomical-information-for-an-ip-address)
    - [Get Astronomical Information for a Specific Date](#get-astronomical-information-for-a-specific-date)
-6. [Error Handling](#error-handling)
+7. [Error Handling](#error-handling)
 
 ## Requirements
 
-- Python 3.9+
+- Internet Connection
 - API Key from [IPGeolocation.io](https://ipgeolocation.io)
 
 ## How to Get Your API Key
