@@ -345,51 +345,82 @@ Welcome, California visitors! Check out our local deals.
 <p>We're glad to have you here from [ipgeo country].</p>
 ```
 
-## **Frequently Asked Questions (FAQs)**
+# Frequently Asked Questions
 
-### **Does this plugin redirect logged‑in administrators?**
+<details>
+<summary><strong>Does this plugin redirect logged-in administrators?</strong></summary>
 
 No. Administrators are automatically excluded from all redirects and access rules.
 
-### **Are bots and search engines redirected?**
+</details>
 
-No. Known bots and search engine crawlers (e.g., Google, Bing, Facebook, Twitter) are excluded from redirects so your SEO indexing remains unaffected. 
+<details>
+<summary><strong>Are bots and search engines redirected?</strong></summary>
 
-### **Does the plugin cache API responses?**
+No. Known bots and search engine crawlers (e.g., Google, Bing, Facebook, Twitter) are excluded from redirects so your SEO indexing remains unaffected.
 
-Yes. IPGeolocation stores geolocation data per IP in WordPress transients for **24 hours**, improving performance and reducing API calls.
+</details>
 
-### **Does the plugin work with Cloudflare?**
+<details>
+<summary><strong>Does the plugin cache API responses?</strong></summary>
 
-Yes. The plugin supports the `CF‑Connecting‑IP` header, allowing it to detect visitor IPs even when Cloudflare is enabled. 
+Yes. IPGeolocation stores geolocation data per IP in WordPress transients for <strong>24 hours</strong>, improving performance and reducing API calls.
 
-### **Will this slow down my website?**
+</details>
+
+<details>
+<summary><strong>Does the plugin work with Cloudflare?</strong></summary>
+
+Yes. The plugin supports the <code>CF-Connecting-IP</code> header, allowing it to detect visitor IPs even when Cloudflare is enabled.
+
+</details>
+
+<details>
+<summary><strong>Will this slow down my website?</strong></summary>
 
 No. API calls are cached, and geolocation rules are processed efficiently so page load impact is minimal under normal conditions.
 
-### **What happens if the IPGeolocation API key is missing or incorrect?**
+</details>
 
-Without a valid API key, the plugin’s core features (redirects, content rules, and access control) **will not function** because it cannot determine visitor location. Users might see default content or no redirection until the key is configured.
+<details>
+<summary><strong>What happens if the IPGeolocation API key is missing or incorrect?</strong></summary>
 
-### **Can I temporarily bypass redirection for testing or users?**
+Without a valid API key, the plugin’s core features (redirects, content rules, and access control) <strong>will not function</strong> because it cannot determine visitor location. Users might see default content or no redirection until the key is configured.
+
+</details>
+
+<details>
+<summary><strong>Can I temporarily bypass redirection for testing or users?</strong></summary>
 
 Yes. You can add query parameters for control:
 
-- `?geo_bypass=1` — bypasses redirects for 30 days
-- `?geo_reset=1` — resets the bypass state and allows redirects again
+- <code>?geo_bypass=1</code> — bypasses redirects for 30 days  
+- <code>?geo_reset=1</code> — resets the bypass state and allows redirects again
 
-### **How can I verify that redirects or content rules are working?**
+</details>
+
+<details>
+<summary><strong>How can I verify that redirects or content rules are working?</strong></summary>
 
 To test rules:
 
-- Use a **VPN or proxy** to simulate different countries.
-- Try `?geo_bypass=1` to skip redirects temporarily.
+- Use a <strong>VPN or proxy</strong> to simulate different countries.
+- Try <code>?geo_bypass=1</code> to skip redirects temporarily.
 - Use an incognito browser session to avoid cached rules.
 
-### **Is there a way to detect VPN, proxy, or Tor users?**
+</details>
 
-Yes — with the **Advanced or Security API plan**, you can detect if a visitor is using a proxy, VPN, or Tor. These details can also be used in conditional shortcodes to show or hide relevant content.
+<details>
+<summary><strong>Is there a way to detect VPN, proxy, or Tor users?</strong></summary>
 
-### **Can I show different prices, banners, or contact details based on location?**
+Yes — with the <strong>Advanced or Security API plan</strong>, you can detect if a visitor is using a proxy, VPN, or Tor. These details can also be used in conditional shortcodes to show or hide relevant content.
 
-Absolutely! Use the conditional content shortcodes (e.g., `[ipgeo_if country_code="US"]`) to display localized banners, contact information, prices, or other content tailored to the visitor’s country or region.
+</details>
+
+<details>
+<summary><strong>Can I show different prices, banners, or contact details based on location?</strong></summary>
+
+Absolutely. Use the conditional content shortcodes (e.g., <code>[ipgeo_if country_code="US"]</code>) to display localized banners, contact information, prices, or other content tailored to the visitor’s country or region.
+
+</details>
+
