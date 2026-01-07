@@ -345,7 +345,7 @@ Welcome, California visitors! Check out our local deals.
 <p>We're glad to have you here from [ipgeo country].</p>
 ```
 
-# Frequently Asked Questions
+## Frequently Asked Questions
 
 <details>
 <summary><strong>Does this plugin redirect logged-in administrators?</strong></summary>
