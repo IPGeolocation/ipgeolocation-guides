@@ -125,8 +125,8 @@ A live preview is shown so you can see changes instantly.
 - Clicking **No** keeps the visitor on the current page
 
 > [!NOTE] 
-> Popup redirects are user-friendly and GDPR-friendly
-> Automatic redirects are best for country-specific pages
+> - Popup redirects are user-friendly and GDPR-friendly
+> - Automatic redirects are best for country-specific pages
 
 ## Country Access Rules
 
