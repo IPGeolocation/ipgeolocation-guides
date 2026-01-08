@@ -71,9 +71,10 @@ The plugin needs a "key" to work—think of it like a password that lets your Wo
 
 ![API Configuration](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/api-configs.png)
 
-Imagine your website could automatically greet visitors in their language, show them relevant local offers, or redirect them to the perfect regional page—all based on where they're browsing from. That's exactly what the [IPGeolocation.io](http://ipgeolocation.io/) – Geo Redirects & Content Control Plugin does!**Important**
+Imagine your website could automatically greet visitors in their language, show them relevant local offers, or redirect them to the perfect regional page—all based on where they're browsing from. That's exactly what the [IPGeolocation.io – Geo Redirects & Content Control Plugin](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/) does!
 
-- Please make sure to select the correct plan type. Choosing the wrong option may cause the plugin to not work properly.
+> [!IMPORTANT] 
+> Please make sure to select the correct plan type. Choosing the wrong option may cause the plugin to not work properly.
 
 ## Geo Redirection Rules
 
@@ -123,10 +124,9 @@ A live preview is shown so you can see changes instantly.
 - Clicking **Yes** redirects the visitor to the target URL
 - Clicking **No** keeps the visitor on the current page
 
-**Notes:**
-
-- Popup redirects are user-friendly and GDPR-friendly
-- Automatic redirects are best for country-specific pages
+> [!NOTE] 
+> Popup redirects are user-friendly and GDPR-friendly
+> Automatic redirects are best for country-specific pages
 
 ## Country Access Rules
 
