@@ -166,12 +166,11 @@ If the country cannot be detected, no restriction is applied.
 - If **Allow mode** is enabled and the visitor’s country does NOT match the list → access is blocked
 - Allowed visitors continue browsing normally
 
-**Notes**
-
-- Runs early and only on frontend requests
-- Uses strict country matching
-- Safe for caching and SEO
-- Fully automatic once configured
+> [!NOTE] 
+> - Runs early and only on frontend requests
+> - Uses strict country matching
+> - Safe for caching and SEO
+> - Fully automatic once configured
 
 ## Page Exclusion Rules
 
@@ -222,11 +221,10 @@ If any rule matches, the page is excluded.
 - Value: **ref=google**
 - Matches: **/shop?ref=google**
 
-**Notes**
-
-- Only one match is needed to exclude the page
-- Trailing slashes are handled automatically
-- Works with normal URLs and query strings
+> [!NOTE] 
+> - Only one match is needed to exclude the page
+> - Trailing slashes are handled automatically
+> - Works with normal URLs and query strings
 
 ## **Shortcodes & Dynamic Content Display**
 
