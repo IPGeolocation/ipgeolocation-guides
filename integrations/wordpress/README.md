@@ -62,14 +62,14 @@ The plugin needs a "key" to work—think of it like a password that lets your Wo
 ### **Step 2: Install & Activate the Plugin**
 
 1. In your WordPress dashboard, go to **Plugins → Add New**
-2. Search for "**IPGeolocation – Geo Redirects & Content Control**"
+2. Search for "**IPGeolocation.io – Geo Redirects & Content Control**"
 
-![Add Plugin and Geo Redirects](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/add-plugin.png)
+![Add Plugin and Geo Redirects](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/add-plugin-1.1.0.png)
 
 1. Click "**Install Now**" then "**Activate**"
 2. Go to the plugin settings and **paste your API key** and **select the API plan type** you are on.
 
-![API Configuration](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/api-configs.png)
+![API Configuration](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/api-config-1.1.0.png)
 
 Imagine your website could automatically greet visitors in their language, show them relevant local offers, or redirect them to the perfect regional page—all based on where they're browsing from. That's exactly what the [IPGeolocation.io – Geo Redirects & Content Control Plugin](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/) does!
 
@@ -295,7 +295,6 @@ Welcome, California visitors! Check out our local deals.
 - `is_tor` (yes/no)
 - `is_cloud_provider` (yes/no)
 - `is_anonymous` (yes/no)
-- `proxy_type` (type of proxy if detected e.g., vpn)
 
 **Logic operators**
 
@@ -341,7 +340,21 @@ Welcome, California visitors! Check out our local deals.
 ```
 <h2>Welcome, visitor from [ipgeo city]!</h2>
 <p>We're glad to have you here from [ipgeo country].</p>
+
 ```
+
+## Changelog
+### 1.1.0
+- Upgraded internal API from v2 to v3
+- Simplified plan types: Developer and Paid Plan only
+- Standard, Advanced, and Security plans auto-migrated to Paid Plan
+- Rename the plugin
+### 1.0.0
+- Initial public release
+- Country redirects with popup support
+- Country access allow/block rules
+- Conditional shortcodes
+- Bot detection and caching
 
 ## Frequently Asked Questions
 
