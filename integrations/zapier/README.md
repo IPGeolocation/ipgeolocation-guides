@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Zapier + IPGeolocation integration makes it simple to use the full [**IPGeolocation.io**](https://ipgeolocation.io) APIs inside your Zap workflows. You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
+The [Zapier + IPGeolocation](https://zapier.com/apps/ipgeolocationio/integrations) integration makes it simple to use the full [**IPGeolocation.io v3**](https://ipgeolocation.io) APIs inside your Zap workflows. You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
 
 With this integration, you can quickly get helpful information about any IP address. This includes location details, network ownership, security risk information, user agent data, time zone details, and even basic astronomy information. You can use this data to improve your workflows, personalize user experiences, and make your automations more secure.
 
@@ -47,7 +47,7 @@ To use IPGeolocation.io with **Zapier**, you need a valid **API Key**. Follow th
 - Click **Create a new zap** from your dashboard.
 - You will see a canvas where you can add modules (actions that perform tasks).
 
-### Add an IPGeolocation module
+### Add an IPGeolocation.io module
 
 - Click the action button to add a module.
 - Search for **IPGeolocation** in the module search bar.
@@ -59,7 +59,7 @@ To use IPGeolocation.io with **Zapier**, you need a valid **API Key**. Follow th
 
 - In the module settings, find the **account** field and click **Sign in**.
 - Paste the **API Key** you copied earlier into the required field.
-- Click **Yes, Continue to IPGeolocation** to authenticate the connection.
+- Click **Yes, Continue to IPGeolocation.io** to authenticate the connection.
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/setup-connection.png)
 
@@ -80,24 +80,24 @@ To use IPGeolocation.io with **Zapier**, you need a valid **API Key**. Follow th
 
 ## Actions Availability across our Plans
 
-We offer **four API plans**: **Developer**, **Standard**, **Security**, and **Advanced**.
+We offer **two API plans**: **Developer**, **Paid**.
 
 The availability of actions depends on the plan you are subscribed to. The following table provides a detailed overview of which actions are included in each plan, helping you quickly identify the plan that suits your needs.
 
-| **Action** | **Developer** | **Standard** | **Security** | **Advance** |
-| --- | --- | --- | --- | --- |
-| **Find Geolocation Information** | ✔ | ✔ | ✖ | ✔ |
-| **Find Bulk IP Geolocation** | ✖ | ✔ | ✖ | ✔ |
-| **Find IP Security**  | ✖ | ✖ | ✔ | ✖ |
-| **Find Bulk IP Security**  | ✖ | ✖ | ✔ | ✖ |
-| **Find ASN Information** | ✖ | ✖ | ✖ | ✔ |
-| **Find Abuse Information** | ✖ | ✖ | ✖ | ✔ |
-| **Find Astronomy Information** | ✔ | ✔ | ✔ | ✔ |
-| **Find Astronomy Timeseries Information** | ✔ | ✔ | ✔ | ✔ |
-| **Find Timezone Information** | ✔ | ✔ | ✔ | ✔ |
-| **Find Time Conversion** | ✔ | ✔ | ✔ | ✔ |
-| **Find User Agent** | ✖ | ✔ | ✔ | ✔ |
-| **Find Bulk User Agents** | ✖ | ✔ | ✔ | ✔ |
+| **Action** | **Developer (Free)** | **Paid** |
+| --- | --- | --- |
+| **Find Geolocation Information** | ✔ | ✔ |
+| **Find Bulk IP Geolocation** | ✖ | ✔ |
+| **Find IP Security** | ✖ | ✔ |
+| **Find Bulk IP Security** | ✖ | ✔ |
+| **Find ASN Information** | ✖ | ✔ |
+| **Find Abuse Information** | ✖ | ✔ |
+| **Find Astronomy Information** | ✔ | ✔ |
+| **Find Astronomy Timeseries Information** | ✔ | ✔ |
+| **Find Timezone Information** | ✔ | ✔ |
+| **Find Time Conversion** | ✔ | ✔ |
+| **Find User Agent** | ✖ | ✔ |
+| **Find Bulk User Agents** | ✖ | ✔ |
 
 For full pricing details and to choose your plan, see the [pricing page](https://ipgeolocation.io/pricing.html).
 
@@ -109,14 +109,14 @@ Below is a structured reference of all modules in this integration.
 
 ### **Geolocation**
 
-**1. Get IP Geolocation**
+**Get IP Geolocation**
 
 Retrieves full geolocation data of a single IPv4/IPv6.
 
 - **Input:** IP Address
-- **Outputs:** country_name, city, latitude, longitude and [many more](https://ipgeolocation.io/ip-location-api.html#2-location-json-object-reference)
+- **Outputs:** country_name, city, latitude, longitude and [many more](https://ipgeolocation.io/documentation/ip-location-api.html#location-json-object-reference)
 
-**2. Get Bulk IP Geolocation**
+**Get Bulk IP Geolocation**
 
 Retrieves geolocation for up to 50,000 IPs per request.
 
@@ -127,39 +127,39 @@ Retrieves geolocation for up to 50,000 IPs per request.
 
 ### **Security**
 
-**3. IP Security Lookup**
+**IP Security Lookup**
 
-Security insights such as proxy, VPN, TOR, threat score, cloud and proxy providers.
+Security insights such as proxy, VPN, TOR, Relay, threat score, cloud and proxy providers.
 
 - **Input:** IP Address
-- **Outputs:** security.is_proxy, security.is_vpn, security.threat_score, security.is_cloud_provider and [more](https://ipgeolocation.io/ip-security-api.html#2-security-json-object-reference)
+- **Outputs:** security.is_proxy, security.is_vpn, security.is_relay, security.is_tor, security.threat_score, security.is_cloud_provider and [more](https://ipgeolocation.io/documentation/ip-security-api.html#security-json-object-reference)
 
-**4. Bulk IP Security Lookup**
+**Bulk IP Security Lookup**
 
 Security assessment for multiple IPs.
 
 - **Input:** Array of IPs
-- **Outputs:** Collection of [security data](https://ipgeolocation.io/ip-security-api.html#2-security-json-object-reference)
+- **Outputs:** Collection of [security data](https://ipgeolocation.io/documentation/ip-security-api.html#security-json-object-reference)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/ip-security.png)
 
 ### **Network Intelligence**
 
-**5. Lookup ASN**
+**Lookup ASN**
 
 Provides a simple way to retrieve accurate information about an Autonomous System Number (ASN) and its associated IPv4 and IPv6 address ranges.
 
 - **Input:** IP or ASN number
-- **Outputs:** asn.as_number, asn.organization and [more](https://ipgeolocation.io/asn-api.html#reference-to-asn-api-response)
+- **Outputs:** asn.as_number, asn.organization and [more](https://ipgeolocation.io/documentation/asn-api.html#reference-to-asn-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/asn.png)
 
-**6. Lookup Abuse Contact Information**
+**Lookup Abuse Contact Information**
 
 Includes details such as the role, handle, organization name, kind (e.g., group or individual), and postal address. This information helps identify the entity responsible for handling abuse reports.
 
 - **Input:** IP Address
-- **Outputs:** abuse.emails, abuse.handle and [more](https://ipgeolocation.io/ip-abuse-contact-api.html#reference-to-abuse-contact-api-response)
+- **Outputs:** abuse.emails, abuse.kind and [more](https://ipgeolocation.io/documentation/ip-abuse-contact-api.html#reference-to-abuse-contact-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/abuse.png)
 
@@ -167,7 +167,7 @@ Includes details such as the role, handle, organization name, kind (e.g., group 
 
 Free **Timezone API** and **Time conversion API** provides date and time related information such as current time, date in various formats, week, month, year, time in unix timestamp, UTC/GMT offset and day light saving time from timezone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
 
-**7. Get Timezone Info**
+**Get Timezone Info**
 
 It can be consumed with the following input variations:
 
@@ -178,11 +178,11 @@ It can be consumed with the following input variations:
 - For any IATA code
 - For any ICAO code
 - For any UN/LO Code
-- **Outputs:** time_zone.name, time_zone.current_time, time_zone.date_time_wti and [more](https://ipgeolocation.io/timezone-api.html#reference-to-time-zone-api-response)
+- **Outputs:** time_zone.name, time_zone.current_time, time_zone.date_time_wti and [more](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/timezone.png)
 
-**8. Time Conversion**
+**Time Conversion**
 
 Converts a time from one of following options
 
@@ -193,7 +193,7 @@ Converts a time from one of following options
 - Convert Time using ICAO codes
 - Convert Time using UN/LOCODEs
 
-**Output:** Converted [date/time](https://ipgeolocation.io/timezone-api.html#reference-to-time-conversion-api-response)
+**Output:** Converted [date/time](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-conversion-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/time-conversion.png)
 
@@ -201,13 +201,13 @@ Converts a time from one of following options
 
 Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimuth, sun altitude, moon altitude, sun distance from the earth and moon distance from the earth.
 
-**9. Get Astronomy Details**
+**Get Astronomy Details**
 
-- **Outputs:** astronomy.sunrise, astronomy.sunset, astronomy.moon_phase and [many more.](https://ipgeolocation.io/astronomy-api.html#reference-to-astronomy-api-response)
+- **Outputs:** astronomy.sunrise, astronomy.sunset, astronomy.moon_phase and [many more.](https://ipgeolocation.io/documentation/astronomy-api.html#reference-to-astronomy-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/astronomy.png)
 
-**10. Astronomy Time Series Lookup**
+**Astronomy Time Series Lookup**
 
 - **Outputs:** Daily astronomy data for a defined date range.
 
@@ -217,14 +217,14 @@ Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimu
 
 Provides detailed client system information, allowing for the detection of bots, crawlers, and potential attackers.
 
-**11. Parse User Agent String**
+**Parse User Agent String**
 
 - **Input:** User agent string
-- **Outputs:** provides name, device and operating sysem [information](https://ipgeolocation.io/user-agent-api.html#reference-to-user-agent-api-response).
+- **Outputs:** provides name, device and operating sysem [information](https://ipgeolocation.io/documentation/user-agent-api.html#reference-to-user-agent-api-response).
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/user-agent.png)
 
-1. **Parse Bulk User Agent Strings**
+**Parse Bulk User Agent Strings**
 - **Input:** Array of User agent strings
 - **Outputs:** Collection of parsed user agent objects
 
