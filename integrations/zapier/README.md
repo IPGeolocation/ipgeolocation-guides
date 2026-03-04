@@ -114,7 +114,7 @@ Below is a structured reference of all modules in this integration.
 Retrieves full geolocation data of a single IPv4/IPv6.
 
 - **Input:** IP Address
-- **Outputs:** country_name, city, latitude, longitude and [many more](https://ipgeolocation.io/documentation/ip-location-api.html#location-json-object-reference)
+- **Outputs:** country_name, city, latitude, longitude, zipcode and [many more](https://ipgeolocation.io/documentation/ip-location-api.html#location-json-object-reference)
 
 **Get Bulk IP Geolocation**
 
