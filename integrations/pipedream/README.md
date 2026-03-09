@@ -379,7 +379,7 @@ Returns sunrise, sunset, moonrise, moonset, solar noon, and moon phase for a giv
 | Longitude | No | Must be paired with Latitude |
 | Location | No | City/country string |
 | Timezone | No | Timezone for result times |
-| Language | No | Response language (defaults to `en`) () |
+| Language | No | Response language (defaults to `en`) |
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/get-astronomy.png)
 
