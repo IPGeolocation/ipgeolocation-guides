@@ -63,7 +63,7 @@ For full pricing details and to choose your plan, see the [pricing page](https:/
 
 ### Get IP Geolocation
 
-**Endpoint:** `GET /v3/ipgeo`
+- **Endpoint:** `GET /v3/ipgeo`
 
 Looks up geolocation data for a single IPv4 or IPv6 address (or domain). Returns country, city, state, coordinates, timezone, currency, ASN, and more depending on your plan.
 
@@ -74,7 +74,7 @@ Looks up geolocation data for a single IPv4 or IPv6 address (or domain). Returns
 | IP Address or Domain | No | Leave blank to look up the caller's IP |
 | Fields | No | Comma-separated list of fields to include in the response |
 | Exclude Fields | No | Fields to omit from the response |
-| Language | No | Response language (e.g., `en`, `de`, `ja`) |
+| Language | No | Response language |
 | Include Modules | No | Additional modules to include (e.g., `security`, `hostname`, `abuse`, `user_agent`, `geo_accuracy`, `dma_code`) |
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/get-geolocation.png)
@@ -94,8 +94,8 @@ const timezone = steps.get_geolocation.$return_value.time_zone.name;
 
 ### Get Bulk IP Geolocation
 
-**Endpoint:** `POST /v3/ipgeo-bulk`
-**Availability:** **Paid Plans**
+- **Endpoint:** `POST /v3/ipgeo-bulk`
+- **Availability:** **Paid Plans**
 
 Enriches up to **50,000 IP addresses or domains** in a single request. Ideal for batch processing log files, user tables, or event streams.
 
@@ -120,8 +120,8 @@ Enriches up to **50,000 IP addresses or domains** in a single request. Ideal for
 
 ### Get IP Security
 
-**Endpoint:** `GET /v3/security`
-**Availability:** **Paid Plans**
+- **Endpoint:** `GET /v3/security`
+- **Availability:** **Paid Plans**
 
 Returns threat intelligence for a single IP: VPN/proxy/Tor detection, bot flags, threat score, spam indicators, and cloud provider identification.
 
@@ -151,8 +151,8 @@ if (security.threat_score > 70 || security.is_proxy) {
 
 ### Get Bulk IP Security
 
-**Endpoint:** `POST /v3/security-bulk`
-**Availability:** **Paid Plans**
+- **Endpoint:** `POST /v3/security-bulk`
+- **Availability:** **Paid Plans**
 
 Runs threat intelligence checks on up to **50,000 IP addresses** at once. Returns per-IP security signals including VPN/proxy/Tor flags, threat scores, and bot detection.
 
@@ -175,8 +175,8 @@ Runs threat intelligence checks on up to **50,000 IP addresses** at once. Return
 
 ### Get ASN Details
 
-**Endpoint:** `GET /v3/asn`
-**Availability:** **Paid Plans**
+- **Endpoint:** `GET /v3/asn`
+- **Availability:** **Paid Plans**
 
 Returns Autonomous System Number (ASN) data including AS number, organization name, IP ranges, peering info, and WHOIS details. Accepts an IP address or ASN number.
 
@@ -203,8 +203,8 @@ Returns Autonomous System Number (ASN) data including AS number, organization na
 
 ### Get Abuse Contact
 
-**Endpoint:** `GET /v3/abuse`
-**Availability:** **Paid Plans**
+- **Endpoint:** `GET /v3/abuse`
+- **Availability:** **Paid Plans**
 
 Retrieves the abuse contact information registered for an IP address, including the responsible organization, email addresses, and phone numbers.
 
@@ -233,7 +233,7 @@ const abuse = steps.get_abuse_contact.$return_value;
 
 ### Get Timezone
 
-**Endpoint:** `GET /v3/timezone`
+- **Endpoint:** `GET /v3/timezone`
 
 Looks up timezone data for a location specified by IP address, coordinates, timezone name, city name, IATA airport code, ICAO code, or UN/LOCODE. Returns current time, UTC offset, DST status, and more.
 
@@ -261,7 +261,7 @@ Looks up timezone data for a location specified by IP address, coordinates, time
 
 ### Convert Timezone
 
-**Endpoint:** `GET /v3/timezone/convert`
+- **Endpoint:** `GET /v3/timezone/convert`
 
 Converts a date/time from one timezone (or location) to another. Accepts timezone names, coordinates, city names, IATA codes, ICAO codes, or UN/LOCODEs as selectors for both the source and destination.
 
@@ -307,8 +307,8 @@ Converts a date/time from one timezone (or location) to another. Accepts timezon
 
 ### Parse User Agent
 
-**Endpoint:** `POST /v3/user-agent`
-**Availability:** **Paid Plans**
+- **Endpoint:** `POST /v3/user-agent`
+- **Availability:** **Paid Plans**
 
 Parses a single user agent string and returns structured data: browser name, version, device type, brand, CPU, operating system, and rendering engine.
 
@@ -336,8 +336,8 @@ const ua = steps.parse_user_agent.$return_value;
 
 ### Parse Bulk User Agents
 
-**Endpoint:** `POST /v3/user-agent-bulk`
-**Availability:** **Paid Plans**
+- **Endpoint:** `POST /v3/user-agent-bulk`
+- **Availability:** **Paid Plans**
 
 Parses up to **50,000 user agent strings** in a single request. Returns the same structured breakdown as the single-UA action for each entry.
 
@@ -358,7 +358,7 @@ Parses up to **50,000 user agent strings** in a single request. Returns the same
 
 ### Get Astronomy Data
 
-**Endpoint:** `GET /v3/astronomy`
+- **Endpoint:** `GET /v3/astronomy`
 
 Returns sunrise, sunset, moonrise, moonset, solar noon, and moon phase for a given location and date. Location can be specified by IP address, coordinates, or city name.
 
@@ -385,7 +385,7 @@ Returns sunrise, sunset, moonrise, moonset, solar noon, and moon phase for a giv
 
 ### Get Astronomy Time Series
 
-**Endpoint:** `GET /v3/astronomy/timeSeries`
+- **Endpoint:** `GET /v3/astronomy/timeSeries`
 
 Returns astronomy data (sunrise, sunset, moonrise, moonset, moon phase) for every day within a specified date range, up to **90 days**.
 
