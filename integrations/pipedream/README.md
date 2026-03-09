@@ -2,10 +2,6 @@
 
 Automate IP intelligence workflows using IPGeolocation.io's full suite of APIs directly inside [Pipedream](https://pipedream.com/apps/ipgeolocation). No custom HTTP requests, no glue code — just configure an action and go.
 
----
-
-## Overview
-
 [IPGeolocation.io](https://ipgeolocation.io) is an enterprise-grade IP intelligence platform trusted by thousands of companies worldwide. It provides real-time data on geolocation, security threats, ASN details, timezone, astronomy, abuse contacts, and user-agent parsing — all through a single, fast API with a 99.99% uptime SLA.
 
 The Pipedream integration exposes **12 ready-to-use actions** that map directly to IPGeolocation.io's API v3 endpoints. You can drop these actions into any Pipedream workflow to enrich data, detect fraud, personalize experiences, automate security responses, and more.
@@ -25,8 +21,10 @@ The Pipedream integration exposes **12 ready-to-use actions** that map directly 
 
 1. Open [Pipedream](https://pipedream.com) and create a new workflow (or open an existing one).
 2. Add a new step and search for **IPGeolocation**.
+
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/add-ipgeolocation-step.png)
 3. Click **Connect Account** and paste your API key when prompted.
+
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/add-connection.png)
 4. Your account is now linked and ready to use across all 12 actions.
 
