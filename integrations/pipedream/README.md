@@ -21,11 +21,16 @@ The Pipedream integration exposes **12 ready-to-use actions** that map directly 
 
 ### Connect IPGeolocation.io to Pipedream
 
-**1.** 1. Open [Pipedream](https://pipedream.com) and create a new workflow (or open an existing one).
-**2.** Add a new step and search for **IPGeolocation**.
+**1.** Open [Pipedream](https://pipedream.com) and create a new workflow (or open an existing one).
+
+**2.** Add a new step and search for **IPGeolocation**. 
+
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/add-ipgeolocation-step.png)
+
 **3.** Click **Connect Account** and paste your API key when prompted.
+
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/add-connection.png)
+
 **4.** Your account is now linked and ready to use across all 12 actions.
 
 ### Add an action
