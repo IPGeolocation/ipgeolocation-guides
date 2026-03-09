@@ -418,6 +418,34 @@ Returns astronomy data (sunrise, sunset, moonrise, moonset, moon phase) for ever
 
 ---
 
+## Referencing Results in Pipedream
+
+Every action's JSON response is accessible in downstream steps via `steps.<action_name>.$return_value`. Some common paths:
+
+| What you want | Path |
+|---|---|
+| Country name | `steps.get_geolocation.$return_value.location.country_name` |
+| City | `steps.get_geolocation.$return_value.location.city` |
+| Timezone name | `steps.get_geolocation.$return_value.time_zone.name` |
+| Is EU visitor | `steps.get_geolocation.$return_value.location.is_eu` |
+| Currency code | `steps.get_geolocation.$return_value.currency.code` |
+| Calling code | `steps.get_geolocation.$return_value.country_metadata.calling_code` |
+| Threat score | `steps.get_ip_security.$return_value.security.threat_score` |
+| Is VPN | `steps.get_ip_security.$return_value.security.is_vpn` |
+| Is Tor | `steps.get_ip_security.$return_value.security.is_tor` |
+| ASN number | `steps.get_asn.$return_value.asn.as_number` |
+| ASN org | `steps.get_asn.$return_value.asn.organization` |
+| Abuse email | `steps.get_abuse_contact.$return_value.abuse.emails[0]` |
+| Sunrise | `steps.get_astronomy.$return_value.sunrise` |
+| Moon phase | `steps.get_astronomy.$return_value.moon_phase` |
+| Converted time | `steps.convert_timezone.$return_value.converted_time` |
+| Hour difference | `steps.convert_timezone.$return_value.diff_hour` |
+| Browser name | `steps.parse_user_agent.$return_value.name` |
+| Device type | `steps.parse_user_agent.$return_value.device.type` |
+| OS name | `steps.parse_user_agent.$return_value.operating_system.name` |
+
+---
+
 ## Example Workflows
 
 ### Fraud detection on new sign-ups
