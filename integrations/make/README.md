@@ -81,28 +81,25 @@ To use IPGeolocation.io with **Make**, you need a valid **API Key**. Follow thes
 
 ## Actions Availability across our Plans
 
-We offer **four API plans**: **Developer**, **Standard**, **Security**, and **Advanced**.
+We offer **two API plans**: **Developer (Free)**, and **Paid**.
 
 The availability of actions depends on the plan you are subscribed to. The following table provides a detailed overview of which actions are included in each plan, helping you quickly identify the plan that suits your needs.
 
-| **Action** | **Developer** | **Standard** | **Security** | **Advance** |
-| --- | --- | --- | --- | --- |
-| **Get IP Geolocation** | ✔ | ✔ | ✖ | ✔ |
-| **Get Bulk IP Geolocation** | ✖ | ✔ | ✖ | ✔ |
-| **IP Security Lookup** | ✖ | ✖ | ✔ | ✖ |
-| **Bulk IP Security Lookup** | ✖ | ✖ | ✔ | ✖ |
-| **Lookup ASN** | ✖ | ✖ | ✖ | ✔ |
-| **Lookup Abuse Contact** | ✖ | ✖ | ✖ | ✔ |
-| **Lookup Astronomy** | ✔ | ✔ | ✔ | ✔ |
-| **Lookup Astronomy Timeseries** | ✔ | ✔ | ✔ | ✔ |
-| **Lookup Timezone Information** | ✔ | ✔ | ✔ | ✔ |
-| **Time Conversion** | ✔ | ✔ | ✔ | ✔ |
-| **Parse User Agent String** | ✖ | ✔ | ✔ | ✔ |
-| **Parse Bulk User Agent Strings** | ✖ | ✔ | ✔ | ✔ |
+| **Action** | **Developer** | **Paid** |
+|--------|----------|---------|
+| Get IP Geolocation | ✔ | ✔ |
+| Get Bulk IP Geolocation | ✖ | ✔ |
+| IP Security Lookup | ✖ | ✖ |
+| Bulk IP Security Lookup | ✖ | ✖ |
+| Lookup ASN | ✖ | ✔ |
+| Lookup Abuse Contact | ✖ | ✔ |
+| Lookup Astronomy | ✔ | ✔ |
+| Lookup Astronomy Timeseries | ✔ | ✔ |
+| Lookup Timezone Information | ✔ | ✔ |
+| Time Conversion | ✔ | ✔ |
+| Parse User Agent String | ✖ | ✔ |
+| Parse Bulk User Agent Strings | ✖ | ✔ |
 
-If you attempt to use **Security-related actions** (for example, **IP Security Lookup**) with an API key from the **Standard plan**, the request will **fail** because these actions are **exclusive to the Security plan**. The API will return an **error message** indicating unauthorized access.
-
-![](https://static.ipgeolocation.io/web-assets/images/integrations/make/action-availability.png)
 
 For full pricing details and to choose your plan, see the [pricing page](https://ipgeolocation.io/pricing.html).
 
@@ -237,9 +234,63 @@ Provides detailed client system information, allowing for the detection of bots,
 
 ---
 
+## Popular IPGeolocation.io Workflows (Make.com)
+
+IPGeolocation.io provides ready-made automation templates on Make.com to help you quickly integrate IP intelligence into your workflows without coding.
+
+---
+
+### Enrich Google Sheets with IPGeolocation.io Data
+
+**Overview:**  
+This [workflow](https://www.make.com/en/templates/18255-enrich-google-sheets-with-ipgeolocation-io-data) automatically enriches IP addresses stored in Google Sheets with detailed geolocation data from IPGeolocation.io.
+
+**What it does:**
+- Reads IP addresses from a Google Sheet
+- Fetches geolocation data (country, region, city, coordinates, ISP, etc.)
+- Updates the same sheet with enriched information
+
+**Use Cases:**
+- Lead enrichment
+- User analytics
+- Data cleanup and validation
+- Location-based reporting
+
+**Benefits:**
+- No manual lookup required
+- Real-time data enrichment inside spreadsheets
+- Easy integration with existing Google Sheets workflows
+
+---
+
+### Get Email Alerts for High-Risk IP Addresses
+
+**Overview:**  
+This [automation](https://www.make.com/en/templates/18227-get-email-alerts-for-high-risk-ip-addresses) monitors IP addresses and sends email alerts when a high-risk or suspicious IP is detected.
+
+**What it does:**
+- Analyzes IP reputation and risk signals
+- Identifies potentially malicious or suspicious IP addresses
+- Sends instant email notifications when risk is detected
+
+**Use Cases:**
+- Security monitoring
+- Fraud detection
+- Abuse prevention
+- Real-time threat alerts
+
+**Benefits:**
+- Early detection of suspicious activity
+- Automated security notifications
+- Helps protect systems and users proactively
+
+---
+
+
+
 ## Use Cases
 
-Some of the use cases are provided as following.
+Some of the most common use cases are provided as following.
 
 ### **E‑commerce Fraud & Network Vetting**
 
