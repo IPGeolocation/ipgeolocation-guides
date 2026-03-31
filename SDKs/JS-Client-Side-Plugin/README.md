@@ -1,30 +1,30 @@
-# IP Geolocation API Javascript Client Side Plugin
+# IP Geolocation API JavaScript Client Side Plugin
 
 ## Overview
-This document provides a comprehensive guide for setting up and using the IP Geolocation API client side JavaScript SDK. It includes detailed descriptions of configuration options, example usage, and error handling. The SDK lets you use two APIs: the [IP Geolocation API](https://ipgeolocation.io/ip-location-api.html) (Free, Standard or Advance) and the [IP Security API](https://ipgeolocation.io/ip-security-api.html) , so you can add geolocation and IP threat detection features to your website or app.
+This document provides a comprehensive guide for setting up and using the IP Geolocation API client-side JavaScript plugin. It includes detailed descriptions of configuration options, example usage, and error handling. The plugin lets you use two APIs: the [IP Geolocation API](https://ipgeolocation.io/documentation/ip-location-api.html) and the [IP Security API](https://ipgeolocation.io/documentation/ip-security-api.html), so you can add geolocation and IP threat detection features to your website or app.
 
-This plugin helps you get accurate geolocation details for any IPv4 or IPv6 address. It provides important information such as country, state, city, ZIP code, latitude, longitude, accuracy radius, confidence, dma code, connection type, ISP/Company information, and ASN data. These details are useful for showing location-based content or understanding where your users are coming from. You can also get abuse contact information, which is helpful for reporting suspicious or malicious activity.
+This plugin helps you get accurate geolocation details for any IPv4 or IPv6 address. It provides important information such as country, state, city, ZIP code, latitude, longitude, accuracy radius, confidence level, DMA code, connection type, ISP/company information, and ASN data. These details are useful for showing location-based content or understanding where your users are coming from. You can also get abuse contact information, which is helpful for reporting suspicious or malicious activity.
 
-Along with location data, the plugin also includes security lookups capability if you have a Security plan subscription. It can detect VPNs, proxy usage, Tor connections, anonymous activity, known attackers, bots, spam sources, and cloud hosting providers, and also provides a threat score to assess risk.
+Along with location data, the plugin also includes security lookup capability if you have a paid plan subscription. It can detect VPNs, proxy usage, residential proxies, Tor connections, relay networks, anonymous activity, known attackers, bots, spam sources, and cloud hosting providers, and also provides a threat score to assess risk.
 
-The plugin further offers extra features like timezone details, currency information, and device data from the User-Agent string. These details can help you customize content, set correct time zones, or display prices in the user’s local currency.
+The plugin further offers extra features like timezone details, currency information, and device data parsed from the User-Agent string. These details can help you customize content, set correct time zones, or display prices in the user's local currency.
 
-## Client Side SDK Purpose
+## Client Side Plugin Purpose
 
-With our [Free Plan](https://ipgeolocation.io/ip-location-api.html#documentation-overview), you get basic location details like country, state, city, ZIP code, and currency. The [Standard Plan](https://ipgeolocation.io/ip-location-api.html#documentation-overview) gives more information in addition to geolocation like timezone, network details (ASN and ISP), and user data such as browser and operating system. The [Security Plan](https://ipgeolocation.io/ip-security-api.html#documentation-overview) focuses on online safety and risk detection. It adds advanced security checks like VPN, proxy, and Tor detection, and provides a threat score to help identify suspicious or harmful activity. Our [Advance Plan](https://ipgeolocation.io/ip-location-api.html#documentation-overview) gives you everything, plus extra details like abuse information, privacy detection, connection type, and DMA codes to help with fraud detection, better marketing, and following local rules.
+With our **Free plan**, you get basic location details like country, state, city, ZIP code, currency, basic ASN, and timezone. **Paid plans** give progressively more information which includes network details (ASN type, domain, RIR, company), user-agent parsing, hostname resolution, security threat detection, abuse contact data, geo accuracy fields, and DMA codes.
 
 > [!IMPORTANT]
-> For a side-by-side comparison of features in each plan, please see the table on our [Billing page](https://ipgeolocation.io/pricing.html).
+> For a side-by-side comparison of features in each plan, please see the table on our [Pricing page](https://ipgeolocation.io/pricing.html).
 
-This SDK allows developers to integrate and utilize IP geolocation data within their web projects. Developers can use this SDK for various purposes, such as:
+This plugin allows developers to integrate and utilize IP geolocation data within their web projects. Developers can use this plugin for various purposes, such as:
 
 1. **Geographic Redirection:** Redirect visitors to region-specific site versions to enhance user experience and compliance with local regulations.
 2. **Analytics Enhancement:** Use geolocation data to analyze web traffic and user behavior, enhancing site and content strategies.
-3. **Marketing Geo-targeting & Region Segmentation:** Personalize content, offers, or marketing campaigns based on the visitor’s region, DMA code, or currency for higher engagement and conversion.
+3. **Marketing Geo-targeting & Region Segmentation:** Personalize content, offers, or marketing campaigns based on the visitor's region, DMA code, or currency for higher engagement and conversion.
 4. **Form Automation:** Pre-fill forms with country, state, city, zip code, and currency information, speeding up the checkout and registration processes.
 5. **Digital Rights Management:** Restrict or grant access to content based on the user's location to comply with legal restrictions.
 6. **ISP & ASN Attribution:** Determine the internet service provider and ASN ownership behind an IP address for auditing, routing analysis, and attribution.
-7. **Suspicious Traffic Detection & Filtering:** Detect and mitigate malicious activities by identifying traffic from suspicious locations or those using VPNs, proxies, tors, and known attackers.
+7. **Suspicious Traffic Detection & Filtering:** Detect and mitigate malicious activities by identifying traffic from suspicious locations or those using VPNs, proxies, Tor, relays, and known attackers.
 8. **Abuse Contact Identification:** Identify abusive or malicious IPs by retrieving their registered abuse contacts, enabling automated reporting and proactive threat response.
 9. **Access Control:** Block or restrict access from specific countries to comply with export controls or to reduce fraud and abuse.
 10. **Hostname Resolution (DB, Live, Fallback):** Retrieve the hostname of an IP using a fast internal database, live DNS lookup, or a fallback of both. Useful for reverse DNS auditing and attribution.
@@ -33,118 +33,137 @@ This SDK allows developers to integrate and utilize IP geolocation data within t
 13. **Language and Currency Customization:** Automatically display content in the user's language and currency based on their geographic location.
 
 > [!TIP]
-> Our JavaScript plugin let you easily integrate location and security intelligence directly into your website or web application. It enables you to deliver dynamic, personalized, and secure user experiences by providing real-time features such as geolocation details, security threat detection, and more without requiring complex backend setup.
+> Our JavaScript plugin lets you easily integrate location and security intelligence directly into your website or web application. It enables you to deliver dynamic, personalized, and secure user experiences by providing real-time features such as geolocation details, security threat detection, and more, without requiring complex backend setup.
 
 ## Table of Contents
 1. [Requirements](#requirements)
 2. [How to Get Your API Key](#how-to-get-your-api-key)
 3. [Configurations](#configurations)
-   - [Authentication & Input](#authentication--input)
-   - [Basic Response Customization](#basic-response-customization-free--paid)
-   - [include fields availability](#include-fields-availability)
-   - [Storage Option](#storage-option)
-4. [Setup Plugin](#storage-option)
+   - [IPGeolocationAPI: Authentication & Input](#ipgeolocationapi-authentication--input)
+   - [IPGeolocationAPI: Basic Response Customization](#ipgeolocationapi-basic-response-customization)
+   - [IPGeolocationAPI: include Options and Plan Availability](#ipgeolocationapi-include-options-and-plan-availability)
+   - [IPGeolocationAPI: Storage Option](#ipgeolocationapi-storage-option)
+   - [IPSecurityAPI: Authentication & Input](#ipsecurityapi-authentication--input)
+   - [IPSecurityAPI: Response Customization](#ipsecurityapi-response-customization)
+   - [IPSecurityAPI: Storage Option](#ipsecurityapi-storage-option)
+4. [Setup Plugin](#setup-plugin)
 5. [API Key Usage Example](#api-key-usage-example)
    - [No API Key](#no-api-key-request-origin-is-whitelisted)
    - [With API Key](#with-api-key)
-6. [Free Plan Examples](#developer-free-plan-examples)
-   - [Get IPGeo Default fields](#get-ipgeo-default-fields)
+6. [Free Plan Examples](#free-plan-examples)
+   - [Get Default Geolocation Fields](#get-default-geolocation-fields)
    - [Filtering Specific Fields from the Response](#filtering-specific-fields-from-the-response)
-7. [Standard Plan Examples](#standard-plan-examples)
+7. [Paid Plan Examples](#paid-plan-examples)
    - [Geolocation with Default Fields](#geolocation-with-default-fields)
    - [Retrieving Geolocation Data in Multiple Languages](#retrieving-geolocation-data-in-multiple-languages)
-   - [Include Hostname, Timezone, and User-Agent](#include-hostname-timezone-and-user-agent)
-8. [Advanced Plan Example](#advanced-plan-example)
-   - [Include DMA, Abuse, and Security](#include-dma-abuse-and-security)
-9. [Security Plan Examples](#security-plan-examples)
-   - [Combine IP Security with Geolocation](#combine-ip-security-with-geolocation)
-   - [Combine IP Security with all fields](#combine-ip-security-with-all-fields)
-   - [Field Filtering for security fields](#request-with-field-filtering-for-security-fields)
-10. [Error Handling](#error-handling)
+   - [Include Hostname and User-Agent](#include-hostname-and-user-agent)
+   - [Include Geo Accuracy Fields](#include-geo-accuracy-fields)
+   - [Include DMA Code](#include-dma-code)
+   - [Include Abuse Contact Information](#include-abuse-contact-information)
+   - [Include Security Information](#include-security-information)
+   - [Include All Optional Modules](#include-all-optional-modules)
+8. [IPSecurityAPI Examples](#ipsecurityapi-examples)
+   - [Basic Security Lookup](#basic-security-lookup)
+   - [Return Only Specific Security Fields](#return-only-specific-security-fields)
+   - [Exclude Specific Security Fields](#exclude-specific-security-fields)
+9. [Error Handling](#error-handling)
+
+---
 
 ## Requirements
 - Active internet connection
-- **API Key**: Sign up [IPGeolocation.io](https://ipgeolocation.io)
+- **API Key**: Sign up at [IPGeolocation.io](https://ipgeolocation.io)
 
 ## How to Get Your API Key
 
 1. **Sign up** here: [https://app.ipgeolocation.io/signup](https://app.ipgeolocation.io/signup)
-2. **(optional)** Verify your email, if you signed up using email.
+2. **(Optional)** Verify your email if you signed up using an email address.
 3. **Log in** to your account: [https://app.ipgeolocation.io/login](https://app.ipgeolocation.io/login)
 4. After logging in, navigate to your **Dashboard** to find your API key: [https://app.ipgeolocation.io/dashboard](https://app.ipgeolocation.io/dashboard)
 
+---
+
 ## Configurations
-### Authentication & Input
-| Option    | Type   | Description                                                                                 |
-|-----------|--------|---------------------------------------------------------------------------------------------|
-| apiKey    | string | Your API key. Required unless request origin is whitelisted (available only in Paid Plans). |
-| ipAddress | string | IPv4, IPv6, or domain name to query. If omitted, the SDK auto-detects the user’s IP.        |
 
-### Basic Response Customization (Free & Paid)
-| Option   | Type   | Description                                                                          |
-|----------|--------|--------------------------------------------------------------------------------------|
-| fields   | string | Comma-separated list of fields to include in the response. Available in all plans.   |
-| excludes | string | Comma-separated list of fields to exclude from the response. Available in all plans. |
-| lang     | string | Language code for translated fields (default: en). Requires Standard plan or higher. |
+### IPGeolocationAPI: Authentication & Input
+| Option      | Type   | Description                                                                                  |
+|-------------|--------|----------------------------------------------------------------------------------------------|
+| `apiKey`    | string | Your API key. Required unless request origin is whitelisted (available only on paid plans).  |
+| `ipAddress` | string | IPv4, IPv6, or domain name to query. If omitted, the plugin auto-detects the user's IP.      |
 
-### include fields availability
-| Option                      | Type    | Description                                                   | Free | Standard | Security | Advance |
-|-----------------------------|---------|---------------------------------------------------------------|:----:|:--------:|:--------:|:-------:|
-| includeHostname             | boolean | Include hostname from IPGeolocation database.                 |  ✖   |    ✔     |    ✔     |    ✔    |
-| includeLiveHostname         | boolean | Use live sources to resolve hostname.                         |  ✖   |    ✔     |    ✔     |    ✔    |
-| includeHostnameFallbackLive | boolean | Try DB first, fallback to live sources.                       |  ✖   |    ✔     |    ✔     |    ✔    |
-| includeTimezone             | boolean | Include timezone information.                                 |  ✖   |    ✔     |    ✔     |    ✔    |
-| includeUserAgent            | boolean | Include client browser and device info.                       |  ✖   |    ✔     |    ✔     |    ✔    |
-| includeLocation             | boolean | Include geolocation details such as city, state, and country. |  ✖   |    ✖     |    ✔     |    ✖    |
-| includeNetwork              | boolean | Include network-related data like ASN and ISP.                |  ✖   |    ✖     |    ✔     |    ✖    |
-| includeCurrency             | boolean | Include currency information based on geolocation.            |  ✖   |    ✖     |    ✔     |    ✖    |
-| includeCountryMetadata      | boolean | Include extra metadata about the user's country.              |  ✖   |    ✖     |    ✔     |    ✖    |
-| includeSecurity             | boolean | Include VPN/proxy/Tor detection.                              |  ✖   |    ✖     |    ✖     |    ✔    |
-| includeAbuse                | boolean | Include IP abuse contact information.                         |  ✖   |    ✖     |    ✖     |    ✔    |
-| includeDMA                  | boolean | Include Designated Market Area (DMA) code.                    |  ✖   |    ✖     |    ✖     |    ✔    |
+### IPGeolocationAPI: Basic Response Customization
+| Option     | Type   | Description                                                                           |
+|------------|--------|---------------------------------------------------------------------------------------|
+| `fields`   | string | Comma-separated list of fields to include in the response. Available on all plans.    |
+| `excludes` | string | Comma-separated list of fields to exclude from the response. Available on all plans.  |
+| `lang`     | string | Language code for translated fields (default: `en`). Requires a paid plan. Supported values: `de`, `ru`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `ko`, `fa`, `pt`. |
+
+### IPGeolocationAPI: include Options and Plan Availability
+| Option                        | Type    | Description                                                          | Free | Paid |
+|-------------------------------|---------|----------------------------------------------------------------------|:----:|:----:|
+| `includeHostname`             | boolean | Include hostname from IPGeolocation's IP-Hostname database.          |  ✖   |  ✔   |
+| `includeLiveHostname`         | boolean | Use live DNS sources to resolve hostname.                            |  ✖   |  ✔   |
+| `includeHostnameFallbackLive` | boolean | Try database first, fall back to live sources if not found.          |  ✖   |  ✔   |
+| `includeUserAgent`            | boolean | Include parsed client browser and device info.                       |  ✖   |  ✔   |
+| `includeGeoAccuracy`          | boolean | Add `accuracy_radius`, `confidence`, and `locality` to `location`.  |  ✖   |  ✔   |
+| `includeDmaCode`              | boolean | Add `dma_code` to the `location` object (US IPs only).              |  ✖   |  ✔   |
+| `includeAbuse`                | boolean | Include IP abuse contact information.                                |  ✖   |  ✔   |
+| `includeSecurity`             | boolean | Include VPN, proxy, Tor, relay, and threat detection.                |  ✖   |  ✔   |
+| `includeAll`                  | boolean | Include all optional modules in a single request (`include=*`).      |  ✖   |  ✔   |
 
 > [!NOTE]
-> No include field available in the Free plan.
+> No `include` options are available on the Free plan. Timezone data (`time_zone` object) is included by default in the response on paid plans without requiring a separate include option.
 
-### Storage Option
-| Option               | Type    | Description                                                                                                                                                                 |
-|----------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| saveToSessionStorage | boolean | If enabled, stores the geolocation data in sessionStorage to avoid making repeated API calls during the same browser session, improving performance and reducing API usage. |
+> [!NOTE]
+> Only one of `includeHostname`, `includeLiveHostname`, or `includeHostnameFallbackLive` should be set to `true` at a time. If multiple are passed, the API applies precedence: `liveHostname` → `hostname` → `hostnameFallbackLive`.
+
+### IPGeolocationAPI: Storage Option
+| Option                 | Type    | Description                                                                                                                                                                  |
+|------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `saveToSessionStorage` | boolean | If enabled, stores the geolocation response in `sessionStorage` to avoid repeated API calls during the same browser session, improving performance and reducing API usage. |
+
+---
+
+### IPSecurityAPI: Authentication & Input
+| Option      | Type   | Description                                                                                 |
+|-------------|--------|---------------------------------------------------------------------------------------------|
+| `apiKey`    | string | Your API key. Required unless request origin is whitelisted (available only on paid plans). |
+| `ipAddress` | string | IPv4 or IPv6 address to query. If omitted, the plugin auto-detects the user's IP.           |
+
+### IPSecurityAPI: Response Customization
+| Option     | Type   | Description                                                                                    |
+|------------|--------|------------------------------------------------------------------------------------------------|
+| `fields`   | string | Comma-separated list of `security` object fields to include (e.g. `security.threat_score`).  |
+| `excludes` | string | Comma-separated list of `security` object fields to exclude (e.g. `security.is_tor`).        |
+
+### IPSecurityAPI: Storage Option
+| Option                 | Type    | Description                                                                                                                                                               |
+|------------------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `saveToSessionStorage` | boolean | If enabled, stores the security response in `sessionStorage` to avoid repeated API calls during the same browser session, improving performance and reducing API usage. |
+
+> [!NOTE]
+> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only the `security` object. It does not support geolocation, timezone, user-agent, or other fields. Each successful security lookup costs **2 API credits**.For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
+
+---
 
 ## Setup Plugin
-To access this service, add the following JavaScript call (usually within the head block of your pages).
+To access this service, add the following JavaScript tag (usually within the `<head>` block of your pages).
+
 ```html
-<script src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v2.0.0.js"></script>
+<script src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v3.0.0.js"></script>
 ```
 
+---
+
 ## API Key Usage Example
-Demonstrates how to use the Plugin with and without an API key. API key is optional if the request originates from a whitelisted domain (available only in paid plans).
+Demonstrates how to use the plugin with and without an API key. The API key is optional if the request originates from a whitelisted domain (available only on paid plans).
+
 ### No API Key (Request Origin is Whitelisted)
 ```html
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI();
 
-        // fetch the geolocation information from the API and use it as you want
-        const resp = await ipGeoAPI.getGeolocation();
-
-        if (!resp.error_message) {
-            console.log(resp);
-        } else {
-            console.log("Something went wrong while fetching data", resp);
-        }
-    })();
-</script> 
-```
-### With API Key
-```html
-<script>
-    (async () => {
-        const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
-        });
-
-        // fetch the geolocation information from the API and use it as you want
         const resp = await ipGeoAPI.getGeolocation();
 
         if (!resp.error_message) {
@@ -156,8 +175,7 @@ Demonstrates how to use the Plugin with and without an API key. API key is optio
 </script>
 ```
 
-## Developer (Free) Plan Examples
-### Get IPGeo Default fields
+### With API Key
 ```html
 <script>
     (async () => {
@@ -165,7 +183,29 @@ Demonstrates how to use the Plugin with and without an API key. API key is optio
             apiKey: "YOUR_IPGEOLOCATION_API_KEY",
         });
 
-        // fetch the geolocation information from the API and use it as you want
+        const resp = await ipGeoAPI.getGeolocation();
+
+        if (!resp.error_message) {
+            console.log(resp);
+        } else {
+            console.log("Something went wrong while fetching data", resp);
+        }
+    })();
+</script>
+```
+
+---
+
+## Free Plan Examples
+
+### Get Default Geolocation Fields
+```html
+<script>
+    (async () => {
+        const ipGeoAPI = new IPGeolocationAPI({
+            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
+        });
+
         const resp = await ipGeoAPI.getGeolocation();
 
         if (!resp.error_message) {
@@ -203,22 +243,56 @@ Sample Response:
   "country_metadata": {
     "calling_code": "+1",
     "tld": ".us",
-    "languages": [
-      "en-US",
-      "es-US",
-      "haw",
-      "fr"
-    ]
+    "languages": ["en-US", "es-US", "haw", "fr"]
   },
   "currency": {
     "code": "USD",
     "name": "US Dollar",
     "symbol": "$"
+  },
+  "asn": {
+    "as_number": "AS15169",
+    "organization": "Google LLC",
+    "country": "US"
+  },
+  "time_zone": {
+    "name": "America/Los_Angeles",
+    "offset": -8,
+    "offset_with_dst": -7,
+    "current_time": "2026-03-27 10:00:00.000-0700",
+    "current_time_unix": 1743087600.000,
+    "current_tz_abbreviation": "PDT",
+    "current_tz_full_name": "Pacific Daylight Time",
+    "standard_tz_abbreviation": "PST",
+    "standard_tz_full_name": "Pacific Standard Time",
+    "is_dst": true,
+    "dst_savings": 1,
+    "dst_exists": true,
+    "dst_tz_abbreviation": "PDT",
+    "dst_tz_full_name": "Pacific Daylight Time",
+    "dst_start": {
+      "utc_time": "2026-03-08 TIME 10:00",
+      "duration": "+1.00H",
+      "gap": true,
+      "date_time_after": "2026-03-08 TIME 03:00",
+      "date_time_before": "2026-03-08 TIME 02:00",
+      "overlap": false
+    },
+    "dst_end": {
+      "utc_time": "2026-11-01 TIME 09:00",
+      "duration": "-1.00H",
+      "gap": false,
+      "date_time_after": "2026-11-01 TIME 01:00",
+      "date_time_before": "2026-11-01 TIME 02:00",
+      "overlap": true
+    }
   }
 }
 ```
+
 ### Filtering Specific Fields from the Response
-Use of 'exclude' and 'fields' to get the location fields and exclude continent information.
+Use `fields` and `excludes` together to get the `location` object while omitting continent fields.
+
 ```html
 <script>
     (async () => {
@@ -228,7 +302,6 @@ Use of 'exclude' and 'fields' to get the location fields and exclude continent i
             excludes: "location.continent_code,location.continent_name",
         });
 
-        // fetch the geolocation information from the API and use it as you want
         const resp = await ipGeoAPI.getGeolocation();
 
         if (!resp.error_message) {
@@ -237,7 +310,7 @@ Use of 'exclude' and 'fields' to get the location fields and exclude continent i
             console.log("Something went wrong while fetching data", resp);
         }
     })();
-</script> 
+</script>
 ```
 Sample Response:
 ```json
@@ -253,9 +326,6 @@ Sample Response:
     "state_code": "US-CA",
     "district": "Santa Clara",
     "city": "Mountain View",
-    "locality": "Mountain View",
-    "accuracy_radius": "5",
-    "confidence": "High",
     "zipcode": "94043-1351",
     "latitude": "37.42240",
     "longitude": "-122.08421",
@@ -266,8 +336,14 @@ Sample Response:
   }
 }
 ```
-## Standard Plan Examples
+
+---
+
+## Paid Plan Examples
+
 ### Geolocation with Default Fields
+On a paid plan, the default response includes additional objects such as `network`, `asn`, `company`, and richer `asn` fields.
+
 ```html
 <script>
     (async () => {
@@ -275,7 +351,6 @@ Sample Response:
             apiKey: "YOUR_IPGEOLOCATION_API_KEY",
         });
 
-        // fetch the geolocation information from the API and use it as you want
         const resp = await ipGeoAPI.getGeolocation();
 
         if (!resp.error_message) {
@@ -313,41 +388,78 @@ Sample Response:
   "country_metadata": {
     "calling_code": "+1",
     "tld": ".us",
-    "languages": [
-      "en-US",
-      "es-US",
-      "haw",
-      "fr"
-    ]
+    "languages": ["en-US", "es-US", "haw", "fr"]
   },
   "network": {
-    "asn": {
-      "as_number": "AS15169",
-      "organization": "Google LLC",
-      "country": "US"
-    },
-    "company": {
-      "name": "Google LLC"
-    }
+    "connection_type": "wired",
+    "route": "8.8.8.0/24",
+    "is_anycast": true
   },
   "currency": {
     "code": "USD",
     "name": "US Dollar",
     "symbol": "$"
+  },
+  "asn": {
+    "as_number": "AS15169",
+    "organization": "Google LLC",
+    "country": "US",
+    "type": "HOSTING",
+    "domain": "about.google",
+    "date_allocated": "2000-03-30",
+    "rir": "ARIN"
+  },
+  "company": {
+    "name": "Google LLC",
+    "type": "HOSTING",
+    "domain": "google.com"
+  },
+  "time_zone": {
+    "name": "America/Los_Angeles",
+    "offset": -8,
+    "offset_with_dst": -7,
+    "current_time": "2026-03-27 10:00:00.000-0700",
+    "current_time_unix": 1743087600.000,
+    "current_tz_abbreviation": "PDT",
+    "current_tz_full_name": "Pacific Daylight Time",
+    "standard_tz_abbreviation": "PST",
+    "standard_tz_full_name": "Pacific Standard Time",
+    "is_dst": true,
+    "dst_savings": 1,
+    "dst_exists": true,
+    "dst_tz_abbreviation": "PDT",
+    "dst_tz_full_name": "Pacific Daylight Time",
+    "dst_start": {
+      "utc_time": "2026-03-08 TIME 10:00",
+      "duration": "+1.00H",
+      "gap": true,
+      "date_time_after": "2026-03-08 TIME 03:00",
+      "date_time_before": "2026-03-08 TIME 02:00",
+      "overlap": false
+    },
+    "dst_end": {
+      "utc_time": "2026-11-01 TIME 09:00",
+      "duration": "-1.00H",
+      "gap": false,
+      "date_time_after": "2026-11-01 TIME 01:00",
+      "date_time_before": "2026-11-01 TIME 02:00",
+      "overlap": true
+    }
   }
 }
 ```
+
 ### Retrieving Geolocation Data in Multiple Languages
-Here is an example to get the geolocation data for the client IP address in Russian (ru) language:
+Here is an example to get the geolocation data for the client's IP address in Russian (`ru`):
+
 ```html
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
             apiKey: "YOUR_IPGEOLOCATION_API_KEY",
-            lang: "ru"
+            lang: "ru",
         });
 
-        // fetch the geolocation information from the API and use it as you want
         const resp = await ipGeoAPI.getGeolocation();
 
         if (!resp.error_message) {
@@ -358,10 +470,13 @@ Here is an example to get the geolocation data for the client IP address in Russ
     })();
 </script>
 ```
-> [!TIP]
-> Checkout all available languages options here: [https://ipgeolocation.io/ip-location-api.html#response-in-multiple-languages](https://ipgeolocation.io/ip-location-api.html#response-in-multiple-languages).
 
-### Include Hostname, Timezone, and User-Agent
+> [!TIP]
+> Check out all available language options here: [Response in multiple languages](https://ipgeolocation.io/documentation/ip-location-api.html#response-in-multiple-languages).
+
+### Include Hostname and User-Agent
+`includeHostname`, `includeLiveHostname`, and `includeHostnameFallbackLive` are available on paid plans. Use only one at a time.
+
 ```html
 <script>
     (async () => {
@@ -369,11 +484,9 @@ Here is an example to get the geolocation data for the client IP address in Russ
             apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             fields: "location.country_name,location.country_capital",
             includeHostname: true,
-            includeTimezone: true,
             includeUserAgent: true,
         });
 
-        // fetch the geolocation information from the API and use it as you want
         const resp = await ipGeoAPI.getGeolocation();
 
         if (!resp.error_message) {
@@ -393,37 +506,11 @@ Sample Response:
     "country_name": "United States",
     "country_capital": "Washington, D.C."
   },
-  "time_zone": {
-    "name": "America/Chicago",
-    "offset": -6,
-    "offset_with_dst": -5,
-    "current_time": "2025-07-11 04:50:39.537-0500",
-    "current_time_unix": 1752227439.537,
-    "is_dst": true,
-    "dst_savings": 1,
-    "dst_exists": true,
-    "dst_start": {
-      "utc_time": "2025-03-09 TIME 08",
-      "duration": "+1H",
-      "gap": true,
-      "date_time_after": "2025-03-09 TIME 03",
-      "date_time_before": "2025-03-09 TIME 02",
-      "overlap": false
-    },
-    "dst_end": {
-      "utc_time": "2025-11-02 TIME 07",
-      "duration": "-1H",
-      "gap": false,
-      "date_time_after": "2025-11-02 TIME 01",
-      "date_time_before": "2025-11-02 TIME 02",
-      "overlap": true
-    }
-  },
   "user_agent": {
     "user_agent_string": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
     "name": "Chrome",
     "type": "Browser",
-    "version": "143",
+    "version": "143.0.0.0",
     "version_major": "143",
     "device": {
       "name": "Linux Desktop",
@@ -434,7 +521,7 @@ Sample Response:
     "engine": {
       "name": "Blink",
       "type": "Browser",
-      "version": "143",
+      "version": "143.0.0.0",
       "version_major": "143"
     },
     "operating_system": {
@@ -447,20 +534,132 @@ Sample Response:
   }
 }
 ```
-## Advanced Plan Example
-### Include DMA, Abuse, and Security
+
+> [!NOTE]
+> The three hostname options behave as follows:
+> - `includeHostname`: Returns hostname from IPGeolocation's local IP-Hostname database. Fastest option.
+> - `includeLiveHostname`: Performs a live DNS lookup. More accurate but adds latency.
+> - `includeHostnameFallbackLive`: Checks the local database first; performs a live lookup only if no hostname is found. Best balance of speed and accuracy.
+>
+> If a hostname cannot be resolved, the `hostname` field returns the queried IP address.
+
+### Include Geo Accuracy Fields
+Pass `includeGeoAccuracy: true` to add `accuracy_radius`, `confidence`, and `locality` to the `location` object.
+
 ```html
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
             apiKey: "YOUR_IPGEOLOCATION_API_KEY",
-            fields: "location.country_flag,location.country_emoji",
-            includeDMA: true,
-            includeAbuse: true,
-            includeSecurity: true,
+            fields: "location",
+            includeGeoAccuracy: true,
         });
 
-        // fetch the geolocation information from the API and use it as you want
+        const resp = await ipGeoAPI.getGeolocation();
+
+        if (!resp.error_message) {
+            console.log(resp);
+        } else {
+            console.log("Something went wrong while fetching data", resp);
+        }
+    })();
+</script>
+```
+Sample Response (relevant `location` fields shown):
+```json
+{
+  "ip": "91.128.103.196",
+  "location": {
+    "continent_code": "EU",
+    "continent_name": "Europe",
+    "country_code2": "SE",
+    "country_code3": "SWE",
+    "country_name": "Sweden",
+    "country_name_official": "Kingdom of Sweden",
+    "country_capital": "Stockholm",
+    "state_prov": "Stockholms län",
+    "state_code": "SE-AB",
+    "district": "Stockholm",
+    "city": "Stockholm",
+    "locality": "Stockholm",
+    "accuracy_radius": "9.148",
+    "confidence": "high",
+    "zipcode": "164 40",
+    "latitude": "59.40510",
+    "longitude": "17.95510",
+    "is_eu": true,
+    "country_flag": "https://ipgeolocation.io/static/flags/se_64.png",
+    "geoname_id": "9972319",
+    "country_emoji": "🇸🇪"
+  }
+}
+```
+
+### Include DMA Code
+The DMA (Designated Market Area) code is a US-only field used for marketing and regional targeting. Pass `includeDmaCode: true` to include it.
+
+```html
+<script>
+    (async () => {
+        const ipGeoAPI = new IPGeolocationAPI({
+            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
+            fields: "location",
+            includeDmaCode: true,
+        });
+
+        const resp = await ipGeoAPI.getGeolocation();
+
+        if (!resp.error_message) {
+            console.log(resp);
+        } else {
+            console.log("Something went wrong while fetching data", resp);
+        }
+    })();
+</script>
+```
+Sample Response (US IP):
+```json
+{
+  "ip": "107.161.145.197",
+  "location": {
+    "continent_code": "NA",
+    "continent_name": "North America",
+    "country_code2": "US",
+    "country_code3": "USA",
+    "country_name": "United States",
+    "country_name_official": "United States of America",
+    "country_capital": "Washington, D.C.",
+    "state_prov": "Pennsylvania",
+    "state_code": "US-PA",
+    "district": "Philadelphia County",
+    "city": "Philadelphia",
+    "dma_code": "504",
+    "zipcode": "19102",
+    "latitude": "39.95258",
+    "longitude": "-75.16522",
+    "is_eu": false,
+    "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+    "geoname_id": "9849057",
+    "country_emoji": "🇺🇸"
+  }
+}
+```
+
+> [!NOTE]
+> `dma_code` will be non-empty only for IPs located in the United States.
+
+### Include Abuse Contact Information
+Pass `includeAbuse: true` to add the `abuse` object to the response.
+
+```html
+<script>
+    (async () => {
+        const ipGeoAPI = new IPGeolocationAPI({
+            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
+            fields: "location.city,location.country_name",
+            includeAbuse: true,
+        });
+
         const resp = await ipGeoAPI.getGeolocation();
 
         if (!resp.error_message) {
@@ -474,111 +673,127 @@ Sample Response:
 Sample Response:
 ```json
 {
-  "ip": "8.8.8.8",
+  "ip": "91.128.103.196",
   "location": {
-    "continent_code": "NA",
-    "continent_name": "North America",
-    "country_code2": "US",
-    "country_code3": "USA",
-    "country_name": "United States",
-    "country_name_official": "United States of America",
-    "country_capital": "Washington, D.C.",
-    "state_prov": "California",
-    "state_code": "US-CA",
-    "district": "Santa Clara",
-    "city": "Mountain View",
-    "zipcode": "94043-1351",
-    "latitude": "37.42240",
-    "longitude": "-122.08421",
-    "is_eu": false,
-    "geoname_id": "6301403",
-    "accuracy_radius": "",
-    "locality": "Mountain View",
-    "dma_code": "807"
-  },
-  "country_metadata": {
-    "calling_code": "+1",
-    "tld": ".us",
-    "languages": [
-      "en-US",
-      "es-US",
-      "haw",
-      "fr"
-    ]
-  },
-  "network": {
-    "asn": {
-      "as_number": "AS15169",
-      "organization": "Google LLC",
-      "country": "US",
-      "asn_name": "GOOGLE",
-      "type": "BUSINESS",
-      "domain": "about.google",
-      "date_allocated": "",
-      "allocation_status": "assigned",
-      "num_of_ipv4_routes": "984",
-      "num_of_ipv6_routes": "104",
-      "rir": "ARIN"
-    },
-    "connection_type": "",
-    "company": {
-      "name": "Google LLC",
-      "type": "Business",
-      "domain": "googlellc.com"
-    }
-  },
-  "currency": {
-    "code": "USD",
-    "name": "US Dollar",
-    "symbol": "$"
-  },
-  "security": {
-    "threat_score": 0,
-    "is_tor": false,
-    "is_proxy": false,
-    "proxy_type": "",
-    "proxy_provider": "",
-    "is_anonymous": false,
-    "is_known_attacker": false,
-    "is_spam": false,
-    "is_bot": false,
-    "is_cloud_provider": false,
-    "cloud_provider": ""
+    "city": "Stockholm",
+    "country_name": "Sweden"
   },
   "abuse": {
-    "route": "8.8.8.0/24",
-    "country": "",
-    "handle": "ABUSE5250-ARIN",
-    "name": "Abuse",
-    "organization": "Abuse",
-    "role": "abuse",
+    "route": "91.128.0.0/14",
+    "country": "SE",
+    "name": "Swipnet Staff",
+    "organization": "",
     "kind": "group",
-    "address": "1600 Amphitheatre Parkway\nMountain View\nCA\n94043\nUnited States",
-    "emails": [
-      "network-abuse@google.com"
-    ],
-    "phone_numbers": [
-      "+1-650-253-0000"
-    ]
+    "address": "Tele2 AB/Swedish IP Network\nIP Registry\nTorshamnsgatan 17 164 40 Kista SWEDEN",
+    "emails": ["abuse@tele2.com"],
+    "phone_numbers": ["+46 8 5626 42 10"]
   }
 }
 ```
+
 > [!NOTE]
-> All features available in the Free plan are also included in the Standard and Advanced plans. Similarly, all features of the Standard plan are available in the Advanced plan.
+> Adding `includeAbuse` costs **1 additional credit** on top of the base lookup credit, for a total of **2 credits** per request.
 
-## Security Plan Examples
-You can use following parameters to customize the API response according to your requirements.
+### Include Security Information
+Pass `includeSecurity: true` to add the `security` object to the geolocation response.
 
-### Combine IP Security with Geolocation
+```html
+<script>
+    (async () => {
+        const ipGeoAPI = new IPGeolocationAPI({
+            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
+            fields: "location.city,location.country_name",
+            includeSecurity: true,
+        });
+
+        const resp = await ipGeoAPI.getGeolocation();
+
+        if (!resp.error_message) {
+            console.log(resp);
+        } else {
+            console.log("Something went wrong while fetching data", resp);
+        }
+    })();
+</script>
+```
+Sample Response:
+```json
+{
+  "ip": "2.56.188.34",
+  "location": {
+    "city": "Dallas",
+    "country_name": "United States"
+  },
+  "security": {
+    "threat_score": 80,
+    "is_tor": false,
+    "is_proxy": true,
+    "proxy_provider_names": ["Zyte Proxy"],
+    "proxy_confidence_score": 80,
+    "proxy_last_seen": "2025-12-12",
+    "is_residential_proxy": true,
+    "is_vpn": true,
+    "vpn_provider_names": ["Nord VPN"],
+    "vpn_confidence_score": 80,
+    "vpn_last_seen": "2026-01-19",
+    "is_relay": false,
+    "relay_provider_name": "",
+    "is_anonymous": true,
+    "is_known_attacker": true,
+    "is_bot": false,
+    "is_spam": false,
+    "is_cloud_provider": true,
+    "cloud_provider_name": "Packethub S.A."
+  }
+}
+```
+
+> [!NOTE]
+> Adding `includeSecurity` costs **2 additional credits** on top of the base lookup credit, for a total of **3 credits** per request.
+
+### Include All Optional Modules
+Pass `includeAll: true` to request every available optional module (`security`, `abuse`, `user_agent`, `hostname`, `geo_accuracy`, `dma_code`) in a single call. Equivalent to passing `include=*` to the API.
+
+```html
+<script>
+    (async () => {
+        const ipGeoAPI = new IPGeolocationAPI({
+            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
+            includeAll: true,
+        });
+
+        const resp = await ipGeoAPI.getGeolocation();
+
+        if (!resp.error_message) {
+            console.log(resp);
+        } else {
+            console.log("Something went wrong while fetching data", resp);
+        }
+    })();
+</script>
+```
+
+> [!NOTE]
+> Using `includeAll` costs **4 API credits** per request: 1 for the base lookup, 2 for the `security` module, and 1 for the `abuse` module.
+
+> [!NOTE]
+> All features available on the Free plan are also included on paid plans.
+
+---
+
+## IPSecurityAPI Examples
+The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only IP threat signals. Use it when you need security data alone. To combine security data with geolocation, use `IPGeolocationAPI` with `includeSecurity: true` instead.
+
+### Basic Security Lookup
+
 ```html
 <script>
     (async () => {
         const ipSecAPI = new IPSecurityAPI({
-            apiKey: "YOUR_SECURITY_API_KEY",
-            includeLocation: true,
+            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
+            ipAddress: "2.56.188.34",
         });
 
-        // fetch the security information from the API and use it as you want
         const resp = await ipSecAPI.getSecurity();
 
         if (!resp.error_message) {
@@ -593,58 +808,42 @@ Sample Response:
 ```json
 {
   "ip": "2.56.188.34",
-  "hostname": "2.56.188.34",
   "security": {
     "threat_score": 80,
     "is_tor": false,
     "is_proxy": true,
-    "proxy_type": "VPN",
-    "proxy_provider": "Nord VPN",
+    "proxy_provider_names": ["Zyte Proxy"],
+    "proxy_confidence_score": 80,
+    "proxy_last_seen": "2025-12-12",
+    "is_residential_proxy": true,
+    "is_vpn": true,
+    "vpn_provider_names": ["Nord VPN"],
+    "vpn_confidence_score": 80,
+    "vpn_last_seen": "2026-01-19",
+    "is_relay": false,
+    "relay_provider_name": "",
     "is_anonymous": true,
     "is_known_attacker": true,
-    "is_spam": false,
     "is_bot": false,
+    "is_spam": false,
     "is_cloud_provider": true,
-    "cloud_provider": "Packethub S.A."
-  },
-  "location": {
-    "continent_code": "NA",
-    "continent_name": "North America",
-    "country_code2": "US",
-    "country_code3": "USA",
-    "country_name": "United States",
-    "country_name_official": "United States of America",
-    "country_capital": "Washington, D.C.",
-    "state_prov": "Texas",
-    "state_code": "US-TX",
-    "district": "Dallas",
-    "city": "Dallas",
-    "zipcode": "75201",
-    "latitude": "32.77822",
-    "longitude": "-96.79512",
-    "is_eu": false,
-    "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
-    "geoname_id": "4684902",
-    "country_emoji": "🇺🇸"
+    "cloud_provider_name": "Packethub S.A."
   }
 }
 ```
-### Combine IP Security with all fields
+
+### Return Only Specific Security Fields
+Use `fields` to limit the response to only the security properties you need.
+
 ```html
 <script>
     (async () => {
         const ipSecAPI = new IPSecurityAPI({
-            apiKey: "YOUR_SECURITY_API_KEY",
-            includeLocation: true,
-            includeNetwork: true,
-            includeTimezone: true,
-            includeUserAgent: true,
-            includeCurrency: true,
-            includeCountryMetadata: true,
-            includeHostname: true,
+            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
+            ipAddress: "2.56.188.34",
+            fields: "security.threat_score,security.is_vpn,security.is_proxy",
         });
 
-        // fetch the security information from the API and use it as you want
         const resp = await ipSecAPI.getSecurity();
 
         if (!resp.error_message) {
@@ -653,170 +852,73 @@ Sample Response:
             console.log("Something went wrong while fetching data", resp);
         }
     })();
-</script> 
-```
-Sample Response:
-```json
-{
-   "ip": "2.56.188.34",
-   "hostname": "2.56.188.34",
-   "security": {
-      "threat_score": 80,
-      "is_tor": false,
-      "is_proxy": true,
-      "proxy_type": "VPN",
-      "proxy_provider": "Nord VPN",
-      "is_anonymous": true,
-      "is_known_attacker": true,
-      "is_spam": false,
-      "is_bot": false,
-      "is_cloud_provider": true,
-      "cloud_provider": "Packethub S.A."
-   },
-   "location": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "US",
-      "country_code3": "USA",
-      "country_name": "United States",
-      "country_name_official": "United States of America",
-      "country_capital": "Washington, D.C.",
-      "state_prov": "Texas",
-      "state_code": "US-TX",
-      "district": "Dallas",
-      "city": "Dallas",
-      "zipcode": "75201",
-      "latitude": "32.77822",
-      "longitude": "-96.79512",
-      "is_eu": false,
-      "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
-      "geoname_id": "4684902",
-      "country_emoji": "🇺🇸"
-   },
-   "network": {
-      "asn": {
-         "as_number": "AS62240",
-         "organization": "Clouvider Limited",
-         "country": "GB"
-      },
-      "company": {
-         "name": "Packethub S.A."
-      }
-   },
-   "time_zone": {
-      "name": "America/Chicago",
-      "offset": -6,
-      "offset_with_dst": -5,
-      "current_time": "2025-07-16 11:00:50.605-0500",
-      "current_time_unix": 1752681650.605,
-      "is_dst": true,
-      "dst_savings": 1,
-      "dst_exists": true,
-      "dst_start": {
-         "utc_time": "2025-03-09 TIME 08",
-         "duration": "+1H",
-         "gap": true,
-         "date_time_after": "2025-03-09 TIME 03",
-         "date_time_before": "2025-03-09 TIME 02",
-         "overlap": false
-      },
-      "dst_end": {
-         "utc_time": "2025-11-02 TIME 07",
-         "duration": "-1H",
-         "gap": false,
-         "date_time_after": "2025-11-02 TIME 01",
-         "date_time_before": "2025-11-02 TIME 02",
-         "overlap": true
-      }
-   },
-   "user_agent": {
-      "user_agent_string": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
-      "name": "Chrome",
-      "type": "Browser",
-      "version": "143",
-      "version_major": "143",
-      "device": {
-         "name": "Linux Desktop",
-         "type": "Desktop",
-         "brand": "Unknown",
-         "cpu": "Intel x86_64"
-      },
-      "engine": {
-         "name": "Blink",
-         "type": "Browser",
-         "version": "143",
-         "version_major": "143"
-      },
-      "operating_system": {
-         "name": "Linux",
-         "type": "Desktop",
-         "version": "??",
-         "version_major": "??",
-         "build": "??"
-      }
-   },
-   "country_metadata": {
-      "calling_code": "+1",
-      "tld": ".us",
-      "languages": [
-         "en-US",
-         "es-US",
-         "haw",
-         "fr"
-      ]
-   },
-   "currency": {
-      "code": "USD",
-      "name": "US Dollar",
-      "symbol": "$"
-   }
-}
-```
-> [!NOTE]
-> You can get all the available fields in standard plan in combination with security data, when subscribed to security plan.
-
-### Request with Field Filtering for security fields
-```html
-<script>
-    (async () => {
-        const ipSecAPI = new IPSecurityAPI({
-            apiKey: "YOUR_SECURITY_API_KEY",
-            includeLocation: true,
-            includeNetwork: true,
-            fields: "security.threat_score,location.city,network.asn.as_number"
-        });
-
-        // fetch the security information from the API and use it as you want
-        const resp = await ipSecAPI.getSecurity();
-
-        if (!resp.error_message) {
-            console.log(resp);
-        } else {
-            console.log("Something went wrong while fetching data", resp);
-        }
-    })();
-</script> 
+</script>
 ```
 Sample Response:
 ```json
 {
   "ip": "2.56.188.34",
   "security": {
-    "threat_score": 75
-  },
-  "location": {
-    "city": "Brisbane"
-  },
-  "network": {
-    "asn": {
-      "as_number": "AS62240"
-    }
+    "threat_score": 80,
+    "is_proxy": true,
+    "is_vpn": true
   }
 }
 ```
 
+### Exclude Specific Security Fields
+Use `excludes` to return the full `security` object while omitting fields you don't need.
+
+```html
+<script>
+    (async () => {
+        const ipSecAPI = new IPSecurityAPI({
+            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
+            ipAddress: "2.56.188.34",
+            excludes: "security.is_tor,security.is_cloud_provider",
+        });
+
+        const resp = await ipSecAPI.getSecurity();
+
+        if (!resp.error_message) {
+            console.log(resp);
+        } else {
+            console.log("Something went wrong while fetching data", resp);
+        }
+    })();
+</script>
+```
+Sample Response (`is_tor` and `is_cloud_provider` omitted):
+```json
+{
+  "ip": "2.56.188.34",
+  "security": {
+    "threat_score": 80,
+    "is_proxy": true,
+    "proxy_provider_names": ["Zyte Proxy"],
+    "proxy_confidence_score": 80,
+    "proxy_last_seen": "2025-12-12",
+    "is_residential_proxy": true,
+    "is_vpn": true,
+    "vpn_provider_names": ["Nord VPN"],
+    "vpn_confidence_score": 80,
+    "vpn_last_seen": "2026-01-19",
+    "is_relay": false,
+    "relay_provider_name": "",
+    "is_anonymous": true,
+    "is_known_attacker": true,
+    "is_bot": false,
+    "is_spam": false,
+    "cloud_provider_name": "Packethub S.A."
+  }
+}
+```
+
+---
+
 ## Error Handling
-Inspect the status field in the response to detect any errors. A missing status field typically indicates a successful request, while its presence signals an issue. For example, if you are using developer plan and are trying to query the security information for an ipAddress, you will encounter an error as shown below:
+Inspect the `error_message` field in the response to detect any errors. A missing `error_message` typically indicates a successful request, while its presence signals an issue. For example, if you are using a free plan and trying to request security information, you will encounter an error as shown below:
+
 ```html
 <script>
     (async () => {
@@ -838,13 +940,13 @@ Inspect the status field in the response to detect any errors. A missing status 
 Sample error response:
 ```json
 {
-  "error_message": "IP-hostname lookup, IP-security lookup and user-agent parsing are not supported on your free subscription. These features are available to all paid subscriptions only",
+  "error_message": "IP-hostname lookup, IP-security lookup and user-agent parsing are not supported on your free subscription. These features are available to all paid subscriptions only.",
   "error_status": 401
 }
 ```
 
-> [!NOTE]
-> More information about error codes and messages can be found in the [error codes](https://ipgeolocation.io/ip-location-api.html#error-codes) section of our documentation. For detailed API documentation and additional features, Please refer to the official [IPGeolocation API documentation](https://ipgeolocation.io/documentation.html).
-> 
-> For details specific to the IP Security API, including detailed security checks and threat intelligence, Please refer to the [IP Security API documentation](https://ipgeolocation.io/ip-security-api.html).
 
+> [!NOTE]
+> More information about error codes and messages can be found in the [error codes](https://ipgeolocation.io/documentation/ip-location-api.html#error-codes) section of our documentation. For detailed API documentation and additional features, please refer to the official [IPGeolocation API documentation](https://ipgeolocation.io/documentation.html).
+>
+> For details specific to the IP Security API, including security checks and threat intelligence fields, please refer to the [IP Security API documentation](https://ipgeolocation.io/documentation/ip-security-api.html).
