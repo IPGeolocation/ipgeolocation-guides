@@ -69,7 +69,7 @@ Click **Install** and follow the prompts. All five transforms will be registered
 
 **Step 6 — Open New Graph**
 
-Click **New +** under the **Investigation** tab, then drag an IPv4 Address entity onto the canvas and right-click to view the available transforms.
+Click **New +** under the **Investigate** tab, then drag an IPv4 Address entity onto the canvas and right-click to view the available transforms.
 
 ![Open New Graph and Add IPv4 Entity](https://static.ipgeolocation.io/web-assets/images/integrations/maltego/installation-step-6.png)
 
@@ -188,7 +188,7 @@ When you need to report malicious activity, this transform gives you the exact c
 
 These workflows show how to chain transforms together for real investigative scenarios.
 
-### Workflow 1: Suspicious Connection Triage
+### Suspicious Connection Triage
 
 **Scenario:** Your SIEM flags an outbound connection from an internal host to an external IP. You need to assess risk quickly.
 
@@ -201,7 +201,7 @@ These workflows show how to chain transforms together for real investigative sce
 4. **Run IP to Company Intel** – Identify who operates the IP
 5. **Document findings** – Use the data to inform your response
 
-### Workflow 2: Infrastructure Discovery
+### Infrastructure Discovery
 
 **Scenario:** You have one suspicious IP and want to identify related infrastructure.
 
@@ -211,7 +211,7 @@ These workflows show how to chain transforms together for real investigative sce
 4. **Run IP to Company Intel** – Identify the organization controlling the ASN
 5. **Pivot to domains** – Use company information to search for associated domains
 
-### Workflow 3: Incident Reporting
+### Incident Reporting
 
 **Scenario:** You've confirmed an IP is hosting phishing content and need to file a takedown request.
 
