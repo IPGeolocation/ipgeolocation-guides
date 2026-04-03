@@ -36,7 +36,11 @@ Whether you're a small business testing new regions or an established brand with
 This guide will walk you through installing IPGeolocation shopify app and completing your initial setup. The entire process takes just a few minutes.
 
 ### Installation
-1.  **Install from Shopify App Store:** Visit the Shopify App Store, search for "IPGeolocation," and click **Install**. You'll be redirected to your Shopify admin to approve permissions.
+1.  **Install from Shopify App Store:**
+
+    You can install the app directly from the Shopify App Store by visiting [IPGeolocation](https://apps.shopify.com/ipgeolocation-1) and clicking **Install**. You'll be redirected to your Shopify admin to approve permissions.
+
+    ![IPGeolocation Shopify App](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/app_store.png)
 2.  **Access the Dashboard:** Once installed, open the app from your Shopify admin under **Apps > IPGeolocation**.
 
 ### Initial Setup Checklist
@@ -172,7 +176,7 @@ These stores are linked together. You can disconnect a store at any time to retu
 
 ## Design & Customization (Theme Editor)
 
-Customize the look and feel via **Online Store > Themes > Customize > App Embeds**.
+Customize the look and feel via **Online Store > Themes > Edit theme > App Embeds**.
 
 ### Geo Redirect Popup
 *   **Content:** Customize Title, Subtitle, and Button Text.
@@ -182,7 +186,7 @@ Customize the look and feel via **Online Store > Themes > Customize > App Embeds
     *   `{currency_code}` - e.g., "EUR"
     *   `{currency_symbol}` - e.g., "€"
     *   *Example:* "Hi! You are visiting from {country}. Shop in {currency_code}?"
-*   **Styling:** Adjust colors, rounded corners, overlay opacity, and fonts to match your brand.
+*   **Styling:** Adjust colors, rounded corners, overlay opacity, font size, etc.
 
 ### Geo Market Selector
 The selector allows users to manually switch markets (e.g., in the Footer or Header).
@@ -190,6 +194,8 @@ The selector allows users to manually switch markets (e.g., in the Footer or Hea
     *   *Requires:* CSS Selector (e.g., `.header__icons` or `#footer-menu`).
 *   **Modal Selector:** A floating button or link that opens a popup window when clicked.
     *   *Easier Setup:* Does not require finding CSS classes.
+
+![IPGeolocation app embeds](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/app_embeds.png)
 
 ---
 
@@ -199,16 +205,18 @@ The selector allows users to manually switch markets (e.g., in the Footer or Hea
 
 **Popup Not Appearing**
 *   **Check App Embeds:** Is `Geo Redirect Popup` toggled ON in the Theme Editor?
+*   **Enable Test Mode:** If the popup does not appear in the Theme Editor, enable **Test Mode** in app embeds. This forces the popup to display inside the theme customizer for styling and preview purposes.
 *   **Check Rules:** Did you hide the popup for your own country (making it invisible to you)?
 *   **Browser Cache:** If you accepted the popup previously, you are now a "Returning Visitor." Test in Incognito/Private mode.
 
 **Markets Not Syncing**
 *   **Manual Sync:** Click the `Sync` button on the dashboard.
-*   **Shopify Settings:** Ensure the market is active in **Shopify Admin > Settings > Markets**.
+*   **Shopify Settings:** Ensure the market is active in **Shopify Admin > Markets**.
 
 **Redirects Not Working**
 *   **Browser Blocking:** Some strict browser privacy settings may block redirects.
 *   **Store Connection:** Verify that the Connection Status is "Active" in the dashboard.
+*   **Disable Shopify Auto-Redirection:** Go to **Online Store > Preferences** and disable automatic redirection for **Country/Region**. Shopify’s native redirection can conflict with the app and prevent it from working correctly.
 
 ---
 
