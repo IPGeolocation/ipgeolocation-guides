@@ -36,12 +36,11 @@ Whether you're a small business testing new regions or an established brand with
 This guide will walk you through installing IPGeolocation shopify app and completing your initial setup. The entire process takes just a few minutes.
 
 ### Installation
-1.  **Install from Shopify App Store:**
+**1**.  **Install from Shopify App Store:** You can install the app directly from the Shopify App Store by visiting [IPGeolocation](https://apps.shopify.com/ipgeolocation-1) and clicking **Install**. You'll be redirected to your Shopify admin to approve permissions.
 
-    You can install the app directly from the Shopify App Store by visiting [IPGeolocation](https://apps.shopify.com/ipgeolocation-1) and clicking **Install**. You'll be redirected to your Shopify admin to approve permissions.
-
-    ![IPGeolocation Shopify App](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/app_store.png)
-2.  **Access the Dashboard:** Once installed, open the app from your Shopify admin under **Apps > IPGeolocation**.
+![IPGeolocation Shopify App](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/app_store.png)
+    
+**2.**  **Access the Dashboard:** Once installed, open the app from your Shopify admin under **Apps > IPGeolocation**.
 
 ### Initial Setup Checklist
 When you first open the app, a progress bar at the top of your dashboard will track three essential tasks:
