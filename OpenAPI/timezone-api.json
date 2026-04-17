@@ -1,0 +1,1693 @@
+{
+  "openapi": "3.0.7",
+  "info": {
+    "title": "IPGeolocation.io: Date, Time & Timezone API",
+    "version": "3.0",
+    "description": "Retrieve current date, time, and timezone information for a specific\nlocation or identifier.\n\nThe Timezone API returns detailed timezone information including the\ntimezone name, UTC offset, daylight saving time (DST) status, current\nlocal time, formatted timestamps, and upcoming DST transition details.\n\nTimezone information can be retrieved using multiple lookup inputs:\n\n- Timezone name (IANA identifier)\n- Location address\n- Geographic coordinates (latitude and longitude)\n- IPv4 or IPv6 address\n- IATA airport code\n- ICAO airport code\n- UN/LOCODE city identifier\n\nDepending on the lookup method used, additional contextual information\nmay be returned:\n\n- Geolocation details for IP address or location queries\n- Airport information for IATA or ICAO code queries\n- City details for UN/LOCODE queries\n\nTwo endpoints are available:\n\n- **Timezone lookup** (`GET /v3/timezone`) returns timezone and current\n  time information for a location, IP address, coordinates, timezone\n  name, airport code, or UN/LOCODE.\n\n- **Time conversion** (`GET /v3/timezone/convert`) converts a given time\n  between two timezones, locations, coordinates, airports, or UN/LOCODE\n  identifiers.\n\n## Authentication\n\nTwo authentication methods are supported:\n\n### API Key\n\nPass your API key as the `apiKey` query parameter on every request. You can find your\nkey in the [IPGeolocation dashboard](https://app.ipgeolocation.io/). Store it in\nserver-side environment variables. Avoid exposing it in client-side JavaScript.\n\n### Request Origin (CORS)\n\nAvailable on paid plans only. Whitelist your domain in the dashboard under the\n\"API Keys\" section. Once configured, requests from that domain (and all its subdomains)\nare accepted without passing `apiKey`. Enter your root domain (e.g. `example.com`),\nnot the full URL.\n\nEach plan has a limit on the number of extra API keys and request origins:\n\n| Plan | Extra API Keys + Request Origins |\n|---|---|\n| Starter (150K requests) | 1 |\n| Core (250K requests) | 1 |\n| Plus (500K requests) | 2 |\n| Pro (1M requests) | 2 |\n| Business (2M requests) | 3 |\n| Premium (5M requests) | 3 |\n\nAdditional keys or origins can be added for $2.50 per month each.\n\n## Response Formats\n\nThe API supports JSON (default) and XML output.\n\n- Set the `output` query parameter to `json` or `xml`.\n- Alternatively, set the `Accept` header to `application/json`,\n  `application/xml`, or `text/xml`.\n\nIf neither is specified, the response is returned as JSON. XML responses\nuse a `LinkedHashMap` root element.\n\n## Credit Usage\n\nCredits are charged only for successful **HTTP 200** responses. The exact\nnumber of credits consumed by a request is returned in the\n`X-Credits-Charged` response header.\n\n- A **timezone lookup** (`GET /v3/timezone`) consumes **1 credit** per request.\n- A **time conversion request** (`GET /v3/timezone/convert`) consumes **1 credit** per request.\n\n## Lookup Parameter Priority\n\nIf multiple lookup parameters are provided in a request, the API resolves\nthe timezone information using the following priority order:\n\n1. `tz` (timezone name)\n2. Geographic coordinates (`lat`, `long`)\n3. `location`\n4. `ip`\n5. `iata_code`\n6. `icao_code`\n7. `lo_code`\n\n## Parameter Name Casing\n\nQuery parameter names are case-sensitive. Use exact names such as\n`apiKey`, `tz`, `location`, `lat`, `long`, `ip`, `iata_code`,\n`icao_code`, `lo_code`, `lang`, and `output`.\n\n## Timezone Data Availability\n\nBasic timezone information is also included in the IP Geolocation API\n(`/v3/ipgeo`) for both Free and Paid subscriptions.\n\nExtended timezone metadata such as formatted timestamps, calendar\nfields, and additional date/time formats are available through the\ndedicated `/v3/timezone` endpoint.\n\nBoth `/v3/ipgeo` and `/v3/timezone` endpoints are available on **Free\nand Paid plans**. The difference between them lies in the **level of\ntimezone data returned**, not plan availability.\n\n| Field | /v3/ipgeo | /v3/timezone |\n|---|---|---|\n| time_zone.name | ✓ | ✓ |\n| time_zone.offset | ✓ | ✓ |\n| time_zone.offset_with_dst | ✓ | ✓ |\n| time_zone.current_time | ✓ | ✓ |\n| time_zone.current_time_unix | ✓ | ✓ |\n| time_zone.current_tz_abbreviation | ✓ | ✓ |\n| time_zone.current_tz_full_name | ✓ | ✓ |\n| time_zone.standard_tz_abbreviation | ✓ | ✓ |\n| time_zone.standard_tz_full_name | ✓ | ✓ |\n| time_zone.is_dst | ✓ | ✓ |\n| time_zone.dst_savings | ✓ | ✓ |\n| time_zone.dst_exists | ✓ | ✓ |\n| time_zone.dst_start | ✓ | ✓ |\n| time_zone.dst_end | ✓ | ✓ |\n| time_zone.date | ✗ | ✓ |\n| time_zone.date_time | ✗ | ✓ |\n| time_zone.date_time_txt | ✗ | ✓ |\n| time_zone.date_time_wti | ✗ | ✓ |\n| time_zone.date_time_ymd | ✗ | ✓ |\n| time_zone.time_24 | ✗ | ✓ |\n| time_zone.time_12 | ✗ | ✓ |\n| time_zone.week | ✗ | ✓ |\n| time_zone.month | ✗ | ✓ |\n| time_zone.year | ✗ | ✓ |\n| time_zone.year_abbr | ✗ | ✓ |\n\nUse `/v3/ipgeo` when timezone information is required together with\ngeolocation, ASN, network, security, or company data in a single request.\n\nUse `/v3/timezone` when detailed timezone metadata, formatted time\nvalues, or timezone conversions are required.\n\n## Usage Limits\n\nThe Timezone API is available on **both Free and Paid plans**.\n\nFree plan subscriptions include **up to 1,000 requests per day**.\n\nPaid subscriptions do not enforce fixed daily or hourly rate limits.\nIf the monthly request quota is exceeded, requests continue and a\nsurcharge may be applied depending on the subscribed plan.\n\nRequests made using invalid API keys or unsupported subscriptions\nreturn **HTTP 401 Unauthorized**.\n",
+    "contact": {
+      "name": "IPGeolocation Support",
+      "url": "https://ipgeolocation.io",
+      "email": "support@ipgeolocation.io"
+    },
+    "termsOfService": "https://ipgeolocation.io/tos.html",
+    "license": {
+      "name": "Proprietary",
+      "url": "https://ipgeolocation.io/tos.html"
+    }
+  },
+  "externalDocs": {
+    "description": "IPGeolocation Date, Time & Timezone API documentation",
+    "url": "https://ipgeolocation.io/documentation/timezone-api.html"
+  },
+  "servers": [
+    {
+      "url": "https://api.ipgeolocation.io",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": [
+
+      ]
+    }
+  ],
+  "paths": {
+    "/v3/timezone": {
+      "get": {
+        "operationId": "lookupTimezone",
+        "summary": "Timezone lookup",
+        "description": "Returns current date, time, and timezone information for a\nspecific location or identifier.\n\nThe timezone can be resolved using one of several inputs,\nincluding an IANA timezone name (`tz`), geographic coordinates\n(`lat` and `long`), location address (`location`), IPv4 or IPv6\naddress (`ip`), airport codes (`iata_code` or `icao_code`), or\na UN/LOCODE (`lo_code`).\n\nDepending on the lookup method used, additional contextual\ninformation may also be returned in the response:\n\n- `location` object for IP address or location queries\n- `airport_details` object for IATA or ICAO code queries\n- `lo_code_details` object for UN/LOCODE queries\n\nIf multiple lookup parameters are provided in the same request,\nthe API resolves the timezone using the following priority order:\n\n1. `tz`\n2. `lat` and `long`\n3. `location`\n4. `ip`\n5. `iata_code`\n6. `icao_code`\n7. `lo_code`\n\nIf none of the lookup parameters are provided, the API resolves\nthe timezone using the public IP address of the requesting client.\n\nEach successful lookup consumes **1 credit**.\n",
+        "tags": [
+          "Timezone"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Tz"
+          },
+          {
+            "$ref": "#/components/parameters/Location"
+          },
+          {
+            "$ref": "#/components/parameters/Lat"
+          },
+          {
+            "$ref": "#/components/parameters/Long"
+          },
+          {
+            "$ref": "#/components/parameters/Ip"
+          },
+          {
+            "$ref": "#/components/parameters/IataCode"
+          },
+          {
+            "$ref": "#/components/parameters/IcaoCode"
+          },
+          {
+            "$ref": "#/components/parameters/LoCode"
+          },
+          {
+            "$ref": "#/components/parameters/Lang"
+          },
+          {
+            "$ref": "#/components/parameters/Output"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "headers": {
+              "X-Credits-Charged": {
+                "description": "Number of API credits consumed by this request.",
+                "schema": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimezoneLookupResponse"
+                },
+                "example": {
+                  "ip": "49.12.0.0",
+                  "location": {
+                    "continent_code": "EU",
+                    "continent_name": "Europe",
+                    "country_code2": "DE",
+                    "country_code3": "DEU",
+                    "country_name": "Germany",
+                    "country_name_official": "Federal Republic of Germany",
+                    "is_eu": true,
+                    "state_prov": "Bavaria",
+                    "state_code": "DE-BY",
+                    "district": "Cham",
+                    "city": "Falkenstein",
+                    "zipcode": "93167",
+                    "latitude": "49.09745",
+                    "longitude": "12.48637"
+                  },
+                  "time_zone": {
+                    "name": "Europe/Berlin",
+                    "offset": 1,
+                    "offset_with_dst": 1,
+                    "date": "2026-03-07",
+                    "date_time": "2026-03-07 10:37:39",
+                    "date_time_txt": "Saturday, March 07, 2026 10:37:39",
+                    "date_time_wti": "Sat, 07 Mar 2026 10:37:39 +0100",
+                    "date_time_ymd": "2026-03-07T10:37:39+0100",
+                    "current_time": "2026-03-07 10:37:39.744+0100",
+                    "current_time_unix": 1772876259.744,
+                    "time_24": "10:37:39",
+                    "time_12": "10:37:39 AM",
+                    "week": 10,
+                    "month": 3,
+                    "year": 2026,
+                    "year_abbr": "26",
+                    "current_tz_abbreviation": "CET",
+                    "current_tz_full_name": "Central European Standard Time",
+                    "standard_tz_abbreviation": "CET",
+                    "standard_tz_full_name": "Central European Standard Time",
+                    "is_dst": false,
+                    "dst_savings": 0,
+                    "dst_exists": true,
+                    "dst_tz_abbreviation": "CEST",
+                    "dst_tz_full_name": "Central European Summer Time",
+                    "dst_start": {
+                      "utc_time": "2026-03-29 TIME 01:00",
+                      "duration": "+1.00H",
+                      "gap": true,
+                      "date_time_after": "2026-03-29 TIME 03:00",
+                      "date_time_before": "2026-03-29 TIME 02:00",
+                      "overlap": false
+                    },
+                    "dst_end": {
+                      "utc_time": "2026-10-25 TIME 01:00",
+                      "duration": "-1.00H",
+                      "gap": false,
+                      "date_time_after": "2026-10-25 TIME 02:00",
+                      "date_time_before": "2026-10-25 TIME 03:00",
+                      "overlap": true
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimezoneLookupResponse"
+                },
+                "example": "<LinkedHashMap>\n  <ip>49.12.0.0</ip>\n  <location>\n      <continent_code>EU</continent_code>\n      <continent_name>Europe</continent_name>\n      <country_code2>DE</country_code2>\n      <country_code3>DEU</country_code3>\n      <country_name>Germany</country_name>\n      <country_name_official>Federal Republic of Germany</country_name_official>\n      <is_eu>true</is_eu>\n      <state_prov>Bavaria</state_prov>\n      <state_code>DE-BY</state_code>\n      <district>Cham</district>\n      <city>Falkenstein</city>\n      <zipcode>93167</zipcode>\n      <latitude>49.09745</latitude>\n      <longitude>12.48637</longitude>\n  </location>\n  <time_zone>\n      <name>Europe/Berlin</name>\n      <offset>1</offset>\n      <offset_with_dst>1</offset_with_dst>\n      <date>2026-03-16</date>\n      <date_time>2026-03-16 21:01:46</date_time>\n      <date_time_txt>Monday, March 16, 2026 21:01:46</date_time_txt>\n      <date_time_wti>Mon, 16 Mar 2026 21:01:46 +0100</date_time_wti>\n      <date_time_ymd>2026-03-16T21:01:46+0100</date_time_ymd>\n      <current_time>2026-03-16 21:01:46.907+0100</current_time>\n      <current_time_unix>1773691306.907</current_time_unix>\n      <time_24>21:01:46</time_24>\n      <time_12>09:01:46 PM</time_12>\n      <week>12</week>\n      <month>3</month>\n      <year>2026</year>\n      <year_abbr>26</year_abbr>\n      <current_tz_abbreviation>CET</current_tz_abbreviation>\n      <current_tz_full_name>Central European Standard Time</current_tz_full_name>\n      <standard_tz_abbreviation>CET</standard_tz_abbreviation>\n      <standard_tz_full_name>Central European Standard Time</standard_tz_full_name>\n      <is_dst>false</is_dst>\n      <dst_savings>0</dst_savings>\n      <dst_exists>true</dst_exists>\n      <dst_tz_abbreviation>CEST</dst_tz_abbreviation>\n      <dst_tz_full_name>Central European Summer Time</dst_tz_full_name>\n      <dst_start>\n          <utc_time>2026-03-29 TIME 01:00</utc_time>\n          <duration>+1.00H</duration>\n          <gap>true</gap>\n          <date_time_after>2026-03-29 TIME 03:00</date_time_after>\n          <date_time_before>2026-03-29 TIME 02:00</date_time_before>\n          <overlap>false</overlap>\n      </dst_start>\n      <dst_end>\n          <utc_time>2026-10-25 TIME 01:00</utc_time>\n          <duration>-1.00H</duration>\n          <gap>false</gap>\n          <date_time_after>2026-10-25 TIME 02:00</date_time_after>\n          <date_time_before>2026-10-25 TIME 03:00</date_time_before>\n          <overlap>true</overlap>\n      </dst_end>\n  </time_zone>\n</LinkedHashMap>\n"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request – Possible reasons include:\n  - If the provided IPv4 or IPv6 address is invalid.\n\n  - If special character(s) ( ) [ ] { } | ^ ` is passed in the API URL either as parameter or its value. Specially in case of API key.\n  \n  - If the provided IATA code to the request parameter `iata_code` is not in the format as three letter code AAA.\n  \n  - If the provided ICAO code to the request parameter `icao_code` is not in the format as four letter code AAAA.\n\n  - If the provided UN/LOCODE to the request parameter `lo_code` is not in format as first two characters of country code, followed by the three alphanumeric characters of the city/region.\n  \n  - If the provided values to the request parameters `lat` and `long` are not numbers, or the values fall outside the acceptable latitude and longitude ranges. The valid range for latitude is between -90 and 90, and for longitude, it is between -180 and 180.\n                \n  - If the provided time zone name to the query parameter `tz` is wrong or not registered in the IANA time zone database.\n\n  - An invalid or unsupported `lang` parameter is provided.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "invalidIp": {
+                    "summary": "Invalid IPv4 or IPv6 address",
+                    "value": {
+                      "message": "Provided name, service or IP address '999.999.999.999' is not valid."
+                    }
+                  },
+                  "specialCharacters": {
+                    "summary": "Invalid characters in request",
+                    "value": {
+                      "message": "Invalid character found in the request target."
+                    }
+                  },
+                  "invalidIata": {
+                    "summary": "Invalid IATA code format",
+                    "value": {
+                      "message": "Invalid IATA code: LH. IATA code must be in the format of AAA."
+                    }
+                  },
+                  "invalidIcao": {
+                    "summary": "Invalid ICAO code format",
+                    "value": {
+                      "message": "Invalid ICAO code: ATL. ICAO code must be in the format of AAAA."
+                    }
+                  },
+                  "invalidLocode": {
+                    "summary": "Invalid UN/LOCODE format",
+                    "value": {
+                      "message": "Invalid LOCode: DER. LOCode must start with the first two characters as alphabets followed by three alphanumeric characters."
+                    }
+                  },
+                  "invalidCoordinates": {
+                    "summary": "Coordinates out of range",
+                    "value": {
+                      "message": "'latitude' (40.7128) or 'longitude' (-700.0060) is not valid. 'latitude' must be between -90.0 and +90.0 and 'longitude' must be between -180.0 and +180.0."
+                    }
+                  },
+                  "invalidTimezone": {
+                    "summary": "Invalid timezone identifier",
+                    "value": {
+                      "message": "Check whether your input values are correct; time_zone_name = Europe/InvalidCity"
+                    }
+                  },
+                  "invalidLang": {
+                    "summary": "Unsupported language parameter",
+                    "value": {
+                      "message": "This 'xx' lang is not valid. Please use 'en' as the default language"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – Possible reasons include:\n  - Missing or invalid API key\n  - If your account has been disabled or locked to use by the admin due to abuse or illegal activity.\n  - When the request to Timezone API is made using API key for a database subscription\n  - When the request to Timezone API is made on the 'paused' subscription.\n  - If you’re making API requests after your subscription trial has been expired.\n  - If your active until date has passed and you need to upgrade your account.\n  - A language other than English is specified in the `lang` parameter\n    while using a Free/Developer plan API key.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "missingApiKey": {
+                    "summary": "Missing API key",
+                    "value": {
+                      "message": "Please provide an API key (as 'apiKey=YOUR_API_KEY' URL parameter) to use IPGeolocation API. To get your free API Key, sign up at https://app.ipgeolocation.io/login"
+                    }
+                  },
+                  "invalidApiKey": {
+                    "summary": "Invalid API key",
+                    "value": {
+                      "message": "Provided API key is not valid. Contact technical support for assistance at support@ipgeolocation.io"
+                    }
+                  },
+                  "lockedAccount": {
+                    "summary": "Account locked",
+                    "value": {
+                      "message": "Your account has been locked to use IPGeolocation API. Contact technical support for assistance at support@ipgeolocation.io"
+                    }
+                  },
+                  "databaseSubscription": {
+                    "summary": "Database subscription key used",
+                    "value": {
+                      "message": "You cannot query IPGeolocation API on a database plan subscription."
+                    }
+                  },
+                  "pausedSubscription": {
+                    "summary": "Subscription paused",
+                    "value": {
+                      "message": "Your subscription has been paused. Please resume your subscription to use IPGeolocation API."
+                    }
+                  },
+                  "expiredSubscription": {
+                    "summary": "Subscription expired",
+                    "value": {
+                      "message": "Your subscription has expired at DATE. Please subscribe to a paid plan to continue using IPGeolocation API without interruption or contact technical support for assistance at support@ipgeolocation.io"
+                    }
+                  },
+                  "freePlanLang": {
+                    "summary": "Non-English language requested on Free plan",
+                    "value": {
+                      "message": "This 'de' lang is not supported for your current subscription. Please use 'en' as the default language or upgrade your subscription to use this feature."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "423": {
+            "$ref": "#/components/responses/Locked"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "499": {
+            "$ref": "#/components/responses/ClientClosedRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          },
+          "504": {
+            "$ref": "#/components/responses/GatewayTimeout"
+          },
+          "505": {
+            "$ref": "#/components/responses/HttpVersionNotSupported"
+          }
+        }
+      }
+    },
+    "/v3/timezone/convert": {
+      "get": {
+        "operationId": "convertTimezone",
+        "summary": "Timezone time conversion",
+        "description": "Converts a given time between two timezones, locations,\ncoordinates, airports, or UN/LOCODE identifiers.\n\nThe conversion can be performed using one of the following\nparameter combinations:\n\n- `tz_from` and `tz_to`\n- `location_from` and `location_to`\n- `lat_from`, `long_from`, `lat_to`, `long_to`\n- `iata_from` and `iata_to`\n- `icao_from` and `icao_to`\n- `locode_from` and `locode_to`\n\nThe optional `time` parameter specifies the time to convert.\n\nSupported formats:\n\n- `yyyy-MM-dd HH:mm`\n- `yyyy-MM-dd HH:mm:ss`\n\nIf the `time` parameter is omitted, the current time is used\nfor conversion.\n\nEach successful conversion request consumes **1 credit**.\n",
+        "tags": [
+          "Timezone"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TzFrom"
+          },
+          {
+            "$ref": "#/components/parameters/TzTo"
+          },
+          {
+            "$ref": "#/components/parameters/LocationFrom"
+          },
+          {
+            "$ref": "#/components/parameters/LocationTo"
+          },
+          {
+            "$ref": "#/components/parameters/LatFrom"
+          },
+          {
+            "$ref": "#/components/parameters/LatTo"
+          },
+          {
+            "$ref": "#/components/parameters/LongFrom"
+          },
+          {
+            "$ref": "#/components/parameters/LongTo"
+          },
+          {
+            "$ref": "#/components/parameters/IataFrom"
+          },
+          {
+            "$ref": "#/components/parameters/IataTo"
+          },
+          {
+            "$ref": "#/components/parameters/IcaoFrom"
+          },
+          {
+            "$ref": "#/components/parameters/IcaoTo"
+          },
+          {
+            "$ref": "#/components/parameters/LocodeFrom"
+          },
+          {
+            "$ref": "#/components/parameters/LocodeTo"
+          },
+          {
+            "$ref": "#/components/parameters/Time"
+          },
+          {
+            "$ref": "#/components/parameters/Output"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "headers": {
+              "X-Credits-Charged": {
+                "description": "Number of API credits consumed by this request.",
+                "schema": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeConversionResponse"
+                },
+                "example": {
+                  "original_time": "2026-03-16 21:42:10",
+                  "converted_time": "2026-03-16 22:42:10",
+                  "diff_hour": 1,
+                  "diff_min": 60
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeConversionResponse"
+                },
+                "example": "<LinkedHashMap>\n  <original_time>2026-03-16 21:43:44</original_time>\n  <converted_time>2026-03-16 22:43:44</converted_time>\n  <diff_hour>1</diff_hour>\n  <diff_min>60</diff_min>\n</LinkedHashMap>\n"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request – Possible reasons include:\n  - If one of the query parameters `tz_from` and `tz_to` is provided and the other is missing, for time conversion.\n\n  - If one of the query parameters `location_from` and `location_to` is provided and the other is missing, for time conversion.\n  \n  - If one of the query parameters `lat_from`, `long_from`, `lat_to`, and `long_to` is provided and other(s) is/are missing, for time conversion.\n                \n  - If the geographic coordinates provided to one of the parameters `lat_from`, `long_from`, `lat_to`, and `long_to` is/are not numbers, or the values fall outside the acceptable latitude and longitude ranges. The valid range for latitude is between -90 and 90, and for longitude, it is between -180 and 180.\n  \n  - If the time zone names provided to one of the parameters `tz_from` and `tz_to` is/are wrong or not registered in the IANA time zone database.\n  \n  - If none of the query parameter combination is provided for time conversion. `tz_from` and `tz_to` or `location_from` and `location_to` or `lat_from`, `long_from`, `lat_to`, `long_to` combination must be provided.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "tzPairMissing": {
+                    "summary": "Missing tz_to parameter",
+                    "value": {
+                      "message": "To convert time by time zone names , both the tz_from and tz_to parameter must be provided. For more detail, you can read about it in the documentation at ipgeolocation.io or contact us at support@ipgeolocation.io."
+                    }
+                  },
+                  "locationPairMissing": {
+                    "summary": "Missing location_to parameter",
+                    "value": {
+                      "message": "To convert time by Location , both the location_from and location_to parameter must be provided. For more detail, you can read about it in the documentation at ipgeolocation.io or contact us at support@ipgeolocation.io."
+                    }
+                  },
+                  "coordinatePairMissing": {
+                    "summary": "Missing coordinate parameters",
+                    "value": {
+                      "message": "To convert time by coordinates , both the lat_from and long_from parameter must be provided. For more detail, you can read about it in the documentation at ipgeolocation.io or contact us at support@ipgeolocation.io."
+                    }
+                  },
+                  "invalidCoordinates": {
+                    "summary": "Coordinates out of range",
+                    "value": {
+                      "message": "Provided  lat_to (450) or long_to (45) is not valid. Latitude must be between -90.0 and +90.0 and longitude must be between -180.0 and +180.0."
+                    }
+                  },
+                  "invalidTimezone": {
+                    "summary": "Invalid timezone identifier",
+                    "value": {
+                      "message": "Check whether your input values are correct; time_zone_name = Europe/InvalidCity"
+                    }
+                  },
+                  "noConversionParams": {
+                    "summary": "Missing conversion parameters",
+                    "value": {
+                      "message": "Parameters' combination is not complete. 'tz_from' and 'tz_to' or 'location_from' and 'location_to' or 'lat_from' and 'long_from' and 'lat_to' and 'long_to' or 'locode_from' and 'locode_to' or 'iata_from' and 'iata_to' or 'icao_from' and 'icao_to' combinations must be provided."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized – Possible reasons include:\n  - Missing or invalid API key\n  - If your account has been disabled or locked to use by the admin due to abuse or illegal activity.\n  - When the request to Timezone API is made using API key for a database subscription\n  - When the request to Timezone API is made on the 'paused' subscription.\n  - If you’re making API requests after your subscription trial has been expired.\n  - If your active until date has passed and you need to upgrade your account.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "missingApiKey": {
+                    "summary": "Missing API key",
+                    "value": {
+                      "message": "Please provide an API key (as 'apiKey=YOUR_API_KEY' URL parameter) to use IPGeolocation API. To get your free API Key, sign up at https://app.ipgeolocation.io/login"
+                    }
+                  },
+                  "invalidApiKey": {
+                    "summary": "Invalid API key",
+                    "value": {
+                      "message": "Provided API key is not valid. Contact technical support for assistance at support@ipgeolocation.io"
+                    }
+                  },
+                  "lockedAccount": {
+                    "summary": "Account locked",
+                    "value": {
+                      "message": "Your account has been locked to use IPGeolocation API. Contact technical support for assistance at support@ipgeolocation.io"
+                    }
+                  },
+                  "pausedSubscription": {
+                    "summary": "Subscription paused",
+                    "value": {
+                      "message": "Your subscription has been paused. Please resume your subscription to use IPGeolocation API."
+                    }
+                  },
+                  "expiredSubscription": {
+                    "summary": "Subscription expired",
+                    "value": {
+                      "message": "Your subscription has expired at DATE. Please subscribe to a paid plan to continue using IPGeolocation API without interruption or contact technical support for assistance at support@ipgeolocation.io"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "423": {
+            "$ref": "#/components/responses/Locked"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "499": {
+            "$ref": "#/components/responses/ClientClosedRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          },
+          "504": {
+            "$ref": "#/components/responses/GatewayTimeout"
+          },
+          "505": {
+            "$ref": "#/components/responses/HttpVersionNotSupported"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "NotFound": {
+        "description": "Not found. Returned for one of the following reasons:\n- If the IPv4, IPv6 address does not exist in our database.\n\n- If the IPv4, IPv6 address passed as a path variable, instead of url parameter as ip=.\n\n- If the location address provided to the `location` parameter is invalid, or if the address provided to either `location_from` or `location_to` is invalid for time conversion. A city-level or state-level address must be provided.\n              \n- If the provided UN/LOCODE, IATA code or ICAO code to the query parameters `lo_code`, `iata_code`, or `icao_code` does not exist in our database.\n\n- If the wrong endpoint is called, that does not exist in our API.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "ipNotInDatabase": {
+                "summary": "IPv4/IPv6 not found in database",
+                "value": {
+                  "message": "Provided IPv4 or IPv6 address does not exist in our database."
+                }
+              },
+              "ipAsPathVariable": {
+                "summary": "IP passed as path variable instead of query parameter",
+                "value": {
+                  "message": "No endpoint GET /v3/ipgeo/8.8.8.8."
+                }
+              },
+              "invalidLocation": {
+                "summary": "Invalid location",
+                "value": {
+                  "message": "We couldn't find the (to) location (Germany, jaakjsdfjhb8wobv). Try a city or state level address only."
+                }
+              },
+              "invalidAirportCode": {
+                "summary": "Invalid airport code",
+                "value": {
+                  "message": "Provided IATA or ICAO code does not exist in our database."
+                }
+              },
+              "wrongEndpoint": {
+                "summary": "Incorrect or non-existent endpoint",
+                "value": {
+                  "message": "No endpoint GET /v3/timezone-invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "Method Not Allowed. Returned when an unsupported HTTP method is used\nto call an endpoint.\n\nOnly the **GET** method is supported for the Timezone API endpoint.\n\nAny other HTTP method results in HTTP 405.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "postNotAllowed": {
+                "summary": "POST method used",
+                "value": {
+                  "message": "Request method 'POST' is not supported"
+                }
+              },
+              "unsupportedMethod": {
+                "summary": "Unsupported HTTP method",
+                "value": {
+                  "message": "Request method is not supported"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Locked": {
+        "description": "Locked. The provided IP address belongs to a bogon IP range or a private\nnetwork and cannot be looked up.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "'10.0.0.1' is a bogon IP address."
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Too Many Requests. Returned for one of the following reasons:\n- The API usage limit has been reached for a Paid subscription with\n  status 'past due', 'deleted', or 'trial expired'.\n- The surcharge API usage limit has been reached for the subscribed plan.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "usageLimitReached": {
+                "summary": "API usage limit reached",
+                "value": {
+                  "message": "You have exceeded the limit of PLAN_USAGE_LIMIT requests per PLAN_INERVAL for your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+                }
+              },
+              "surchargeLimitReached": {
+                "summary": "Surcharge usage limit reached",
+                "value": {
+                  "message": "You have reached the surcharge amount limit of PLAN_USAGE_LIMIT_AND_SURCHARGE_LIMIT on your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+                }
+              }
+            }
+          }
+        }
+      },
+      "ClientClosedRequest": {
+        "description": "The client closed the connection before the server finished processing the\nrequest. This usually happens when the client sets a very short request or\nconnection timeout. Increase the timeout on the client side.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Client closed the request before the server could respond."
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error. The server encountered an unexpected condition\nthat prevented it from fulfilling the request. If the issue persists,\ncontact support@ipgeolocation.io.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Something went wrong on the server side."
+            }
+          }
+        }
+      },
+      "BadGateway": {
+        "description": "Bad Gateway. The API server received an invalid response from an upstream\nserver while processing the request. This is usually temporary.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Upstream service error. Please try again later."
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "Service Unavailable. The API is temporarily unavailable due to maintenance\nor overload. Please try again later.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Service temporarily unavailable. Please try again later."
+            }
+          }
+        }
+      },
+      "GatewayTimeout": {
+        "description": "Gateway Timeout. The API server did not receive a timely response from\nan upstream server.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "The server timed out while processing the request."
+            }
+          }
+        }
+      },
+      "HttpVersionNotSupported": {
+        "description": "HTTP Version Not Supported. The server does not support the HTTP protocol\nversion used in the request.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "HTTP version not supported."
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Ip": {
+        "name": "ip",
+        "in": "query",
+        "required": false,
+        "description": "An IPv4 address, IPv6 address, or domain name to look up. When omitted, the API\nresolves the public IP of the requesting client. Empty or whitespace-only values\nare treated the same as omission and resolve caller IP. Domain lookups require a\npaid plan. Pass `ip` only once. If multiple `ip` query parameters are sent,\nvalues may be merged and treated as invalid input (HTTP 400).\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide IP address",
+            "value": ""
+          },
+          "ipv4": {
+            "summary": "IPv4 address",
+            "value": "91.128.103.196"
+          },
+          "ipv6": {
+            "summary": "IPv6 address",
+            "value": "2607:fb91:16c6:8860:e531:2d1d:4944:6c7c"
+          }
+        }
+      },
+      "Lang": {
+        "name": "lang",
+        "in": "query",
+        "required": false,
+        "description": "Language code for translated location names. Defaults to `en`. Non-English\nresponses require a paid plan. Free plans always receive English regardless\nof this parameter. Unsupported `lang` values return HTTP 400.\n",
+        "schema": {
+          "type": "string",
+          "default": "en",
+          "enum": [
+            "en",
+            "de",
+            "ru",
+            "ja",
+            "fr",
+            "cn",
+            "es",
+            "cs",
+            "it",
+            "ko",
+            "fa",
+            "pt"
+          ]
+        }
+      },
+      "Fields": {
+        "name": "fields",
+        "in": "query",
+        "required": false,
+        "description": "Comma-separated list of fields or objects to return. Everything else is omitted.\nThe `ip` field is always returned regardless of this filter.\n\nSupports dot-notation for nested fields: `location.city`, `asn.organization`.\nTo return an entire object, use the object key: `location`, `security`.\n\nIf a field belongs to an optional module (e.g. `security.threat_score`), you\nmust also pass the corresponding `include` value.\nIf you omit `include`, the request still succeeds, but fields from optional\nmodules are not returned.\n\nIf the same field or object is specified in both `fields` and `excludes`, the\nobject is still returned, but it will be empty.\nIf the same field or object is specified in `include`, `fields`, and `excludes`,\n`include` takes priority over both `fields` and `excludes`.\n\nIf you list both an object key and one of its nested fields separated by comma\n(e.g. `security,security.threat_score`), the full object is returned.\n\nUnknown field paths are ignored. The API still returns HTTP 200.\n\nAvailable on all plans including Free.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Return the full response (no field filtering)",
+            "value": ""
+          },
+          "locationOnly": {
+            "summary": "Return only the location object",
+            "value": "location"
+          },
+          "nestedFields": {
+            "summary": "Return specific nested fields",
+            "value": "location.country_name,asn.organization"
+          },
+          "securityFields": {
+            "summary": "Return specific security fields (requires include=security)",
+            "value": "location.city,security.threat_score,security.is_vpn"
+          }
+        }
+      },
+      "Excludes": {
+        "name": "excludes",
+        "in": "query",
+        "required": false,
+        "description": "Comma-separated list of fields or objects to remove from the response. The `ip`\nfield cannot be excluded.\n\nSupports dot-notation for nested fields: `location.continent_code`.\nTo exclude an entire object, use the object key: `currency`, `time_zone`.\n\nIf the same field or object is specified in both `fields` and `excludes`, the\nobject is still returned, but it will be empty.\nIf the same field or object is specified in `include`, `fields`, and `excludes`,\n`include` takes priority over both `fields` and `excludes`.\n\nUnknown fields or object keys in `excludes` are ignored. The API still returns\nHTTP 200.\n\nAvailable on all plans including Free.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not exclude any fields",
+            "value": ""
+          },
+          "excludeObjects": {
+            "summary": "Exclude entire objects and a nested field",
+            "value": "location.continent_code,currency,company.type"
+          }
+        }
+      },
+      "Output": {
+        "name": "output",
+        "in": "query",
+        "required": false,
+        "description": "Desired response format. Defaults to `json` if not specified. You can also\ncontrol the format using the `Accept` header (`application/json`,\n`application/xml`, or `text/xml`). If both are provided, the `output` parameter\ntakes precedence.\n\nIf `output` is unknown or unsupported, it is ignored and the response defaults\nto JSON (`application/json`) with HTTP 200.\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "json",
+            "xml"
+          ],
+          "default": "json"
+        }
+      },
+      "LoCode": {
+        "name": "lo_code",
+        "in": "query",
+        "required": false,
+        "description": "UN/LOCODE used to determine the timezone of a city or location.\n\nThe code consists of a two-letter country code followed by\nthree alphanumeric characters representing the location.\n\nWhen used, the response includes a `lo_code_details` object\nalongside the `time_zone` object.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide UN/LOCODE",
+            "value": ""
+          },
+          "berlin": {
+            "summary": "Berlin city UN/LOCODE",
+            "value": "DEBER"
+          }
+        }
+      },
+      "IcaoCode": {
+        "name": "icao_code",
+        "in": "query",
+        "required": false,
+        "description": "Four-letter ICAO airport code used to determine the timezone\nof the airport location.\n\nWhen used, the response includes an `airport_details` object\ncontaining airport metadata alongside the `time_zone` object.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide ICAO code",
+            "value": ""
+          },
+          "atlanta": {
+            "summary": "Atlanta International Airport",
+            "value": "KATL"
+          }
+        }
+      },
+      "IataCode": {
+        "name": "iata_code",
+        "in": "query",
+        "required": false,
+        "description": "Three-letter IATA airport code used to determine the timezone\nof the airport location.\n\nWhen used, the response includes an `airport_details` object\ncontaining airport metadata alongside the `time_zone` object.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide IATA code",
+            "value": ""
+          },
+          "heathrow": {
+            "summary": "London Heathrow Airport",
+            "value": "LHR"
+          }
+        }
+      },
+      "Long": {
+        "name": "long",
+        "in": "query",
+        "required": false,
+        "description": "Longitude coordinate of the location used to determine the\ntimezone. Must be provided together with the `lat` parameter.\n\nValid longitude values range from **-180 to 180**.\n",
+        "schema": {
+          "type": "number",
+          "format": "float"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide longitude",
+            "value": ""
+          },
+          "newyork": {
+            "summary": "Longitude of New York",
+            "value": -74.006
+          }
+        }
+      },
+      "Lat": {
+        "name": "lat",
+        "in": "query",
+        "required": false,
+        "description": "Latitude coordinate of the location used to determine the\ntimezone. Must be provided together with the `long` parameter.\n\nValid latitude values range from **-90 to 90**.\n",
+        "schema": {
+          "type": "number",
+          "format": "float"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide latitude",
+            "value": ""
+          },
+          "newyork": {
+            "summary": "Latitude of New York",
+            "value": 40.7128
+          }
+        }
+      },
+      "Location": {
+        "name": "location",
+        "in": "query",
+        "required": false,
+        "description": "Address or location name used to determine the timezone.\n\nTypically a city-level or region-level address such as\n`London, UK` or `New York, USA`.\n\nWhen this parameter is used, the API returns a `location`\nobject containing geolocation details alongside the\n`time_zone` object.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide location",
+            "value": ""
+          },
+          "london": {
+            "summary": "City address",
+            "value": "London, UK"
+          },
+          "lahore": {
+            "summary": "City address",
+            "value": "Lahore, Pakistan"
+          }
+        }
+      },
+      "Tz": {
+        "name": "tz",
+        "in": "query",
+        "required": false,
+        "description": "IANA timezone identifier to retrieve timezone information.\n\nWhen provided, the API returns the current date, time, and timezone\nmetadata for the specified timezone.\n\nIf multiple lookup parameters are provided in the same request,\nthe `tz` parameter takes the highest priority.\n\nExample identifiers include `Europe/London`, `America/New_York`,\nand `Asia/Tokyo`.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide timezone",
+            "value": ""
+          },
+          "london": {
+            "summary": "Europe/London timezone",
+            "value": "Europe/London"
+          },
+          "australia": {
+            "summary": "Australia/Lord_Howe timezone",
+            "value": "Australia/Lord_Howe"
+          }
+        }
+      },
+      "TzFrom": {
+        "name": "tz_from",
+        "in": "query",
+        "required": false,
+        "description": "Source timezone identifier (IANA format) used for time conversion.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide source timezone",
+            "value": ""
+          },
+          "newyork": {
+            "summary": "Source timezone",
+            "value": "America/New_York"
+          }
+        }
+      },
+      "TzTo": {
+        "name": "tz_to",
+        "in": "query",
+        "required": false,
+        "description": "Destination timezone identifier (IANA format) used for time conversion.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide destination timezone",
+            "value": ""
+          },
+          "kabul": {
+            "summary": "Destination timezone",
+            "value": "Asia/Kabul"
+          }
+        }
+      },
+      "Time": {
+        "name": "time",
+        "in": "query",
+        "required": false,
+        "description": "Date and time to convert.\n\nSupported formats:\n\n- `yyyy-MM-dd HH:mm`\n- `yyyy-MM-dd HH:mm:ss`\n\nIf omitted, the current time is used.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Use current time",
+            "value": ""
+          },
+          "specific": {
+            "summary": "Convert specific time",
+            "value": "2025-01-30 09:00"
+          }
+        }
+      },
+      "LocationFrom": {
+        "name": "location_from",
+        "in": "query",
+        "required": false,
+        "description": "Source location address used to determine the source timezone.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide source location",
+            "value": ""
+          },
+          "usa": {
+            "summary": "Source location",
+            "value": "New York, USA"
+          }
+        }
+      },
+      "LocationTo": {
+        "name": "location_to",
+        "in": "query",
+        "required": false,
+        "description": "Destination location address used to determine the target timezone.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide destination location",
+            "value": ""
+          },
+          "pakistan": {
+            "summary": "Destination location",
+            "value": "Lahore, Pakistan"
+          }
+        }
+      },
+      "LatFrom": {
+        "name": "lat_from",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "format": "float"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide source latitude",
+            "value": ""
+          },
+          "lat": {
+            "summary": "Source latitude",
+            "value": 34.0207305
+          }
+        }
+      },
+      "LongFrom": {
+        "name": "long_from",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "format": "float"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide source longitude",
+            "value": ""
+          },
+          "long": {
+            "summary": "Source longitude",
+            "value": -118.6919163
+          }
+        }
+      },
+      "LatTo": {
+        "name": "lat_to",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "format": "float"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide destination latitude",
+            "value": ""
+          },
+          "lat": {
+            "summary": "Destination latitude",
+            "value": 53.4736827
+          }
+        }
+      },
+      "LongTo": {
+        "name": "long_to",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "format": "float"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide destination longitude",
+            "value": ""
+          },
+          "long": {
+            "summary": "Destination longitude",
+            "value": -77.3977062
+          }
+        }
+      },
+      "IataFrom": {
+        "name": "iata_from",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide source IATA Code",
+            "value": ""
+          },
+          "iata": {
+            "summary": "Source IATA Code",
+            "value": "DXB"
+          }
+        }
+      },
+      "IataTo": {
+        "name": "iata_to",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide destination IATA Code",
+            "value": ""
+          },
+          "iata": {
+            "summary": "Destination IATA Code",
+            "value": "LHR"
+          }
+        }
+      },
+      "IcaoFrom": {
+        "name": "icao_from",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide source ICAO Code",
+            "value": ""
+          },
+          "icao": {
+            "summary": "Source ICAO Code",
+            "value": "YSSY"
+          }
+        }
+      },
+      "IcaoTo": {
+        "name": "icao_to",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide destination ICAO Code",
+            "value": ""
+          },
+          "icao": {
+            "summary": "Destination ICAO Code",
+            "value": "ZBAA"
+          }
+        }
+      },
+      "LocodeFrom": {
+        "name": "locode_from",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide source LOCODE Code",
+            "value": ""
+          },
+          "locode": {
+            "summary": "Source LOCODE Code",
+            "value": "PKISB"
+          }
+        }
+      },
+      "LocodeTo": {
+        "name": "locode_to",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not provide destination LOCODE Code",
+            "value": ""
+          },
+          "locode": {
+            "summary": "Destination LOCODE Code",
+            "value": "USNYC"
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Returned for any non-200 response. Contains only a human-readable `message`.\nMessage text can vary by status and condition; examples in this spec are\nrepresentative, not exhaustive, and should not be treated as stable machine\ncodes.\n",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable explanation of what went wrong. Use HTTP status for control flow.",
+            "example": "Provided name, service or IP address '999.999.999.999' is not valid."
+          }
+        }
+      },
+      "TimezoneLookupResponse": {
+        "type": "object",
+        "xml": {
+          "name": "LinkedHashMap"
+        },
+        "description": "Response returned by the Timezone Lookup API.\n\nContains timezone information for the requested identifier such as a\ntimezone name, IP address, geographic coordinates, location address,\nairport code (IATA/ICAO), or UN/LOCODE.\n\nDepending on the lookup method used, additional contextual objects may\nbe returned:\n\n- `ip` appears when the lookup is performed using an IP address or when\n  no parameters are provided (caller IP lookup).\n- `location` appears when the lookup is performed using an IP address\n  or location address.\n- `airport_details` appears when the lookup is performed using\n  `iata_code` or `icao_code`.\n- `lo_code_details` appears when the lookup is performed using\n  `lo_code`.\n\nThe `time_zone` object is always present in the response.\n",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "The IP address used to determine the timezone. This field appears\nonly when the lookup is performed using an IP address or when the\nAPI resolves the caller's IP automatically.\n",
+            "example": "8.8.8.8"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "airport_details": {
+            "$ref": "#/components/schemas/AirportDetails"
+          },
+          "lo_code_details": {
+            "$ref": "#/components/schemas/LocodeDetails"
+          },
+          "time_zone": {
+            "$ref": "#/components/schemas/Timezone"
+          }
+        }
+      },
+      "TimeConversionResponse": {
+        "type": "object",
+        "xml": {
+          "name": "LinkedHashMap"
+        },
+        "description": "Response returned by the Timezone Conversion API.\n\nContains the original timestamp, the converted timestamp in the\ndestination timezone, and the time difference between the two\nlocations or timezones.\n\nThe conversion can be performed using timezone names, geographic\ncoordinates, location addresses, airport codes (IATA/ICAO),\nor UN/LOCODE identifiers.\n",
+        "properties": {
+          "original_time": {
+            "type": "string",
+            "description": "The original timestamp before conversion. If the `time`\nparameter is omitted, this value represents the current\ntime at the source location.\n",
+            "example": "2024-12-08 11:00"
+          },
+          "converted_time": {
+            "type": "string",
+            "description": "The converted timestamp in the destination timezone.\n",
+            "example": "2024-12-08 18:30:00"
+          },
+          "diff_hour": {
+            "type": "number",
+            "format": "float",
+            "description": "Time difference between the source and destination\ntimezones expressed in hours.\n",
+            "example": 7.5
+          },
+          "diff_min": {
+            "type": "number",
+            "description": "Time difference between the source and destination\ntimezones expressed in minutes.\n",
+            "example": 450
+          }
+        }
+      },
+      "Timezone": {
+        "type": "object",
+        "description": "Detailed timezone information for the requested location or identifier.\n\nContains timezone metadata such as UTC offset, daylight saving time (DST)\nstatus, formatted timestamps, and DST transition information.\n",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "IANA timezone identifier for the location.",
+            "example": "America/Los_Angeles"
+          },
+          "offset": {
+            "format": "float",
+            "description": "Standard timezone offset from UTC in hours.",
+            "example": -8
+          },
+          "offset_with_dst": {
+            "format": "float",
+            "description": "Timezone offset from UTC including daylight saving time.",
+            "example": -7
+          },
+          "date": {
+            "type": "string",
+            "description": "Current date in `YYYY-MM-DD` format.",
+            "example": "2025-04-24"
+          },
+          "date_time": {
+            "type": "string",
+            "description": "Current date and time in `YYYY-MM-DD HH:mm:ss` format.",
+            "example": "2025-04-24 11:30:12"
+          },
+          "date_time_txt": {
+            "type": "string",
+            "description": "Human-readable date and time string.",
+            "example": "Thursday, April 24, 2025 11:30:12"
+          },
+          "date_time_wti": {
+            "type": "string",
+            "description": "Date and time with timezone information.",
+            "example": "Thu, 24 Apr 2025 11:30:12 -0700"
+          },
+          "date_time_ymd": {
+            "type": "string",
+            "description": "ISO-8601 formatted date and time with timezone offset.",
+            "example": "2025-04-24T11:30:12-0700"
+          },
+          "current_time_unix": {
+            "type": "number",
+            "format": "float",
+            "description": "Unix timestamp representing the current date and time.",
+            "example": 1745519412.353
+          },
+          "time_24": {
+            "type": "string",
+            "description": "Current local time in 24-hour format.",
+            "example": "11:30:12"
+          },
+          "time_12": {
+            "type": "string",
+            "description": "Current local time in 12-hour format.",
+            "example": "11:30:12 AM"
+          },
+          "week": {
+            "type": "number",
+            "description": "Week number of the current year.",
+            "example": 17
+          },
+          "month": {
+            "type": "number",
+            "description": "Current month number.",
+            "example": 4
+          },
+          "year": {
+            "type": "number",
+            "description": "Four-digit year.",
+            "example": 2025
+          },
+          "year_abbr": {
+            "type": "string",
+            "description": "Two-digit abbreviated year.",
+            "example": "25"
+          },
+          "current_tz_abbreviation": {
+            "type": "string",
+            "description": "Abbreviation of the timezone currently in effect.",
+            "example": "AEST"
+          },
+          "current_tz_full_name": {
+            "type": "string",
+            "description": "Full name of the timezone currently in effect.",
+            "example": "Australian Eastern Standard Time"
+          },
+          "standard_tz_abbreviation": {
+            "type": "string",
+            "description": "Standard (non-DST) timezone abbreviation.",
+            "example": "AEST"
+          },
+          "standard_tz_full_name": {
+            "type": "string",
+            "description": "Full name of the standard timezone.",
+            "example": "Australian Eastern Standard Time"
+          },
+          "is_dst": {
+            "type": "boolean",
+            "description": "Indicates whether daylight saving time is currently active."
+          },
+          "dst_savings": {
+            "type": "number",
+            "format": "float",
+            "description": "Number of hours added during daylight saving time."
+          },
+          "dst_exists": {
+            "type": "boolean",
+            "description": "Indicates whether the region observes daylight saving time."
+          },
+          "dst_tz_abbreviation": {
+            "type": "string",
+            "description": "Abbreviation used during daylight saving time.",
+            "example": "PDT"
+          },
+          "dst_tz_full_name": {
+            "type": "string",
+            "description": "Full name used during daylight saving time.",
+            "example": "Pacific Daylight Time"
+          },
+          "dst_start": {
+            "$ref": "#/components/schemas/DSTTransition"
+          },
+          "dst_end": {
+            "$ref": "#/components/schemas/DSTTransition"
+          }
+        }
+      },
+      "DSTTransition": {
+        "type": "object",
+        "description": "Represents a daylight saving time transition event including the\nmoment when DST begins or ends.\n",
+        "properties": {
+          "utc_time": {
+            "type": "string",
+            "description": "UTC timestamp when the DST transition occurs.",
+            "example": "2025-03-09 TIME 10"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Time change applied during the transition.",
+            "example": "+1H"
+          },
+          "gap": {
+            "type": "boolean",
+            "description": "Indicates whether an hour is skipped during the transition."
+          },
+          "date_time_after": {
+            "type": "string",
+            "description": "Local date and time immediately after the DST change.",
+            "example": "2025-03-09 TIME 03"
+          },
+          "date_time_before": {
+            "type": "string",
+            "description": "Local date and time immediately before the DST change.",
+            "example": "2025-03-09 TIME 02"
+          },
+          "overlap": {
+            "type": "boolean",
+            "description": "Indicates whether clock time overlaps during the transition."
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "description": "Geolocation information associated with the requested IP address\nor location query.\n\nThis object appears when the timezone lookup is performed using\nthe `ip` or `location` parameters.\n\nIt provides geographic details such as continent, country,\nadministrative regions, and coordinates used to determine the\ncorresponding timezone.\n",
+        "properties": {
+          "location_string": {
+            "type": "string",
+            "description": "Original location string provided in the request.",
+            "example": "London, UK"
+          },
+          "continent_code": {
+            "type": "string",
+            "description": "Two-letter continent code.",
+            "example": "EU"
+          },
+          "continent_name": {
+            "type": "string",
+            "description": "Full name of the continent.",
+            "example": "Europe"
+          },
+          "country_code2": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code.",
+            "example": "GB"
+          },
+          "country_code3": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 country code.",
+            "example": "GBR"
+          },
+          "country_name": {
+            "type": "string",
+            "description": "Common name of the country.",
+            "example": "United Kingdom"
+          },
+          "country_name_official": {
+            "type": "string",
+            "description": "Official name of the country.",
+            "example": "United Kingdom of Great Britain and Northern Ireland"
+          },
+          "is_eu": {
+            "type": "boolean",
+            "description": "Indicates whether the country is a member of the European Union."
+          },
+          "state_prov": {
+            "type": "string",
+            "description": "State, province, or region name.",
+            "example": "England"
+          },
+          "state_code": {
+            "type": "string",
+            "description": "Standardized state or region code.",
+            "example": "GB-ENG"
+          },
+          "district": {
+            "type": "string",
+            "description": "District or administrative subdivision.",
+            "example": "Greater London"
+          },
+          "city": {
+            "type": "string",
+            "description": "City name of the location.",
+            "example": "London"
+          },
+          "locality": {
+            "type": "string",
+            "description": "Smaller locality or neighborhood within the city.",
+            "example": "Westminster"
+          },
+          "zipcode": {
+            "type": "string",
+            "description": "ZIP or postal code of the location.",
+            "example": "SW1A"
+          },
+          "latitude": {
+            "type": "string",
+            "description": "Latitude coordinate of the location.",
+            "example": "51.50002"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Longitude coordinate of the location.",
+            "example": "-0.19244"
+          }
+        }
+      },
+      "AirportDetails": {
+        "type": "object",
+        "description": "Airport information returned when the timezone lookup is performed\nusing `iata_code` or `icao_code`.\n\nContains metadata about the airport including its geographic\ncoordinates, country, and airport identifiers.\n",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Classification of the airport based on size and traffic.",
+            "example": "large_airport"
+          },
+          "name": {
+            "type": "string",
+            "description": "Official name of the airport.",
+            "example": "Hartsfield Jackson Atlanta International Airport"
+          },
+          "latitude": {
+            "type": "string",
+            "description": "Latitude coordinate of the airport.",
+            "example": "33.63670"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Longitude coordinate of the airport.",
+            "example": "-84.42810"
+          },
+          "elevation_ft": {
+            "type": "number",
+            "description": "Airport elevation above sea level measured in feet.",
+            "example": 1026
+          },
+          "continent_code": {
+            "type": "string",
+            "description": "Two-letter continent code where the airport is located.",
+            "example": "NA"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code.",
+            "example": "US"
+          },
+          "state_code": {
+            "type": "string",
+            "description": "State or province code where the airport is located.",
+            "example": "US-GA"
+          },
+          "city": {
+            "type": "string",
+            "description": "City served by the airport.",
+            "example": "Atlanta"
+          },
+          "iata_code": {
+            "type": "string",
+            "description": "Three-letter IATA airport identifier.",
+            "example": "ATL"
+          },
+          "icao_code": {
+            "type": "string",
+            "description": "Four-letter ICAO airport identifier.",
+            "example": "KATL"
+          },
+          "faa_code": {
+            "type": "string",
+            "description": "FAA location identifier used primarily in the United States.",
+            "example": ""
+          }
+        }
+      },
+      "LocodeDetails": {
+        "type": "object",
+        "description": "City or logistics location information returned when the timezone\nlookup is performed using a UN/LOCODE.\n\nUN/LOCODE is a five-character identifier consisting of a two-letter\ncountry code followed by a three-character location identifier.\n",
+        "properties": {
+          "lo_code": {
+            "type": "string",
+            "description": "UN/LOCODE representing the city or logistics location.",
+            "example": "DEBER"
+          },
+          "city": {
+            "type": "string",
+            "description": "Name of the city associated with the UN/LOCODE.",
+            "example": "Berlin"
+          },
+          "state_code": {
+            "type": "string",
+            "description": "State or region code of the location.",
+            "example": "BE"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code.",
+            "example": "DE"
+          },
+          "country_name": {
+            "type": "string",
+            "description": "Name of the country where the location exists.",
+            "example": "Germany"
+          },
+          "location_type": {
+            "type": "string",
+            "description": "Type of facilities available at the location such as port,\nrail terminal, road terminal, airport, or postal exchange.\n",
+            "example": "Port, Rail Terminal, Road Terminal, Airport, Postal Exchange"
+          },
+          "latitude": {
+            "type": "string",
+            "description": "Latitude coordinate of the location.",
+            "example": "52.51667"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Longitude coordinate of the location.",
+            "example": "13.38333"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "apiKey",
+        "description": "API key passed as the `apiKey` query parameter. Get yours from the\n[IPGeolocation dashboard](https://app.ipgeolocation.io/). For client-side\nusage, consider using Request Origin (CORS) authentication instead to\navoid exposing your key.    \n"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Timezone",
+      "description": "API endpoints for retrieving current date, time, and timezone\ninformation for a given input such as an IANA timezone identifier,\ngeographic coordinates, location address, IPv4 or IPv6 address,\nairport codes (IATA or ICAO), or UN/LOCODE.\n\nThe API can also convert timestamps between different timezones,\nlocations, coordinates, airports, or UN/LOCODE identifiers.\n\nResponses include detailed timezone metadata such as UTC offset,\ndaylight saving time (DST) status, formatted timestamps, and\nupcoming DST transition information. Depending on the lookup\nmethod used, the response may also include geolocation data,\nairport details, or city information.\n",
+      "externalDocs": {
+        "description": "IPGeolocation Date, Time & Timezone API documentation",
+        "url": "https://ipgeolocation.io/documentation/timezone-api.html"
+      }
+    }
+  ]
+}

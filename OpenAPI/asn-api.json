@@ -1,0 +1,748 @@
+{
+  "openapi": "3.0.7",
+  "info": {
+    "title": "IPGeolocation.io: ASN Lookup API",
+    "version": "3.0",
+    "description": "Retrieve Autonomous System Number (ASN) information associated with an\nIPv4 address, IPv6 address, or a specific ASN.\n\nThe ASN Lookup API returns detailed information about an Autonomous System\nincluding the ASN number, organization name, country of registration,\ndomain, ASN type, allocation date, and the Regional Internet Registry (RIR)\nresponsible for assigning the ASN.\n\nAdditional routing intelligence can also be retrieved including:\n\n- Peering relationships\n- Upstream and downstream connections\n- IPv4 and IPv6 routing prefixes\n- Raw WHOIS registry data\n\nThis information helps organizations analyze internet routing, identify\nnetwork operators, and understand how Autonomous Systems interconnect\nacross the internet.\n\nOne endpoint is available:\n\n- **ASN lookup** (`GET /v3/asn`) returns ASN information for a single\n  IPv4 address, IPv6 address, or ASN number per request.\n\nUse query parameters to control which fields are returned, include\nrouting relationships, or exclude fields to reduce response payload size.\n\n   ## Authentication\n\nTwo authentication methods are supported:\n\n### API Key\n\nPass your API key as the `apiKey` query parameter on every request. You can find your\nkey in the [IPGeolocation dashboard](https://app.ipgeolocation.io/). Store it in\nserver-side environment variables. Avoid exposing it in client-side JavaScript.\n\n### Request Origin (CORS)\n\nAvailable on paid plans only. Whitelist your domain in the dashboard under the\n\"API Keys\" section. Once configured, requests from that domain (and all its subdomains)\nare accepted without passing `apiKey`. Enter your root domain (e.g. `example.com`),\nnot the full URL.\n\nEach plan has a limit on the number of extra API keys and request origins:\n\n| Plan | Extra API Keys + Request Origins |\n|---|---|\n| Starter (150K requests) | 1 |\n| Core (250K requests) | 1 |\n| Plus (500K requests) | 2 |\n| Pro (1M requests) | 2 |\n| Business (2M requests) | 3 |\n| Premium (5M requests) | 3 |\n\nAdditional keys or origins can be added for $2.50 per month each.\n\n## Response Formats\n\nThe API supports JSON (default) and XML output.\n\n- Set the `output` query parameter to `json` or `xml`.\n- Alternatively, set the `Accept` header to `application/json`, `application/xml`,\n  or `text/xml`.\n\nIf neither is specified, the response is returned as JSON. XML responses use a\n`LinkedHashMap` root element.\n\n## Credit Usage\n\nCredits are charged only for successful **HTTP 200** responses. The exact number of\ncredits consumed by a request is returned in the `X-Credits-Charged` response header.\n\nA **single ASN lookup** (`GET /v3/asn`) consumes **1 credit** per request.\n\n## Field Filtering\n\nUse `fields` to cherry-pick specific fields, or `excludes` to drop fields you do not\nneed. Both accept dot-notation for nested fields (e.g. `asn.as_number`,\n`asn.organization`). The `ip` field is always present regardless of filters.\n\n## Parameter Name Casing\n\nQuery parameter names are case-sensitive. Use exact names such as\n`apiKey`, `ip`, `fields`, `include`, `excludes`, and `output`.\n\n## Include Additional ASN Data\n\nThe `include` parameter can be used to retrieve additional routing\ninformation related to the ASN.\n\nSupported values include:\n\n- `peers`\n- `downstreams`\n- `upstreams`\n- `routes`\n- `whois_response`\n\nMultiple values must be comma-separated.\n\n## Parameter Name Casing\n\nQuery parameter names are case-sensitive.\nUse exact names such as `apiKey`, `ip`, `asn`, `include`,\n`fields`, `excludes`, and `output`.\n\n## ASN Data Availability\n\nBasic ASN information is also included in the IP Geolocation API (`/v3/ipgeo`).\n\nField availability differs depending on the endpoint and subscription plan.\n\n| Field | /v3/ipgeo (Free) | /v3/ipgeo (Paid) | /v3/asn |\n|---|---|---|---|\n| asn.as_number | ✓ | ✓ | ✓ |\n| asn.organization | ✓ | ✓ | ✓ |\n| asn.country | ✓ | ✓ | ✓ |\n| asn.type | ✗ | ✓ | ✓ |\n| asn.domain | ✗ | ✓ | ✓ |\n| asn.date_allocated | ✗ | ✓ | ✓ |\n| asn.rir | ✗ | ✓ | ✓ |\n| asn.asn_name | ✗ | ✗ | ✓ |\n| asn.allocation_status | ✗ | ✗ | ✓ |\n| asn.num_of_ipv4_routes | ✗ | ✗ | ✓ |\n| asn.num_of_ipv6_routes | ✗ | ✗ | ✓ |\n| asn.peers | ✗ | ✗ | ✓ |\n| asn.downstreams | ✗ | ✗ | ✓ |\n| asn.upstreams | ✗ | ✗ | ✓ |\n| asn.routes | ✗ | ✗ | ✓ |\n| asn.whois_response | ✗ | ✗ | ✓ |\n\nThe `/v3/ipgeo` endpoint is recommended when you need IP geolocation data together\nwith basic ASN information.\n\nThe `/v3/asn` endpoint should be used when detailed ASN intelligence is required,\nincluding routing relationships, routes, and WHOIS registry data.\n\n## Usage Limits\n\nPaid subscriptions do not enforce fixed daily or hourly rate limits.\n\nIf the monthly request quota is exceeded, requests continue and a surcharge\nmay be applied depending on the subscribed plan.\n\nRequests made using invalid API keys or unsupported subscriptions\nreturn **HTTP 401 Unauthorized**.\n",
+    "contact": {
+      "name": "IPGeolocation Support",
+      "url": "https://ipgeolocation.io",
+      "email": "support@ipgeolocation.io"
+    },
+    "termsOfService": "https://ipgeolocation.io/tos.html",
+    "license": {
+      "name": "Proprietary",
+      "url": "https://ipgeolocation.io/tos.html"
+    }
+  },
+  "externalDocs": {
+    "description": "IPGeolocation ASN Lookup API documentation",
+    "url": "https://ipgeolocation.io/documentation/asn-api.html"
+  },
+  "servers": [
+    {
+      "url": "https://api.ipgeolocation.io",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": [
+
+      ]
+    }
+  ],
+  "paths": {
+    "/v3/asn": {
+      "get": {
+        "operationId": "lookupASN",
+        "summary": "ASN lookup",
+        "description": "Returns ASN details for a single IPv4 address, IPv6 address,\nor ASN number.\n\nThe response contains information about the Autonomous System\nresponsible for routing the queried IP address or ASN.\n\nBasic ASN metadata is always returned, while additional routing\nrelationships such as peers, upstreams, downstreams, routes,\nand WHOIS data can be retrieved using the `include` parameter.\n\nWhen the lookup is performed using the `asn` parameter,\nthe `ip` field is not included in the response.\n\nEach successful lookup consumes **1 credit**.\n\nUse the `fields`, `excludes`, and `include` parameters\nto customize the response.\n",
+        "tags": [
+          "ASN Lookup"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ip"
+          },
+          {
+            "$ref": "#/components/parameters/Asn"
+          },
+          {
+            "$ref": "#/components/parameters/Include"
+          },
+          {
+            "$ref": "#/components/parameters/Fields"
+          },
+          {
+            "$ref": "#/components/parameters/Excludes"
+          },
+          {
+            "$ref": "#/components/parameters/Output"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ASN information for the requested IP address.",
+            "headers": {
+              "X-Credits-Charged": {
+                "description": "Number of API credits consumed by this request.",
+                "schema": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ASNLookupResponse"
+                },
+                "example": {
+                  "asn": {
+                    "as_number": "AS24940",
+                    "organization": "Hetzner Online GmbH",
+                    "country": "DE",
+                    "type": "HOSTING",
+                    "domain": "hetzner.com",
+                    "date_allocated": "2002-06-03",
+                    "asn_name": "HETZNER-AS",
+                    "allocation_status": "ASSIGNED",
+                    "num_of_ipv4_routes": "84",
+                    "num_of_ipv6_routes": "6",
+                    "rir": "RIPE",
+                    "peers": [
+                      {
+                        "as_number": "AS58057",
+                        "description": "Securebit A",
+                        "country": "CH"
+                      },
+                      {
+                        "as_number": "AS28792",
+                        "description": "Public Internet Ltd",
+                        "country": "GB"
+                      }
+                    ],
+                    "routes": [
+                      "78.46.0.0/15",
+                      "138.199.128.0/17"
+                    ],
+                    "upstreams": [
+                      {
+                        "as_number": "AS12552",
+                        "description": "GlobalConnect AB",
+                        "country": "SE"
+                      },
+                      {
+                        "as_number": "AS58057",
+                        "description": "Securebit AG",
+                        "country": "CH"
+                      }
+                    ],
+                    "downstreams": [
+                      {
+                        "as_number": "AS209148",
+                        "description": "Securepoint GmbH",
+                        "country": "DE"
+                      },
+                      {
+                        "as_number": "AS198167",
+                        "description": "Apptc.me s.r.o.",
+                        "country": "CZ"
+                      }
+                    ],
+                    "whois_response": "#\n# ARIN WHOIS data and services are subject to the Terms of Use\n#\nASNumber:       24940\nASName:         HETZNER-AS\nOrgName:        Hetzner Online GmbH\nCountry:        DE\n...\n"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ASNLookupResponse"
+                },
+                "example": "<LinkedHashMap>\n  <asn>\n    <as_number>AS24940</as_number>\n    <organization>Hetzner Online GmbH</organization>\n    <country>DE</country>\n    <type>HOSTING</type>\n    <domain>hetzner.com</domain>\n    <date_allocated>2002-06-03</date_allocated>\n    <asn_name>HETZNER-AS</asn_name>\n    <allocation_status>ASSIGNED</allocation_status>\n    <num_of_ipv4_routes>84</num_of_ipv4_routes>\n    <num_of_ipv6_routes>6</num_of_ipv6_routes>\n    <rir>RIPE</rir>\n    <peers>\n      <as_number>AS58057</as_number>\n      <description>Securebit AG</description>\n      <country>CH</country>\n    </peers>\n    <peers>\n      <as_number>AS28792</as_number>\n      <description>Public Internet Ltd</description>\n      <country>GB</country>\n    </peers>\n    <routes>78.46.0.0/15</routes>\n    <routes>138.199.128.0/17</routes>\n    <upstreams>\n      <as_number>AS12552</as_number>\n      <description>GlobalConnect AB</description>\n      <country>SE</country>\n    </upstreams>\n    <upstreams>\n      <as_number>AS58057</as_number>\n      <description>Securebit AG</description>\n      <country>CH</country>\n    </upstreams>\n    <downstreams>\n      <as_number>AS209148</as_number>\n      <description>Securepoint GmbH</description>\n      <country>DE</country>\n    </downstreams>\n    <downstreams>\n      <as_number>AS198167</as_number>\n      <description>Apptc.me s.r.o.</description>\n      <country>CZ</country>\n    </downstreams>\n    <whois_response>\n      ASNumber: 24940\n      OrgName: Hetzner Online GmbH\n      Country: DE\n      ...\n    </whois_response>\n  </asn>\n</LinkedHashMap>\n"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "423": {
+            "$ref": "#/components/responses/Locked"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "499": {
+            "$ref": "#/components/responses/ClientClosedRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          },
+          "504": {
+            "$ref": "#/components/responses/GatewayTimeout"
+          },
+          "505": {
+            "$ref": "#/components/responses/HttpVersionNotSupported"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Ip": {
+        "name": "ip",
+        "in": "query",
+        "required": false,
+        "description": "An IPv4 address or IPv6 address to look up. When omitted, the API\nresolves the public IP of the requesting client.\n\nIf the `asn` parameter is provided, the `ip` parameter must not be used,\nbecause the lookup will be performed directly using the specified ASN.\n\nEmpty or whitespace-only values are treated the same as omission and resolve\nthe caller IP.\n\nPass `ip` only once. If multiple `ip` query parameters are sent,\nvalues may be merged and treated as invalid input (HTTP 400).\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "No IP address provided",
+            "value": ""
+          },
+          "ipv4": {
+            "summary": "IPv4 address",
+            "value": "91.128.103.196"
+          },
+          "ipv6": {
+            "summary": "IPv6 address",
+            "value": "2607:fb91:16c6:8860:e531:2d1d:4944:6c7c"
+          }
+        }
+      },
+      "Asn": {
+        "name": "asn",
+        "in": "query",
+        "required": false,
+        "description": "An Autonomous System Number (ASN) to look up.\n\nWhen provided, the lookup is performed directly using the specified ASN,\nand the `ip` parameter must not be included in the request.\n\nThe API returns detailed information about the ASN including the\norganization name, country of registration, ASN type, routing statistics,\nand other related network metadata.\n\nPass `asn` only once. If multiple `asn` query parameters are sent,\nvalues may be merged and treated as invalid input (HTTP 400).\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "No ASN provided",
+            "value": ""
+          },
+          "numeric": {
+            "summary": "ASN number",
+            "value": "24940"
+          },
+          "prefixed": {
+            "summary": "ASN with prefix",
+            "value": "AS24940"
+          }
+        }
+      },
+      "Include": {
+        "name": "include",
+        "in": "query",
+        "required": false,
+        "description": "Comma-separated list of optional data modules to add to the response. These are\nnot returned by default.\n\nSupported ASN modules include:\n\n- `peers`\n- `downstreams`\n- `upstreams`\n- `routes`\n- `whois_response`\n\nIf multiple values are provided, they must be comma-separated.\n\nFor additional query parameters (`include`, `fields`, `excludes`, `output`),\nunknown values are ignored. The API still returns HTTP 200 and applies only\nrecognized values.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not include any optional modules",
+            "value": ""
+          },
+          "peers": {
+            "summary": "Include ASN peer relationships",
+            "value": "peers"
+          },
+          "multiple": {
+            "summary": "Include peers and downstream connections",
+            "value": "peers,downstreams"
+          },
+          "routingData": {
+            "summary": "Include routing relationships and routes",
+            "value": "peers,downstreams,upstreams,routes"
+          },
+          "all": {
+            "summary": "Include all ASN modules",
+            "value": "peers,downstreams,upstreams,routes,whois_response"
+          }
+        }
+      },
+      "Fields": {
+        "name": "fields",
+        "in": "query",
+        "required": false,
+        "description": "Comma-separated list of fields or objects to return. Everything else is omitted.\nThe `ip` field is always returned when the lookup is performed using an IP address.\n\nSupports dot-notation for nested fields: `asn.organization`, `asn.domain`.\n\nIf the same field or object is specified in both `fields` and `excludes`, the\nobject is still returned, but it will be empty.\n\nIf you list both an object key and one of its nested fields separated by comma\n(e.g. `asn,asn.organization`), the full object is returned.\n\nUnknown field paths are ignored. The API still returns HTTP 200.\n\nAvailable on all plans including Free.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Return the full response (no field filtering)",
+            "value": ""
+          },
+          "countryOnly": {
+            "summary": "Return only the ASN country field",
+            "value": "asn.country"
+          },
+          "moreThanOneFields": {
+            "summary": "Return specific ASN fields",
+            "value": "asn.organization,asn.country"
+          }
+        }
+      },
+      "Excludes": {
+        "name": "excludes",
+        "in": "query",
+        "required": false,
+        "description": "Comma-separated list of fields or objects to remove from the response.\nThe `ip` field cannot be excluded.\n\nSupports dot-notation for nested fields: `asn.domain`.\n\nIf the same field or object is specified in both `fields` and `excludes`, the\nobject is still returned, but it will be empty.\n\nUnknown fields or object keys in `excludes` are ignored. The API still returns\nHTTP 200.\n\nAvailable on all plans including Free.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not exclude any fields",
+            "value": ""
+          },
+          "excludeObjects": {
+            "summary": "Exclude ASN allocation metadata",
+            "value": "asn.date_allocated,asn.allocation_status"
+          }
+        }
+      },
+      "Output": {
+        "name": "output",
+        "in": "query",
+        "required": false,
+        "description": "Desired response format. Defaults to `json` if not specified. You can also\ncontrol the format using the `Accept` header (`application/json`,\n`application/xml`, or `text/xml`). If both are provided, the `output` parameter\ntakes precedence.\n\nIf `output` is unknown or unsupported, it is ignored and the response defaults\nto JSON (`application/json`) with HTTP 200.\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "json",
+            "xml"
+          ],
+          "default": "json"
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request. Returned for one of the following reasons:\n- The provided IPv4 address or IPv6 address is invalid.\n- Special characters such as ( ) [ ] { } | ^ ` are present in the API URL,\n  either in a parameter name or its value (especially in the API key).\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "invalidIp": {
+                "summary": "Invalid IPv4/IPv6 input",
+                "value": {
+                  "message": "Provided name, service or IP address '999.999.999.999' is not valid."
+                }
+              },
+              "specialCharacters": {
+                "summary": "Special characters in API URL or key",
+                "value": {
+                  "message": "Invalid character found in the request target."
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized. Returned for one of the following reasons:\n\n- The `apiKey` URL parameter is missing.\n- An invalid (random or incorrect) API key is provided.\n- The account has been disabled or locked due to abuse or illegal activity.\n- The API request is made using an API key for a database subscription.\n- The API request is made using a free subscription API key.\n- The subscription is in a 'paused' state.\n- The subscription trial has expired.\n- The account’s active-until date has passed and renewal or upgrade is required.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "missingApiKey": {
+                "summary": "Missing API key",
+                "value": {
+                  "message": "Please provide an API key (as 'apiKey=YOUR_API_KEY' URL parameter) to use IPGeolocation API. To get your free API Key, sign up at https://app.ipgeolocation.io/login"
+                }
+              },
+              "invalidApiKey": {
+                "summary": "Invalid API key",
+                "value": {
+                  "message": "Provided API key is not valid. Contact technical support for assistance at support@ipgeolocation.io"
+                }
+              },
+              "lockedAccount": {
+                "summary": "Account locked or disabled",
+                "value": {
+                  "message": "Your account has been locked to use IPGeolocation API. Contact technical support for assistance at support@ipgeolocation.io"
+                }
+              },
+              "databaseSubscriptionKey": {
+                "summary": "Database subscription API key used for REST API",
+                "value": {
+                  "message": "You cannot query IPGeolocation API on a database plan subscription. "
+                }
+              },
+              "freePlanAccess": {
+                "summary": "Free subscription used for ASN lookup API",
+                "value": {
+                  "message": "ASN Lookup is not supported on your current subscription. This feature is available to Paid subscriptions only."
+                }
+              },
+              "pausedSubscription": {
+                "summary": "Subscription is paused",
+                "value": {
+                  "message": "Your subscription has been paused. Please resume your subscription to use IPGeolocation API."
+                }
+              },
+              "expiredSubscription": {
+                "summary": "Subscription expired or trial ended",
+                "value": {
+                  "message": "Your subscription has expired at DATE. Please subscribe to a paid plan to continue using IPGeolocation API without interruption or contact technical support for assistance at support@ipgeolocation.io"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not found. Returned for one of the following reasons:\n\n- A syntactically valid IPv4, IPv6, or ASN does not exist in the IPGeolocation database.\n- An IPv4, IPv6, or ASN is passed as a path variable\n  instead of as a URL query parameter (e.g., using `/v3/ipgeo/8.8.8.8`\n  instead of `/v3/ipgeo?ip=8.8.8.8`).\n- A non-existent or incorrect API endpoint is called.\n\nInvalid or malformed IPv4, IPv6, or domain input returns HTTP 400 instead.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "ipNotInDatabase": {
+                "summary": "IPv4/IPv6/ASN not found in database",
+                "value": {
+                  "message": "Provided ASN or IP Address does not exist in our database."
+                }
+              },
+              "ipAsPathVariable": {
+                "summary": "IP passed as path variable instead of query parameter",
+                "value": {
+                  "message": "No endpoint GET /v3/ipgeo/8.8.8.8."
+                }
+              },
+              "asnAsPathVariable": {
+                "summary": "ASN passed as path variable instead of query parameter",
+                "value": {
+                  "message": "No endpoint GET /v3/ipgeo/24940."
+                }
+              },
+              "wrongEndpoint": {
+                "summary": "Incorrect or non-existent endpoint",
+                "value": {
+                  "message": "No endpoint GET /v3/asn-invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "Method Not Allowed. Returned when an unsupported HTTP method is used\nto call an endpoint.\n\nOnly the **GET** method is supported for the ASN lookup API endpoint.\n\nAny other HTTP method results in HTTP 405.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "postNotAllowed": {
+                "summary": "POST method used",
+                "value": {
+                  "message": "Request method 'POST' is not supported"
+                }
+              },
+              "unsupportedMethod": {
+                "summary": "Unsupported HTTP method",
+                "value": {
+                  "message": "Request method is not supported"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Locked": {
+        "description": "Locked. The provided IP address belongs to a bogon IP range or a private\nnetwork and cannot be looked up.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "'10.0.0.1' is a bogon IP address."
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Too Many Requests. Returned for one of the following reasons:\n- The API usage limit has been reached for a Paid subscription with\n  status 'past due', 'deleted', or 'trial expired'.\n- The surcharge API usage limit has been reached for the subscribed plan.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "usageLimitReached": {
+                "summary": "API usage limit reached",
+                "value": {
+                  "message": "You have exceeded the limit of PLAN_USAGE_LIMIT requests per PLAN_INERVAL for your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+                }
+              },
+              "surchargeLimitReached": {
+                "summary": "Surcharge usage limit reached",
+                "value": {
+                  "message": "You have reached the surcharge amount limit of PLAN_USAGE_LIMIT_AND_SURCHARGE_LIMIT on your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+                }
+              }
+            }
+          }
+        }
+      },
+      "ClientClosedRequest": {
+        "description": "The client closed the connection before the server finished processing the\nrequest. This usually happens when the client sets a very short request or\nconnection timeout. Increase the timeout on the client side.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Client closed the request before the server could respond."
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error. The server encountered an unexpected condition\nthat prevented it from fulfilling the request. If the issue persists,\ncontact support@ipgeolocation.io.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Something went wrong on the server side."
+            }
+          }
+        }
+      },
+      "BadGateway": {
+        "description": "Bad Gateway. The API server received an invalid response from an upstream\nserver while processing the request. This is usually temporary.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Upstream service error. Please try again later."
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "Service Unavailable. The API is temporarily unavailable due to maintenance\nor overload. Please try again later.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Service temporarily unavailable. Please try again later."
+            }
+          }
+        }
+      },
+      "GatewayTimeout": {
+        "description": "Gateway Timeout. The API server did not receive a timely response from\nan upstream server.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "The server timed out while processing the request."
+            }
+          }
+        }
+      },
+      "HttpVersionNotSupported": {
+        "description": "HTTP Version Not Supported. The server does not support the HTTP protocol\nversion used in the request.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "HTTP version not supported."
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Returned for any non-200 response. Contains only a human-readable `message`.\nMessage text can vary by status and condition; examples in this spec are\nrepresentative, not exhaustive, and should not be treated as stable machine\ncodes.\n",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable explanation of what went wrong. Use HTTP status for control flow.",
+            "example": "Provided name, service or IP address '999.999.999.999' is not valid."
+          }
+        }
+      },
+      "ASNLookupResponse": {
+        "type": "object",
+        "xml": {
+          "name": "LinkedHashMap"
+        },
+        "description": "Response returned by the ASN Lookup API.\n\nContains the queried IP address (when an IP lookup is performed) and\nthe ASN information associated with the network responsible for routing\nthat IP address.\n\nWhen the lookup is performed using the `asn` parameter, the `ip` field\nis not included in the response.\n",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "The IP address for which ASN details are returned. This field appears\nonly when the lookup is performed using an IP address.\n",
+            "example": "49.12.0.0"
+          },
+          "asn": {
+            "$ref": "#/components/schemas/ASN"
+          }
+        }
+      },
+      "ASN": {
+        "type": "object",
+        "description": "ASN information describing the Autonomous System responsible for routing\nthe queried IP address or the specified ASN. Costs 1 credit.\n",
+        "properties": {
+          "as_number": {
+            "type": "string",
+            "description": "Complete Autonomous System Number that was looked up.",
+            "example": "AS24940"
+          },
+          "organization": {
+            "type": "string",
+            "description": "Name of the organization to which the ASN is assigned.",
+            "example": "Hetzner Online GmbH"
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code where the ASN is registered.",
+            "example": "DE"
+          },
+          "asn_name": {
+            "type": "string",
+            "description": "Official ASN handle.",
+            "example": "HETZNER-AS"
+          },
+          "type": {
+            "type": "string",
+            "description": "ASN category. Possible values include `ISP`, `HOSTING`, `BUSINESS`,\n`EDUCATION`, or `GOVERNMENT` when available.\n",
+            "example": "HOSTING"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Domain associated with the ASN.",
+            "example": "hetzner.com"
+          },
+          "date_allocated": {
+            "type": "string",
+            "description": "Date when the ASN was originally allocated.",
+            "example": "2002-06-03"
+          },
+          "rir": {
+            "type": "string",
+            "description": "Regional Internet Registry that allocated the ASN.\nExamples include `RIPE`, `ARIN`, `APNIC`, `LACNIC`, `AFRINIC`, etc.\n",
+            "example": "RIPE"
+          },
+          "allocation_status": {
+            "type": "string",
+            "description": "Current allocation status of the ASN.",
+            "example": "ASSIGNED"
+          },
+          "num_of_ipv4_routes": {
+            "type": "string",
+            "description": "Number of IPv4 prefixes announced by this ASN.",
+            "example": "84"
+          },
+          "num_of_ipv6_routes": {
+            "type": "string",
+            "description": "Number of IPv6 prefixes announced by this ASN.",
+            "example": "6"
+          },
+          "peers": {
+            "type": "array",
+            "description": "Directly connected peer ASNs.",
+            "items": {
+              "$ref": "#/components/schemas/ASNConnection"
+            }
+          },
+          "downstreams": {
+            "type": "array",
+            "description": "Downstream (customer) ASNs connected to this ASN.",
+            "items": {
+              "$ref": "#/components/schemas/ASNConnection"
+            }
+          },
+          "upstreams": {
+            "type": "array",
+            "description": "Upstream provider ASNs used for internet connectivity.",
+            "items": {
+              "$ref": "#/components/schemas/ASNConnection"
+            }
+          },
+          "routes": {
+            "type": "array",
+            "description": "IPv4 and IPv6 prefixes announced by this ASN.",
+            "items": {
+              "type": "string"
+            },
+            "examples": [
+              "192.76.177.0/24",
+              "2607:f600::/32"
+            ]
+          },
+          "whois_response": {
+            "type": "string",
+            "description": "Raw WHOIS registry record text returned for the ASN.",
+            "example": "ASNumber: 24940\nOrgName: Hetzner Online GmbH\nCountry: DE"
+          }
+        }
+      },
+      "ASNConnection": {
+        "type": "object",
+        "description": "Represents a connected Autonomous System such as a peer,\nupstream provider, or downstream customer.\n",
+        "properties": {
+          "as_number": {
+            "type": "string",
+            "description": "Autonomous System Number of the connected network.",
+            "example": "AS3356"
+          },
+          "description": {
+            "type": "string",
+            "description": "Name or description of the connected network operator.",
+            "example": "Level 3 Parent, LLC"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country code of the connected ASN.",
+            "example": "US"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "apiKey",
+        "description": "API key passed as the `apiKey` query parameter. Get yours from the\n[IPGeolocation dashboard](https://app.ipgeolocation.io/). For client-side\nusage, consider using Request Origin (CORS) authentication instead to\navoid exposing your key.\n"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "ASN Lookup",
+      "description": "API endpoint for retrieving Autonomous System Number (ASN) information\nassociated with IPv4 addresses, IPv6 addresses, or specific ASN numbers.\n\nThe response includes ASN metadata such as the ASN number, organization\nname, country of registration, ASN type, domain, allocation details,\nrouting statistics, and the Regional Internet Registry (RIR) responsible\nfor the allocation.\n\nAdditional routing intelligence such as peers, upstreams, downstreams,\nannounced routes, and raw WHOIS registry data can also be retrieved\nusing the `include` parameter.\n\nThis information helps analyze internet routing, identify network\noperators, and understand how Autonomous Systems interconnect\nacross the internet.\n",
+      "externalDocs": {
+        "description": "ASN Lookup API documentation",
+        "url": "https://ipgeolocation.io/documentation/asn-api.html"
+      }
+    }
+  ]
+}

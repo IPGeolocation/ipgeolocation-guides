@@ -1,0 +1,1989 @@
+{
+  "openapi": "3.0.7",
+  "info": {
+    "title": "IPGeolocation.io: IPGeolocation API",
+    "version": "3.0",
+    "description": "Look up geolocation, network, company, ASN, timezone, currency, abuse contact, and security\nthreat data for any IPv4 address, IPv6 address, or domain name. The API also parses\nUser-Agent strings when requested.\n\nTwo endpoints are available:\n\n- **Single lookup** (`GET /v3/ipgeo`) returns data for one IP or domain per request.\n- **Bulk lookup** (`POST /v3/ipgeo-bulk`) accepts up to 50,000 IPs or domains in a\n  single request. Requires a paid plan.\n\nUse query parameters to control which optional modules are included, which fields are\nreturned, and which fields are excluded. Both endpoints share the same query parameters\nand the same response schema per IP.\n\n## Authentication\n\nTwo authentication methods are supported:\n\n### API Key\n\nPass your API key as the `apiKey` query parameter on every request. You can find your\nkey in the [IPGeolocation dashboard](https://app.ipgeolocation.io/). Store it in\nserver-side environment variables. Avoid exposing it in client-side JavaScript.\n\n### Request Origin (CORS)\n\nAvailable on paid plans only. Whitelist your domain in the dashboard under the\n\"API Keys\" section. Once configured, requests from that domain (and all its subdomains)\nare accepted without passing `apiKey`. Enter your root domain (e.g. `example.com`),\nnot the full URL.\n\nEach plan has a limit on the number of extra API keys and request origins:\n\n| Plan | Extra API Keys + Request Origins |\n|---|---|\n| Starter (150K requests) | 1 |\n| Core (250K requests) | 1 |\n| Plus (500K requests) | 2 |\n| Pro (1M requests) | 2 |\n| Business (2M requests) | 3 |\n| Premium (5M requests) | 3 |\n\nAdditional keys or origins can be added for $2.50 per month each.\n\n## Response Formats\n\nThe API supports JSON (default) and XML output.\n\n- Set the `output` query parameter to `json` or `xml`.\n- Alternatively, set the `Accept` header to `application/json`, `application/xml`,\n  or `text/xml`.\n\nIf neither is specified, the response is returned as JSON. XML responses use a\n`LinkedHashMap` root element.\n\n## Credits\n\nCredits are charged only on successful HTTP 200 responses. The exact charge for any\nrequest is returned in the `X-Credits-Charged` response header.\n\n| Condition | Credits charged |\n|---|---|\n| Base lookup (location, ASN, company, network, currency, timezone) | 1 |\n| Adding `dma_code`, `geo_accuracy`, `hostname`, or `user_agent` | 0 extra (still 1) |\n| Adding `security` | +2 (total 3) |\n| Adding `abuse` | +1 (total 2) |\n| Adding `security` and `abuse` | +3 (total 4) |\n| `include=*` (everything) | 4 |\n| Only `security` via `include=security&fields=security` | 2 |\n| Only `abuse` via `include=abuse&fields=abuse` | 1 |\n\nFor bulk requests, total credits equal credits per lookup multiplied by the number of\nvalid IPs. Private, bogon, and malformed IPs are not counted as valid and do not\nconsume credits.\n\n## Response Language\n\nPass `lang` to get translated location names. English is the default. Non-English\nresponses require a paid plan.\n\n## Field Filtering\n\nUse `fields` to cherry-pick specific fields, or `excludes` to drop fields you do not\nneed. Both accept dot-notation for nested fields (e.g. `location.city`,\n`security.threat_score`). The `ip` field is always present regardless of filters.\n\n## Parameter Name Casing\n\nQuery parameter names are case-sensitive. Use exact names such as `apiKey`, `ip`,\n`include`, `fields`, `excludes`, `lang`, and `output`.\n\n## Rate Limits\n\n- **Free plan:** 1,000 requests per day (hard limit).\n- **Paid plans:** No daily, hourly, or monthly rate limit. If the monthly quota is\n  exceeded, requests continue and a surcharge is added to the monthly bill.\n\n## Free vs. Paid Plan Differences\n\n| Capability | Free | Paid |\n|---|---|---|\n| IPv4 / IPv6 lookup | Yes | Yes |\n| Domain lookup | No | Yes |\n| Bulk lookup (`/v3/ipgeo-bulk`) | No | Yes |\n| `include` parameter (optional modules) | No | Yes |\n| `lang` (non-English responses) | No | Yes |\n| `fields` / `excludes` filtering | Yes | Yes |\n| `network` object in default response | No | Yes |\n| `company` object in default response | No | Yes |\n| Basic `asn` fields (`as_number`, `organization`, `country`) | Yes | Yes |\n| Extended `asn` fields (`type`, `domain`, `rir`, `date_allocated`) | No | Yes |\n",
+    "contact": {
+      "name": "IPGeolocation Support",
+      "url": "https://ipgeolocation.io",
+      "email": "support@ipgeolocation.io"
+    },
+    "termsOfService": "https://ipgeolocation.io/tos.html",
+    "license": {
+      "name": "Proprietary",
+      "url": "https://ipgeolocation.io/tos.html"
+    }
+  },
+  "externalDocs": {
+    "description": "IPGeolocation IP Location API documentation",
+    "url": "https://ipgeolocation.io/documentation/ip-location-api.html"
+  },
+  "servers": [
+    {
+      "url": "https://api.ipgeolocation.io",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": [
+
+      ]
+    }
+  ],
+  "paths": {
+    "/v3/ipgeo": {
+      "get": {
+        "operationId": "lookupIpGeolocation",
+        "summary": "Single IP geolocation lookup",
+        "description": "Returns geolocation and enrichment data for a single IPv4 address, IPv6 address,\nor domain name. When `ip` is omitted, the API resolves the caller's public IP\nautomatically, which is useful for client-side lookups.\n\nThe base response always includes `location`, `country_metadata`, `currency`,\n`asn`, and `time_zone`. Paid plans also get `network` and `company` by default.\n\nUse the `include` parameter to add optional modules such as `security`, `abuse`,\n`user_agent`, `geo_accuracy`, `dma_code`, and hostname resolution.\n\nUse `fields` and `excludes` to control exactly which parts of the response you\nreceive. This reduces payload size and can improve response times.\n",
+        "tags": [
+          "IP Geolocation"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ip"
+          },
+          {
+            "$ref": "#/components/parameters/Lang"
+          },
+          {
+            "$ref": "#/components/parameters/Include"
+          },
+          {
+            "$ref": "#/components/parameters/Fields"
+          },
+          {
+            "$ref": "#/components/parameters/Excludes"
+          },
+          {
+            "$ref": "#/components/parameters/Output"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Geolocation data for the requested IP or domain.",
+            "headers": {
+              "X-Credits-Charged": {
+                "description": "Number of API credits consumed by this request.",
+                "schema": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IpGeolocationResponse"
+                },
+                "examples": {
+                  "paidFullResponse": {
+                    "summary": "Paid plan, all modules included",
+                    "value": {
+                      "ip": "91.128.103.196",
+                      "hostname": "91.128.103.196",
+                      "location": {
+                        "continent_code": "EU",
+                        "continent_name": "Europe",
+                        "country_code2": "SE",
+                        "country_code3": "SWE",
+                        "country_name": "Sweden",
+                        "country_name_official": "Kingdom of Sweden",
+                        "country_capital": "Stockholm",
+                        "state_prov": "Stockholms län",
+                        "state_code": "SE-AB",
+                        "district": "Stockholm",
+                        "city": "Stockholm",
+                        "locality": "Stockholm",
+                        "accuracy_radius": "4.395",
+                        "confidence": "high",
+                        "dma_code": "",
+                        "zipcode": "164 40",
+                        "latitude": "59.40510",
+                        "longitude": "17.95510",
+                        "is_eu": true,
+                        "country_flag": "https://ipgeolocation.io/static/flags/se_64.png",
+                        "geoname_id": "9972319",
+                        "country_emoji": "🇸🇪"
+                      },
+                      "country_metadata": {
+                        "calling_code": "+46",
+                        "tld": ".se",
+                        "languages": [
+                          "sv-SE",
+                          "se",
+                          "sma",
+                          "fi-SE"
+                        ]
+                      },
+                      "network": {
+                        "connection_type": "",
+                        "route": "91.128.0.0/14",
+                        "is_anycast": false
+                      },
+                      "currency": {
+                        "code": "SEK",
+                        "name": "Swedish Krona",
+                        "symbol": "kr"
+                      },
+                      "asn": {
+                        "as_number": "AS1257",
+                        "organization": "Tele2 Sverige AB",
+                        "country": "SE",
+                        "type": "ISP",
+                        "domain": "tele2.com",
+                        "date_allocated": "2024-12-13",
+                        "rir": "RIPE"
+                      },
+                      "company": {
+                        "name": "Tele2 Sverige AB",
+                        "type": "ISP",
+                        "domain": "tele2.com"
+                      },
+                      "security": {
+                        "threat_score": 0,
+                        "is_tor": false,
+                        "is_proxy": false,
+                        "proxy_provider_names": [
+
+                        ],
+                        "proxy_confidence_score": 0,
+                        "proxy_last_seen": "",
+                        "is_residential_proxy": false,
+                        "is_vpn": false,
+                        "vpn_provider_names": [
+
+                        ],
+                        "vpn_confidence_score": 0,
+                        "vpn_last_seen": "",
+                        "is_relay": false,
+                        "relay_provider_name": "",
+                        "is_anonymous": false,
+                        "is_known_attacker": false,
+                        "is_bot": false,
+                        "is_spam": false,
+                        "is_cloud_provider": false,
+                        "cloud_provider_name": ""
+                      },
+                      "abuse": {
+                        "route": "91.128.0.0/14",
+                        "country": "SE",
+                        "name": "Swipnet Staff",
+                        "organization": "",
+                        "kind": "group",
+                        "address": "Tele2 AB/Swedish IP Network, IP Registry, Torshamnsgatan 17 164 40 Kista SWEDEN",
+                        "emails": [
+                          "abuse@tele2.com"
+                        ],
+                        "phone_numbers": [
+                          "+46 8 5626 42 10"
+                        ]
+                      },
+                      "time_zone": {
+                        "name": "Europe/Stockholm",
+                        "offset": 1,
+                        "offset_with_dst": 1,
+                        "current_time": "2026-02-13 09:19:24.410+0100",
+                        "current_time_unix": 1770970764.41,
+                        "current_tz_abbreviation": "CET",
+                        "current_tz_full_name": "Central European Standard Time",
+                        "standard_tz_abbreviation": "CET",
+                        "standard_tz_full_name": "Central European Standard Time",
+                        "is_dst": false,
+                        "dst_savings": 0,
+                        "dst_exists": true,
+                        "dst_tz_abbreviation": "CEST",
+                        "dst_tz_full_name": "Central European Summer Time",
+                        "dst_start": {
+                          "utc_time": "2026-03-29 TIME 01:00",
+                          "duration": "+1.00H",
+                          "gap": true,
+                          "date_time_after": "2026-03-29 TIME 03:00",
+                          "date_time_before": "2026-03-29 TIME 02:00",
+                          "overlap": false
+                        },
+                        "dst_end": {
+                          "utc_time": "2026-10-25 TIME 01:00",
+                          "duration": "-1.00H",
+                          "gap": false,
+                          "date_time_after": "2026-10-25 TIME 02:00",
+                          "date_time_before": "2026-10-25 TIME 03:00",
+                          "overlap": true
+                        }
+                      },
+                      "user_agent": {
+                        "user_agent_string": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0",
+                        "name": "Edge",
+                        "type": "Browser",
+                        "version": "143",
+                        "version_major": "143",
+                        "device": {
+                          "name": "Linux Desktop",
+                          "type": "Desktop",
+                          "brand": "Unknown",
+                          "cpu": "Intel x86_64"
+                        },
+                        "engine": {
+                          "name": "Blink",
+                          "type": "Browser",
+                          "version": "143",
+                          "version_major": "143"
+                        },
+                        "operating_system": {
+                          "name": "Linux",
+                          "type": "Desktop",
+                          "version": "??",
+                          "version_major": "??",
+                          "build": "??"
+                        }
+                      }
+                    }
+                  },
+                  "freeMinimalResponse": {
+                    "summary": "Free plan default response",
+                    "value": {
+                      "ip": "165.227.0.0",
+                      "location": {
+                        "continent_code": "NA",
+                        "continent_name": "North America",
+                        "country_code2": "US",
+                        "country_code3": "USA",
+                        "country_name": "United States",
+                        "country_name_official": "United States of America",
+                        "country_capital": "Washington, D.C.",
+                        "state_prov": "California",
+                        "state_code": "US-CA",
+                        "district": "Santa Clara County",
+                        "city": "Santa Clara",
+                        "zipcode": "95051",
+                        "latitude": "37.35983",
+                        "longitude": "-121.98144",
+                        "is_eu": false,
+                        "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+                        "geoname_id": "5346804",
+                        "country_emoji": "🇺🇸"
+                      },
+                      "country_metadata": {
+                        "calling_code": "+1",
+                        "tld": ".us",
+                        "languages": [
+                          "en-US",
+                          "es-US",
+                          "haw",
+                          "fr"
+                        ]
+                      },
+                      "currency": {
+                        "code": "USD",
+                        "name": "US Dollar",
+                        "symbol": "$"
+                      },
+                      "asn": {
+                        "as_number": "AS14061",
+                        "organization": "DigitalOcean, LLC",
+                        "country": "US"
+                      },
+                      "time_zone": {
+                        "name": "America/Los_Angeles",
+                        "offset": -8,
+                        "offset_with_dst": -8,
+                        "current_time": "2026-02-09 09:54:51.206-0800",
+                        "current_time_unix": 1770659691.206,
+                        "current_tz_abbreviation": "PST",
+                        "current_tz_full_name": "Pacific Standard Time",
+                        "standard_tz_abbreviation": "PST",
+                        "standard_tz_full_name": "Pacific Standard Time",
+                        "is_dst": false,
+                        "dst_savings": 0,
+                        "dst_exists": true,
+                        "dst_tz_abbreviation": "PDT",
+                        "dst_tz_full_name": "Pacific Daylight Time",
+                        "dst_start": {
+                          "utc_time": "2026-03-08 TIME 10:00",
+                          "duration": "+1.00H",
+                          "gap": true,
+                          "date_time_after": "2026-03-08 TIME 03:00",
+                          "date_time_before": "2026-03-08 TIME 02:00",
+                          "overlap": false
+                        },
+                        "dst_end": {
+                          "utc_time": "2026-11-01 TIME 09:00",
+                          "duration": "-1.00H",
+                          "gap": false,
+                          "date_time_after": "2026-11-01 TIME 01:00",
+                          "date_time_before": "2026-11-01 TIME 02:00",
+                          "overlap": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/IpGeolocationResponse"
+                },
+                "examples": {
+                  "paidFullResponse": {
+                    "summary": "Paid plan, all modules included (XML)",
+                    "value": "<LinkedHashMap>\n  <ip>91.128.103.196</ip>\n  <hostname>91.128.103.196</hostname>\n  <location>\n      <continent_code>EU</continent_code>\n      <continent_name>Europe</continent_name>\n      <country_code2>SE</country_code2>\n      <country_code3>SWE</country_code3>\n      <country_name>Sweden</country_name>\n      <country_name_official>Kingdom of Sweden</country_name_official>\n      <country_capital>Stockholm</country_capital>\n      <state_prov>Stockholms län</state_prov>\n      <state_code>SE-AB</state_code>\n      <district>Stockholm</district>\n      <city>Stockholm</city>\n      <locality>Stockholm</locality>\n      <accuracy_radius>8.793</accuracy_radius>\n      <confidence>high</confidence>\n      <dma_code></dma_code>\n      <zipcode>164 40</zipcode>\n      <latitude>59.40510</latitude>\n      <longitude>17.95510</longitude>\n      <is_eu>true</is_eu>\n      <country_flag>https://ipgeolocation.io/static/flags/se_64.png</country_flag>\n      <geoname_id>9972319</geoname_id>\n      <country_emoji>🇸🇪</country_emoji>\n  </location>\n  <country_metadata>\n      <calling_code>+46</calling_code>\n      <tld>.se</tld>\n      <languages>sv-SE</languages>\n      <languages>se</languages>\n      <languages>sma</languages>\n      <languages>fi-SE</languages>\n  </country_metadata>\n  <network>\n      <connection_type></connection_type>\n      <route>91.128.0.0/14</route>\n      <is_anycast>false</is_anycast>\n  </network>\n  <currency>\n      <code>SEK</code>\n      <name>Swedish Krona</name>\n      <symbol>kr</symbol>\n  </currency>\n  <asn>\n      <as_number>AS1257</as_number>\n      <organization>Tele2 Sverige AB</organization>\n      <country>SE</country>\n      <type>ISP</type>\n      <domain>tele2.com</domain>\n      <date_allocated>2002-09-19</date_allocated>\n      <rir>RIPE</rir>\n  </asn>\n  <company>\n      <name>Tele2 Sverige AB</name>\n      <type>ISP</type>\n      <domain>tele2.com</domain>\n  </company>\n  <security>\n      <threat_score>0</threat_score>\n      <is_tor>false</is_tor>\n      <is_proxy>false</is_proxy>\n      <proxy_confidence_score>0</proxy_confidence_score>\n      <proxy_last_seen></proxy_last_seen>\n      <is_residential_proxy>false</is_residential_proxy>\n      <is_vpn>false</is_vpn>\n      <vpn_confidence_score>0</vpn_confidence_score>\n      <vpn_last_seen></vpn_last_seen>\n      <is_relay>false</is_relay>\n      <relay_provider_name></relay_provider_name>\n      <is_anonymous>false</is_anonymous>\n      <is_known_attacker>false</is_known_attacker>\n      <is_bot>false</is_bot>\n      <is_spam>false</is_spam>\n      <is_cloud_provider>false</is_cloud_provider>\n      <cloud_provider_name></cloud_provider_name>\n  </security>\n  <abuse>\n      <route>91.128.0.0/14</route>\n      <country>SE</country>\n      <name>Swipnet Staff</name>\n      <organization></organization>\n      <kind>group</kind>\n      <address>Tele2 AB/Swedish IP Network, IP Registry, Torshamnsgatan 17 164 40 Kista SWEDEN</address>\n      <emails>abuse@tele2.com</emails>\n      <phone_numbers>+46 8 5626 42 10</phone_numbers>\n  </abuse>\n  <time_zone>\n      <name>Europe/Stockholm</name>\n      <offset>1</offset>\n      <offset_with_dst>1</offset_with_dst>\n      <current_time>2026-03-02 13:32:39.256+0100</current_time>\n      <current_time_unix>1772454759.256</current_time_unix>\n      <current_tz_abbreviation>CET</current_tz_abbreviation>\n      <current_tz_full_name>Central European Standard Time</current_tz_full_name>\n      <standard_tz_abbreviation>CET</standard_tz_abbreviation>\n      <standard_tz_full_name>Central European Standard Time</standard_tz_full_name>\n      <is_dst>false</is_dst>\n      <dst_savings>0</dst_savings>\n      <dst_exists>true</dst_exists>\n      <dst_tz_abbreviation>CEST</dst_tz_abbreviation>\n      <dst_tz_full_name>Central European Summer Time</dst_tz_full_name>\n      <dst_start>\n          <utc_time>2026-03-29 TIME 01:00</utc_time>\n          <duration>+1.00H</duration>\n          <gap>true</gap>\n          <date_time_after>2026-03-29 TIME 03:00</date_time_after>\n          <date_time_before>2026-03-29 TIME 02:00</date_time_before>\n          <overlap>false</overlap>\n      </dst_start>\n      <dst_end>\n          <utc_time>2026-10-25 TIME 01:00</utc_time>\n          <duration>-1.00H</duration>\n          <gap>false</gap>\n          <date_time_after>2026-10-25 TIME 02:00</date_time_after>\n          <date_time_before>2026-10-25 TIME 03:00</date_time_before>\n          <overlap>true</overlap>\n      </dst_end>\n  </time_zone>\n  <user_agent>\n      <user_agent_string>PostmanRuntime/7.49.1</user_agent_string>\n      <name>PostmanRuntime</name>\n      <type>Robot</type>\n      <version>7.49.1</version>\n      <version_major>7</version_major>\n      <device>\n          <name>Postman Runtime</name>\n          <type>Robot</type>\n          <brand>Postman</brand>\n          <cpu>Unknown</cpu>\n      </device>\n      <engine>\n          <name>PostmanRuntime</name>\n          <type>Robot</type>\n          <version>7.49.1</version>\n          <version_major>7</version_major>\n      </engine>\n      <operating_system>\n          <name>Cloud</name>\n          <type>Cloud</type>\n          <version>??</version>\n          <version_major>??</version_major>\n          <build>??</build>\n      </operating_system>\n  </user_agent>\n</LinkedHashMap>\n"
+                  },
+                  "freeMinimalResponse": {
+                    "summary": "Free plan default response (XML)",
+                    "value": "<LinkedHashMap>\n  <ip>165.227.0.0</ip>\n  <location>\n      <continent_code>NA</continent_code>\n      <continent_name>North America</continent_name>\n      <country_code2>US</country_code2>\n      <country_code3>USA</country_code3>\n      <country_name>United States</country_name>\n      <country_name_official>United States of America</country_name_official>\n      <country_capital>Washington, D.C.</country_capital>\n      <state_prov>California</state_prov>\n      <state_code>US-CA</state_code>\n      <district>Santa Clara County</district>\n      <city>Santa Clara</city>\n      <zipcode>95051</zipcode>\n      <latitude>37.35983</latitude>\n      <longitude>-121.98144</longitude>\n      <is_eu>false</is_eu>\n      <country_flag>https://ipgeolocation.io/static/flags/us_64.png</country_flag>\n      <geoname_id>5346804</geoname_id>\n      <country_emoji>🇺🇸</country_emoji>\n  </location>\n  <country_metadata>\n      <calling_code>+1</calling_code>\n      <tld>.us</tld>\n      <languages>en-US</languages>\n      <languages>es-US</languages>\n      <languages>haw</languages>\n      <languages>fr</languages>\n  </country_metadata>\n  <currency>\n      <code>USD</code>\n      <name>US Dollar</name>\n      <symbol>$</symbol>\n  </currency>\n  <asn>\n      <as_number>AS14061</as_number>\n      <organization>DigitalOcean, LLC</organization>\n      <country>US</country>\n  </asn>\n  <time_zone>\n      <name>America/Los_Angeles</name>\n      <offset>-8</offset>\n      <offset_with_dst>-8</offset_with_dst>\n      <current_time>2026-03-02 03:29:55.186-0800</current_time>\n      <current_time_unix>1772450995.186</current_time_unix>\n      <current_tz_abbreviation>PST</current_tz_abbreviation>\n      <current_tz_full_name>Pacific Standard Time</current_tz_full_name>\n      <standard_tz_abbreviation>PST</standard_tz_abbreviation>\n      <standard_tz_full_name>Pacific Standard Time</standard_tz_full_name>\n      <is_dst>false</is_dst>\n      <dst_savings>0</dst_savings>\n      <dst_exists>true</dst_exists>\n      <dst_tz_abbreviation>PDT</dst_tz_abbreviation>\n      <dst_tz_full_name>Pacific Daylight Time</dst_tz_full_name>\n      <dst_start>\n          <utc_time>2026-03-08 TIME 10:00</utc_time>\n          <duration>+1.00H</duration>\n          <gap>true</gap>\n          <date_time_after>2026-03-08 TIME 03:00</date_time_after>\n          <date_time_before>2026-03-08 TIME 02:00</date_time_before>\n          <overlap>false</overlap>\n      </dst_start>\n      <dst_end>\n          <utc_time>2026-11-01 TIME 09:00</utc_time>\n          <duration>-1.00H</duration>\n          <gap>false</gap>\n          <date_time_after>2026-11-01 TIME 01:00</date_time_after>\n          <date_time_before>2026-11-01 TIME 02:00</date_time_before>\n          <overlap>true</overlap>\n      </dst_end>\n  </time_zone>\n</LinkedHashMap>\n"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "423": {
+            "$ref": "#/components/responses/Locked"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "499": {
+            "$ref": "#/components/responses/ClientClosedRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          },
+          "504": {
+            "$ref": "#/components/responses/GatewayTimeout"
+          },
+          "505": {
+            "$ref": "#/components/responses/HttpVersionNotSupported"
+          }
+        }
+      }
+    },
+    "/v3/ipgeo-bulk": {
+      "post": {
+        "operationId": "bulkLookupIpGeolocation",
+        "summary": "Bulk IP geolocation lookup",
+        "description": "Returns geolocation and enrichment data for up to 50,000 IPv4 addresses, IPv6\naddresses, or domain names in a single request. The request body must be a JSON\nobject with an `ips` array.\n\nThis endpoint requires a paid plan. Calling it with a free\nplan API key returns HTTP 401.\n\nThe response is a JSON array with one element per IP in the request. Each element\nis either a full geolocation response object or an error object with only a\n`message` field. Invalid, bogon, and unresolvable entries appear as error\nobjects. Invalid, private, and bogon IPs are not billed.\n\nThis endpoint supports the same query parameters as the single lookup endpoint,\nincluding `lang`, `include`, `fields`, `excludes`, and `output`.\n\nCredits are calculated as: credits per lookup multiplied by the number of valid\nIPs in the request. The total is returned in the `X-Credits-Charged` response\nheader. When at least one submitted ip is invalid, the `X-Successful-Record`\nresponse header indicates how many entries were successfully resolved.\n\nOnly the `POST` method is accepted. Sending a `GET` request returns HTTP 405.\n",
+        "tags": [
+          "IP Geolocation"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Lang"
+          },
+          {
+            "$ref": "#/components/parameters/Include"
+          },
+          {
+            "$ref": "#/components/parameters/Fields"
+          },
+          {
+            "$ref": "#/components/parameters/Excludes"
+          },
+          {
+            "$ref": "#/components/parameters/Output"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "A JSON object containing an `ips` array. Each element is a string representing\nan IPv4 address, IPv6 address, or domain name. The array must not be empty and\nmust not contain more than 50,000 entries.\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkGeolocationRequest"
+              },
+              "examples": {
+                "mixedIps": {
+                  "summary": "Mixed IPv4, IPv6, and domain",
+                  "value": {
+                    "ips": [
+                      "8.8.8.8",
+                      "91.128.103.196",
+                      "2607:fb91:16c6:8860:e531:2d1d:4944:6c7c",
+                      "ipgeolocation.io"
+                    ]
+                  }
+                },
+                "ipv4Only": {
+                  "summary": "Multiple IPv4 addresses",
+                  "value": {
+                    "ips": [
+                      "1.1.1.1",
+                      "8.8.4.4",
+                      "165.227.0.0"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An array of results, one per input entry. Valid entries return full\ngeolocation objects. Invalid, bogon, and unresolvable entries return\nobjects with only a `message` field.\n`X-Successful-Record` is returned only when at least one submitted entry\nfails and the number of successful lookups is lower than the number of\nsubmitted entries.\n",
+            "headers": {
+              "X-Credits-Charged": {
+                "description": "Total number of API credits consumed. Equals credits per lookup\nmultiplied by the count of valid IPs.\n",
+                "schema": {
+                  "type": "number",
+                  "example": 3
+                }
+              },
+              "X-Successful-Record": {
+                "description": "Number of valid IP addresses or domains that were successfully resolved in\nthis bulk request. Invalid, bogon, and private IPs are not counted.\nThis header is included only when at least one bulk entry returns an\nerror message and total successful lookups are fewer than submitted\nentries.\n",
+                "schema": {
+                  "type": "number",
+                  "example": 4
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BulkGeolocationResponseItem"
+                  }
+                },
+                "examples": {
+                  "bulkResponse": {
+                    "summary": "Bulk response with one valid and one error entry",
+                    "value": [
+                      {
+                        "ip": "8.8.8.8",
+                        "location": {
+                          "continent_code": "NA",
+                          "continent_name": "North America",
+                          "country_code2": "US",
+                          "country_code3": "USA",
+                          "country_name": "United States",
+                          "country_name_official": "United States of America",
+                          "country_capital": "Washington, D.C.",
+                          "state_prov": "California",
+                          "state_code": "US-CA",
+                          "district": "Santa Clara County",
+                          "city": "Mountain View",
+                          "zipcode": "94043",
+                          "latitude": "37.42240",
+                          "longitude": "-122.08421",
+                          "is_eu": false,
+                          "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+                          "geoname_id": "5375480",
+                          "country_emoji": "🇺🇸"
+                        },
+                        "country_metadata": {
+                          "calling_code": "+1",
+                          "tld": ".us",
+                          "languages": [
+                            "en-US",
+                            "es-US",
+                            "haw",
+                            "fr"
+                          ]
+                        },
+                        "network": {
+                          "connection_type": "",
+                          "route": "8.8.8.0/24",
+                          "is_anycast": true
+                        },
+                        "currency": {
+                          "code": "USD",
+                          "name": "US Dollar",
+                          "symbol": "$"
+                        },
+                        "asn": {
+                          "as_number": "AS15169",
+                          "organization": "Google LLC",
+                          "country": "US",
+                          "type": "BUSINESS",
+                          "domain": "google.com",
+                          "date_allocated": "2000-03-30",
+                          "rir": "ARIN"
+                        },
+                        "company": {
+                          "name": "Google LLC",
+                          "type": "HOSTING",
+                          "domain": "google.com"
+                        },
+                        "time_zone": {
+                          "name": "America/Los_Angeles",
+                          "offset": -8,
+                          "offset_with_dst": -8,
+                          "current_time": "2026-02-09 09:54:51.206-0800",
+                          "current_time_unix": 1770659691.206,
+                          "current_tz_abbreviation": "PST",
+                          "current_tz_full_name": "Pacific Standard Time",
+                          "standard_tz_abbreviation": "PST",
+                          "standard_tz_full_name": "Pacific Standard Time",
+                          "is_dst": false,
+                          "dst_savings": 0,
+                          "dst_exists": true,
+                          "dst_tz_abbreviation": "PDT",
+                          "dst_tz_full_name": "Pacific Daylight Time",
+                          "dst_start": {
+                            "utc_time": "2026-03-08 TIME 10:00",
+                            "duration": "+1.00H",
+                            "gap": true,
+                            "date_time_after": "2026-03-08 TIME 03:00",
+                            "date_time_before": "2026-03-08 TIME 02:00",
+                            "overlap": false
+                          },
+                          "dst_end": {
+                            "utc_time": "2026-11-01 TIME 09:00",
+                            "duration": "-1.00H",
+                            "gap": false,
+                            "date_time_after": "2026-11-01 TIME 01:00",
+                            "date_time_before": "2026-11-01 TIME 02:00",
+                            "overlap": true
+                          }
+                        }
+                      },
+                      {
+                        "message": "'10.0.0.1' is a bogon IP address."
+                      }
+                    ]
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "xml": {
+                    "name": "ArrayList",
+                    "wrapped": true
+                  },
+                  "items": {
+                    "$ref": "#/components/schemas/BulkGeolocationResponseItem",
+                    "xml": {
+                      "name": "item"
+                    }
+                  }
+                },
+                "examples": {
+                  "bulkResponse": {
+                    "summary": "Bulk response with one valid and one error entry (XML)",
+                    "value": "<ArrayList>\n  <item>\n      <ip>85.219.46.79</ip>\n      <location>\n          <continent_code>EU</continent_code>\n          <continent_name>Europe</continent_name>\n          <country_code2>ES</country_code2>\n          <country_code3>ESP</country_code3>\n          <country_name>Spain</country_name>\n          <country_name_official>Kingdom of Spain</country_name_official>\n          <country_capital>Madrid</country_capital>\n          <state_prov>Navarre</state_prov>\n          <state_code>ES-NC</state_code>\n          <district>Provincia de Navarra</district>\n          <city>Segundo Ensanche</city>\n          <zipcode>31002</zipcode>\n          <latitude>42.81253</latitude>\n          <longitude>-1.64577</longitude>\n          <is_eu>true</is_eu>\n          <country_flag>https://ipgeolocation.io/static/flags/es_64.png</country_flag>\n          <geoname_id>6359749</geoname_id>\n          <country_emoji>🇪🇸</country_emoji>\n      </location>\n      <country_metadata>\n          <calling_code>+34</calling_code>\n          <tld>.es</tld>\n          <languages>es-ES</languages>\n          <languages>ca</languages>\n          <languages>gl</languages>\n          <languages>eu</languages>\n          <languages>oc</languages>\n      </country_metadata>\n      <network>\n          <connection_type></connection_type>\n          <route>85.219.0.0/17</route>\n          <is_anycast>false</is_anycast>\n      </network>\n      <currency>\n          <code>EUR</code>\n          <name>Euro</name>\n          <symbol>€</symbol>\n      </currency>\n      <asn>\n          <as_number>AS6739</as_number>\n          <organization>VODAFONE ONO, S.A.</organization>\n          <country>ES</country>\n          <type>ISP</type>\n          <domain>corp.vodafone.es</domain>\n          <date_allocated>2002-01-09</date_allocated>\n          <rir>RIPE</rir>\n      </asn>\n      <company>\n          <name>ONO HFC</name>\n          <type></type>\n          <domain></domain>\n      </company>\n      <time_zone>\n          <name>Europe/Madrid</name>\n          <offset>1</offset>\n          <offset_with_dst>1</offset_with_dst>\n          <current_time>2026-03-03 19:39:41.143+0100</current_time>\n          <current_time_unix>1772563181.143</current_time_unix>\n          <current_tz_abbreviation>CET</current_tz_abbreviation>\n          <current_tz_full_name>Central European Standard Time</current_tz_full_name>\n          <standard_tz_abbreviation>CET</standard_tz_abbreviation>\n          <standard_tz_full_name>Central European Standard Time</standard_tz_full_name>\n          <is_dst>false</is_dst>\n          <dst_savings>0</dst_savings>\n          <dst_exists>true</dst_exists>\n          <dst_tz_abbreviation>CEST</dst_tz_abbreviation>\n          <dst_tz_full_name>Central European Summer Time</dst_tz_full_name>\n          <dst_start>\n              <utc_time>2026-03-29 TIME 01:00</utc_time>\n              <duration>+1.00H</duration>\n              <gap>true</gap>\n              <date_time_after>2026-03-29 TIME 03:00</date_time_after>\n              <date_time_before>2026-03-29 TIME 02:00</date_time_before>\n              <overlap>false</overlap>\n          </dst_start>\n          <dst_end>\n              <utc_time>2026-10-25 TIME 01:00</utc_time>\n              <duration>-1.00H</duration>\n              <gap>false</gap>\n              <date_time_after>2026-10-25 TIME 02:00</date_time_after>\n              <date_time_before>2026-10-25 TIME 03:00</date_time_before>\n              <overlap>true</overlap>\n          </dst_end>\n      </time_zone>\n  </item>\n  <item>\n      <message>'10.0.0.0' is a bogon IP address.</message>\n  </item>\n</ArrayList>\n"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "413": {
+            "$ref": "#/components/responses/PayloadTooLarge"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "499": {
+            "$ref": "#/components/responses/ClientClosedRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          },
+          "504": {
+            "$ref": "#/components/responses/GatewayTimeout"
+          },
+          "505": {
+            "$ref": "#/components/responses/HttpVersionNotSupported"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Ip": {
+        "name": "ip",
+        "in": "query",
+        "required": false,
+        "description": "An IPv4 address, IPv6 address, or domain name to look up. When omitted, the API\nresolves the public IP of the requesting client. Empty or whitespace-only values\nare treated the same as omission and resolve caller IP. Domain lookups require a\npaid plan. Pass `ip` only once. If multiple `ip` query parameters are sent,\nvalues may be merged and treated as invalid input (HTTP 400).\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "ipv4": {
+            "summary": "IPv4 address",
+            "value": "91.128.103.196"
+          },
+          "ipv6": {
+            "summary": "IPv6 address",
+            "value": "2607:fb91:16c6:8860:e531:2d1d:4944:6c7c"
+          },
+          "domain": {
+            "summary": "Domain name (paid plans only)",
+            "value": "ipgeolocation.io"
+          }
+        }
+      },
+      "Lang": {
+        "name": "lang",
+        "in": "query",
+        "required": false,
+        "description": "Language code for translated location names. Defaults to `en`. Non-English\nresponses require a paid plan. Free plans always receive English regardless\nof this parameter. Unsupported `lang` values return HTTP 400.\n",
+        "schema": {
+          "type": "string",
+          "default": "en",
+          "enum": [
+            "en",
+            "de",
+            "ru",
+            "ja",
+            "fr",
+            "cn",
+            "es",
+            "cs",
+            "it",
+            "ko",
+            "fa",
+            "pt"
+          ]
+        }
+      },
+      "Include": {
+        "name": "include",
+        "in": "query",
+        "required": false,
+        "description": "Comma-separated list of optional data modules to add to the response. These are\nnot returned by default. Requires a paid plan.\n\n**Available values:**\n\n| Value | What it adds | Extra credits |\n|---|---|---|\n| `geo_accuracy` | `location.locality`, `location.accuracy_radius`, `location.confidence` | 0 |\n| `dma_code` | `location.dma_code` (US IPs only) | 0 |\n| `user_agent` | `user_agent` object (parses the `User-Agent` header) | 0 |\n| `security` | `security` object with threat signals | +2 |\n| `abuse` | `abuse` object with abuse contact info | +1 |\n| `hostname` | `hostname` field (from local database, fast, experimental) | 0 |\n| `liveHostname` | `hostname` field (live DNS lookup, slower, accurate) | 0 |\n| `hostnameFallbackLive` | `hostname` field (local first, falls back to live) | 0 |\n| `*` | All of the above | +3 |\n\nIf multiple hostname options are passed in `include`, hostname resolution uses\nthis precedence order: `liveHostname` first, then `hostname`, then\n`hostnameFallbackLive`.\nIf none is specified, the `hostname` field is not returned.\n\nFor `user_agent`, the API parses the `User-Agent` header from the request. For\nserver-side calls, forward your visitor's User-Agent string in the header so the\nparsed result matches the actual visitor.\n\nFor additional query parameters (`include`, `fields`, `excludes`, `output`),\nunknown values are ignored. The API still returns HTTP 200 and applies only\nrecognized values.\n\nFree plan behavior for `include=*`: the API returns HTTP 200 and ignores the\ninclude request, returning only base response fields. In contrast, specific\ninclude values such as `include=security` return HTTP 401 on free plans.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not include any optional modules",
+            "value": ""
+          },
+          "security": {
+            "summary": "Include security threat data",
+            "value": "security"
+          },
+          "multiple": {
+            "summary": "Include security and abuse data",
+            "value": "security,abuse"
+          },
+          "allNonBillable": {
+            "summary": "Include all free modules",
+            "value": "dma_code,geo_accuracy,hostname,user_agent"
+          },
+          "all": {
+            "summary": "Include everything",
+            "value": "*"
+          }
+        }
+      },
+      "Fields": {
+        "name": "fields",
+        "in": "query",
+        "required": false,
+        "description": "Comma-separated list of fields or objects to return. Everything else is omitted.\nThe `ip` field is always returned regardless of this filter.\n\nSupports dot-notation for nested fields: `location.city`, `asn.organization`.\nTo return an entire object, use the object key: `location`, `security`.\n\nIf a field belongs to an optional module (e.g. `security.threat_score`), you\nmust also pass the corresponding `include` value.\nIf you omit `include`, the request still succeeds, but fields from optional\nmodules are not returned.\n\nIf the same field or object is specified in both `fields` and `excludes`, the\nobject is still returned, but it will be empty.\nIf the same field or object is specified in `include`, `fields`, and `excludes`,\n`include` takes priority over both `fields` and `excludes`.\n\nIf you list both an object key and one of its nested fields separated by comma\n(e.g. `security,security.threat_score`), the full object is returned.\n\nUnknown field paths are ignored. The API still returns HTTP 200.\n\nAvailable on all plans including Free.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Return the full response (no field filtering)",
+            "value": ""
+          },
+          "locationOnly": {
+            "summary": "Return only the location object",
+            "value": "location"
+          },
+          "nestedFields": {
+            "summary": "Return specific nested fields",
+            "value": "location.country_name,asn.organization"
+          },
+          "securityFields": {
+            "summary": "Return specific security fields (requires include=security)",
+            "value": "location.city,security.threat_score,security.is_vpn"
+          }
+        }
+      },
+      "Excludes": {
+        "name": "excludes",
+        "in": "query",
+        "required": false,
+        "description": "Comma-separated list of fields or objects to remove from the response. The `ip`\nfield cannot be excluded.\n\nSupports dot-notation for nested fields: `location.continent_code`.\nTo exclude an entire object, use the object key: `currency`, `time_zone`.\n\nIf the same field or object is specified in both `fields` and `excludes`, the\nobject is still returned, but it will be empty.\nIf the same field or object is specified in `include`, `fields`, and `excludes`,\n`include` takes priority over both `fields` and `excludes`.\n\nUnknown fields or object keys in `excludes` are ignored. The API still returns\nHTTP 200.\n\nAvailable on all plans including Free.\n",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "none": {
+            "summary": "Do not exclude any fields",
+            "value": ""
+          },
+          "excludeObjects": {
+            "summary": "Exclude entire objects and a nested field",
+            "value": "location.continent_code,currency,company.type"
+          }
+        }
+      },
+      "Output": {
+        "name": "output",
+        "in": "query",
+        "required": false,
+        "description": "Desired response format. Defaults to `json` if not specified. You can also\ncontrol the format using the `Accept` header (`application/json`,\n`application/xml`, or `text/xml`). If both are provided, the `output` parameter\ntakes precedence.\n\nIf `output` is unknown or unsupported, it is ignored and the response defaults\nto JSON (`application/json`) with HTTP 200.\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "json",
+            "xml"
+          ],
+          "default": "json"
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request. Returned for one of the following reasons:\n\n- The provided IPv4 address, IPv6 address, or domain name is invalid.\n- Special characters such as ( ) [ ] { } | ^ ` are present in the API URL,\n  either in a parameter name or its value (especially in the API key).\n- For the `ipgeo-bulk` endpoint:\n  - The request payload is empty or missing.\n  - The JSON body is malformed.\n  - The `ips` field is missing or the `ips` array is empty.\n  - More than 50,000 IP addresses are provided in the request.\n- An invalid or unsupported `lang` parameter is provided.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "invalidIp": {
+                "summary": "Invalid IPv4/IPv6/domain input",
+                "value": {
+                  "message": "Provided name, service or IP address '999.999.999.999' is not valid."
+                }
+              },
+              "specialCharacters": {
+                "summary": "Special characters in API URL or key",
+                "value": {
+                  "message": "Invalid character found in the request target."
+                }
+              },
+              "malformedJson": {
+                "summary": "Malformed JSON body for bulk endpoint",
+                "value": {
+                  "message": "Malformed JSON request or invalid field"
+                }
+              },
+              "missingIps": {
+                "summary": "Bulk body missing ips field",
+                "value": {
+                  "message": "IP addresses for bulk lookup are missing"
+                }
+              },
+              "emptyBulkIps": {
+                "summary": "Bulk ips array is empty",
+                "value": {
+                  "message": "'ips' must not be empty or null"
+                }
+              },
+              "tooManyBulkEntries": {
+                "summary": "Bulk body exceeds 50,000 entries",
+                "value": {
+                  "message": "No. of lookup queries cannot be more than 50000"
+                }
+              },
+              "invalidLang": {
+                "summary": "Unsupported lang parameter value",
+                "value": {
+                  "message": "This 'zz' lang is not valid. Please use 'en' as the default language"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized. Returned for one of the following reasons:\n\n- The `apiKey` URL parameter is missing.\n- An invalid (random or incorrect) API key is provided.\n- The account has been disabled or locked due to abuse or illegal activity.\n- The API request is made using an API key for a database subscription.\n- The subscription is in a 'paused' state.\n- The subscription trial has expired.\n- The account’s active-until date has passed and renewal or upgrade is required.\n- Any of the following `include` values are used with a Free/Developer plan API key:\n  `hostname`, `liveHostname`, `hostnameFallbackLive`, `security`,\n  `abuse`, `geo_accuracy`, `dma_code`, or `user_agent`.\n- The bulk IP geolocation endpoint is called using a Free subscription API key.\n- The bulk IP geolocation endpoint is called using Request Origin (CORS)\n  authentication. Bulk requests require an `apiKey` and cannot be authenticated\n  using Request Origin alone.\n- A domain name lookup is performed using a Free subscription API key.\n- A language other than English is specified in the `lang` parameter\n  while using a Free/Developer plan API key.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "missingApiKey": {
+                "summary": "Missing API key",
+                "value": {
+                  "message": "Please provide an API key (as 'apiKey=YOUR_API_KEY' URL parameter) to use IPGeolocation API. To get your free API Key, sign up at https://app.ipgeolocation.io/login"
+                }
+              },
+              "invalidApiKey": {
+                "summary": "Invalid API key",
+                "value": {
+                  "message": "Provided API key is not valid. Contact technical support for assistance at support@ipgeolocation.io"
+                }
+              },
+              "lockedAccount": {
+                "summary": "Account locked or disabled",
+                "value": {
+                  "message": "Your account has been locked to use IPGeolocation API. Contact technical support for assistance at support@ipgeolocation.io"
+                }
+              },
+              "databaseSubscriptionKey": {
+                "summary": "Database subscription API key used for REST API",
+                "value": {
+                  "message": "You cannot query IPGeolocation API on a database plan subscription. "
+                }
+              },
+              "pausedSubscription": {
+                "summary": "Subscription is paused",
+                "value": {
+                  "message": "Your subscription has been paused. Please resume your subscription to use IPGeolocation API."
+                }
+              },
+              "expiredSubscription": {
+                "summary": "Subscription expired or trial ended",
+                "value": {
+                  "message": "Your subscription has expired at DATE. Please subscribe to a paid plan to continue using IPGeolocation API without interruption or contact technical support for assistance at support@ipgeolocation.io"
+                }
+              },
+              "freePlanBulk": {
+                "summary": "Free plan used for bulk endpoint",
+                "value": {
+                  "message": "Bulk IP to geolocation lookup is not supported on your current subscription. This feature is available to all paid subscriptions only."
+                }
+              },
+              "requestOriginBulk": {
+                "summary": "Bulk endpoint called using Request Origin authentication",
+                "value": {
+                  "message": "Bulk queries are not allowed with request origins. Please use some API key to perform bulk queries."
+                }
+              },
+              "freePlanInclude": {
+                "summary": "Free plan used with restricted include parameter",
+                "value": {
+                  "message": "This feature is not supported on your subscription. This feature is available on Paid subscriptions only."
+                }
+              },
+              "freePlanDomain": {
+                "summary": "Free plan used with domain lookup",
+                "value": {
+                  "message": "IP to geolocation lookup for domain or service name is not supported on your current subscription. This feature is available to all paid subscriptions only."
+                }
+              },
+              "freePlanLang": {
+                "summary": "Free plan used with non-English lang value",
+                "value": {
+                  "message": "This 'de' lang is not supported for your current subscription. Please use 'en' as the default language or upgrade your subscription to use this feature."
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not found. Returned for one of the following reasons:\n\n- A syntactically valid IPv4 or IPv6 address does not exist in the IPGeolocation database.\n- An IPv4 address, IPv6 address, or domain name is passed as a path variable\n  instead of as a URL query parameter (e.g., using `/v3/ipgeo/8.8.8.8`\n  instead of `/v3/ipgeo?ip=8.8.8.8`).\n- A non-existent or incorrect API endpoint is called.\n\nInvalid or malformed IPv4, IPv6, or domain input returns HTTP 400 instead.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "ipNotInDatabase": {
+                "summary": "IPv4/IPv6 not found in database",
+                "value": {
+                  "message": "Provided IPv4 or IPv6 address does not exist in our database."
+                }
+              },
+              "ipAsPathVariable": {
+                "summary": "IP passed as path variable instead of query parameter",
+                "value": {
+                  "message": "No endpoint GET /v3/ipgeo/8.8.8.8."
+                }
+              },
+              "wrongEndpoint": {
+                "summary": "Incorrect or non-existent endpoint",
+                "value": {
+                  "message": "No endpoint GET /v3/ipgeo-invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "Method Not Allowed. Returned when an unsupported HTTP method is used\nto call an endpoint.\n\nOnly GET and POST methods are supported:\n\n- `GET` is allowed for the `ipgeo` endpoint.\n- `POST` is allowed for the `ipgeo-bulk` endpoint.\n\nAny other HTTP method, or using the correct method on the wrong endpoint,\nresults in HTTP 405.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "getNotAllowedForBulk": {
+                "summary": "GET used on bulk endpoint",
+                "value": {
+                  "message": "Request method 'GET' is not supported"
+                }
+              },
+              "postNotAllowedForSingle": {
+                "summary": "POST used on single lookup endpoint",
+                "value": {
+                  "message": "Request method 'POST' is not supported"
+                }
+              },
+              "unsupportedMethod": {
+                "summary": "Unsupported HTTP method",
+                "value": {
+                  "message": "Request method is not supported"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PayloadTooLarge": {
+        "description": "Payload too large. Returned by the edge proxy (nginx) when raw POST body size\nexceeds configured limits before the request reaches the application.\n\nThis status is based on payload byte size, not on the number of IP entries. It\ncan occur even when `ips` contains only one very large value.\n\nIf both conditions apply (oversized body and `ips` count > 50,000), HTTP 413 may\nbe returned first because edge validation runs before application-level checks.\n",
+        "content": {
+          "text/html": {
+            "schema": {
+              "type": "string"
+            },
+            "example": "<html>\n  <head>\n    <title>413 Request Entity Too Large</title>\n  </head>\n  <body>\n    <center><h1>413 Request Entity Too Large</h1></center>\n    <hr><center>nginx/1.24.0 (Ubuntu)</center>\n  </body>\n</html>\n"
+          }
+        }
+      },
+      "UnsupportedMediaType": {
+        "description": "Unsupported media type. The `Content-Type` header is not set to `application/json`.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Content-Type 'application/x-www-form-urlencoded' is not supported"
+            }
+          }
+        }
+      },
+      "Locked": {
+        "description": "Locked. The provided IP address belongs to a bogon IP range or a private\nnetwork and cannot be looked up.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "'10.0.0.1' is a bogon IP address."
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Too Many Requests. Returned for one of the following reasons:\n\n- The API usage limit has been reached for a Free subscription.\n- The API usage limit has been reached for a Paid subscription with\n  status 'past due', 'deleted', or 'trial expired'.\n- The surcharge API usage limit has been reached for the subscribed plan.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "usageLimitReached": {
+                "summary": "API usage limit reached",
+                "value": {
+                  "message": "You have exceeded the limit of PLAN_USAGE_LIMIT requests per PLAN_INERVAL for your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+                }
+              },
+              "surchargeLimitReached": {
+                "summary": "Surcharge usage limit reached",
+                "value": {
+                  "message": "You have reached the surcharge amount limit of PLAN_USAGE_LIMIT_AND_SURCHARGE_LIMIT on your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+                }
+              }
+            }
+          }
+        }
+      },
+      "ClientClosedRequest": {
+        "description": "The client closed the connection before the server finished processing the\nrequest. This usually happens when the client sets a very short request or\nconnection timeout. Increase the timeout on the client side.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Client closed the request before the server could respond."
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error. The server encountered an unexpected condition\nthat prevented it from fulfilling the request. If the issue persists,\ncontact support@ipgeolocation.io.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Something went wrong on the server side."
+            }
+          }
+        }
+      },
+      "BadGateway": {
+        "description": "Bad Gateway. The API server received an invalid response from an upstream\nserver while processing the request. This is usually temporary.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Upstream service error. Please try again later."
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "Service Unavailable. The API is temporarily unavailable due to maintenance\nor overload. Please try again later.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Service temporarily unavailable. Please try again later."
+            }
+          }
+        }
+      },
+      "GatewayTimeout": {
+        "description": "Gateway Timeout. The API server did not receive a timely response from\nan upstream server.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "The server timed out while processing the request."
+            }
+          }
+        }
+      },
+      "HttpVersionNotSupported": {
+        "description": "HTTP Version Not Supported. The server does not support the HTTP protocol\nversion used in the request.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "HTTP version not supported."
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Returned for any non-200 response. Contains only a human-readable `message`.\nMessage text can vary by status and condition; examples in this spec are\nrepresentative, not exhaustive, and should not be treated as stable machine\ncodes.\n",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable explanation of what went wrong. Use HTTP status for control flow.",
+            "example": "Provided name, service or IP address '999.999.999.999' is not valid."
+          }
+        }
+      },
+      "BulkGeolocationRequest": {
+        "type": "object",
+        "description": "Request body for the bulk geolocation lookup. Contains a single `ips` field\nwith an array of IP addresses or domain names to look up.\n",
+        "required": [
+          "ips"
+        ],
+        "properties": {
+          "ips": {
+            "type": "array",
+            "description": "Array of IPv4 addresses, IPv6 addresses, or domain names to look up.\nMust not be empty. Maximum 50,000 entries per request. Each entry is\nresolved independently, so you can mix IPv4, IPv6, and domains freely.\n",
+            "minItems": 1,
+            "maxItems": 50000,
+            "items": {
+              "type": "string"
+            },
+            "examples": [
+              "8.8.8.8",
+              "91.128.103.196",
+              "2607:fb91:16c6:8860:e531:2d1d:4944:6c7c",
+              "ipgeolocation.io"
+            ]
+          }
+        }
+      },
+      "BulkGeolocationResponseItem": {
+        "description": "A single element in the bulk lookup response array. Each element is either a\nfull geolocation object or an error object containing only `message`.\n",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/BulkGeolocationSuccessItem"
+          },
+          {
+            "$ref": "#/components/schemas/BulkGeolocationErrorItem"
+          }
+        ]
+      },
+      "BulkGeolocationSuccessItem": {
+        "type": "object",
+        "required": [
+          "ip"
+        ],
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "The resolved IP address for this bulk entry. For direct IPv4/IPv6 input,\nthis matches the submitted value (normalized). For domain input, this is\nthe resolved A/AAAA IP.\n",
+            "example": "8.8.8.8"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Present only when the submitted `ips` entry was a domain name.\nContains the original domain input exactly as submitted.\n",
+            "example": "ipgeolocation.io"
+          },
+          "hostname": {
+            "type": "string",
+            "description": "Reverse-DNS hostname for the IP. Only present when one of the hostname\n`include` options is used.\n",
+            "example": "dns.google"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "country_metadata": {
+            "$ref": "#/components/schemas/CountryMetadata"
+          },
+          "network": {
+            "$ref": "#/components/schemas/Network"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "asn": {
+            "$ref": "#/components/schemas/Asn"
+          },
+          "company": {
+            "$ref": "#/components/schemas/Company"
+          },
+          "security": {
+            "$ref": "#/components/schemas/Security"
+          },
+          "abuse": {
+            "$ref": "#/components/schemas/Abuse"
+          },
+          "time_zone": {
+            "$ref": "#/components/schemas/TimeZone"
+          },
+          "user_agent": {
+            "$ref": "#/components/schemas/UserAgent"
+          }
+        }
+      },
+      "BulkGeolocationErrorItem": {
+        "type": "object",
+        "description": "Error object returned for an invalid entry in the bulk lookup request. Contains only\na `message` field. Note: unlike success entries, error entries do NOT include the\noriginal `ip` field, so the only way to correlate errors to inputs is by array\nindex. The response array preserves the same order as the request `ips` array.\n",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable error for the specific bulk entry.",
+            "example": "Provided name, service or IP address 'invalid-ip' is not valid."
+          }
+        }
+      },
+      "IpGeolocationResponse": {
+        "type": "object",
+        "xml": {
+          "name": "LinkedHashMap"
+        },
+        "description": "The top-level response object for a single IP lookup. Where fields and nested\nobjects appear depends on your plan (free vs. paid) and the `include`, `fields`,\nand `excludes` parameters. The `ip` field is always present.\n",
+        "required": [
+          "ip"
+        ],
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "The looked-up IP address. If a domain was queried, this is the resolved IP.\nIf no `ip` parameter was sent, this is the caller's public IP.\n",
+            "example": "91.128.103.196"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Present only when the `ip` query parameter contained a domain name. Mirrors\nthe domain value from the request.\n",
+            "example": "ipgeolocation.io"
+          },
+          "hostname": {
+            "type": "string",
+            "description": "Reverse-DNS hostname for the IP. Returned only when one of the hostname\n`include` options is used (`hostname`, `liveHostname`, or\n`hostnameFallbackLive`). If no hostname can be resolved, this field contains\nthe IP address itself.\n",
+            "example": "host197.lightwavenetworks.com"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "country_metadata": {
+            "$ref": "#/components/schemas/CountryMetadata"
+          },
+          "network": {
+            "$ref": "#/components/schemas/Network"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "asn": {
+            "$ref": "#/components/schemas/Asn"
+          },
+          "company": {
+            "$ref": "#/components/schemas/Company"
+          },
+          "security": {
+            "$ref": "#/components/schemas/Security"
+          },
+          "abuse": {
+            "$ref": "#/components/schemas/Abuse"
+          },
+          "time_zone": {
+            "$ref": "#/components/schemas/TimeZone"
+          },
+          "user_agent": {
+            "$ref": "#/components/schemas/UserAgent"
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "description": "Geographic location data for the IP address.",
+        "properties": {
+          "continent_code": {
+            "type": "string",
+            "description": "Two-letter continent code (e.g. `EU`, `NA`, `AS`).",
+            "example": "EU"
+          },
+          "continent_name": {
+            "type": "string",
+            "description": "Full continent name.",
+            "example": "Europe"
+          },
+          "country_code2": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code.",
+            "example": "SE"
+          },
+          "country_code3": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 country code.",
+            "example": "SWE"
+          },
+          "country_name": {
+            "type": "string",
+            "description": "Common country name.",
+            "example": "Sweden"
+          },
+          "country_name_official": {
+            "type": "string",
+            "description": "Official country name as recognized by the UN.",
+            "example": "Kingdom of Sweden"
+          },
+          "country_capital": {
+            "type": "string",
+            "description": "Capital city of the country.",
+            "example": "Stockholm"
+          },
+          "state_prov": {
+            "type": "string",
+            "description": "State, province, or top-level administrative region.",
+            "example": "Stockholms län"
+          },
+          "state_code": {
+            "type": "string",
+            "description": "ISO 3166-2 state or province code.",
+            "example": "SE-AB"
+          },
+          "district": {
+            "type": "string",
+            "description": "District, county, or second-level administrative division.",
+            "example": "Stockholm"
+          },
+          "city": {
+            "type": "string",
+            "description": "City name.",
+            "example": "Stockholm"
+          },
+          "locality": {
+            "type": "string",
+            "description": "Locality or neighborhood. May be the same as `city`. Only present when\n`include=geo_accuracy` or `include=*` is used.\n",
+            "example": "Stockholm"
+          },
+          "accuracy_radius": {
+            "type": "string",
+            "description": "Estimated accuracy radius in kilometers around `latitude` and `longitude`.\nOnly present when `include=geo_accuracy` or `include=*` is used.\n",
+            "example": "4.395"
+          },
+          "confidence": {
+            "type": "string",
+            "description": "Confidence level for the accuracy radius. Possible values: `high`, `medium`,\n`low`. Only present when `include=geo_accuracy` or `include=*` is used.\n",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "example": "high"
+          },
+          "dma_code": {
+            "type": "string",
+            "description": "Nielsen Designated Market Area code. Only populated for US-based IPs.\nPresent when `include=dma_code` or `include=*` is used. Empty string for\nnon-US IPs.\n",
+            "example": "504"
+          },
+          "zipcode": {
+            "type": "string",
+            "description": "Postal or ZIP code.",
+            "example": "164 40"
+          },
+          "latitude": {
+            "type": "string",
+            "description": "Latitude in decimal degrees (WGS 84).",
+            "example": "59.40510"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Longitude in decimal degrees (WGS 84).",
+            "example": "17.95510"
+          },
+          "is_eu": {
+            "type": "boolean",
+            "description": "Whether the country is a member of the European Union.",
+            "example": true
+          },
+          "country_flag": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to a 64x64 PNG of the country flag.",
+            "example": "https://ipgeolocation.io/static/flags/se_64.png"
+          },
+          "geoname_id": {
+            "type": "string",
+            "description": "GeoNames identifier for the location.",
+            "example": "9972319"
+          },
+          "country_emoji": {
+            "type": "string",
+            "description": "Unicode flag emoji for the country.",
+            "example": "🇸🇪"
+          }
+        }
+      },
+      "CountryMetadata": {
+        "type": "object",
+        "description": "Telephone, TLD, and language information for the country.",
+        "properties": {
+          "calling_code": {
+            "type": "string",
+            "description": "International dialing code with leading `+`.",
+            "example": "+46"
+          },
+          "tld": {
+            "type": "string",
+            "description": "Country-code top-level domain.",
+            "example": ".se"
+          },
+          "languages": {
+            "type": "array",
+            "description": "IETF language tags spoken in the country, ordered by prevalence.\n",
+            "items": {
+              "type": "string"
+            },
+            "examples": [
+              "sv-SE",
+              "se",
+              "sma",
+              "fi-SE"
+            ]
+          }
+        }
+      },
+      "Network": {
+        "type": "object",
+        "description": "Network routing information for the IP. Included by default on paid plans.\nNot available on the free plan.\n",
+        "properties": {
+          "connection_type": {
+            "type": "string",
+            "description": "Type of network connection for this IP. Known values: `DSL`, `Cable`,\n`Fiber`, `Mobile`, `Wireless`, `Dial-Up/ISDN`, `Satellite`. Empty string\nwhen the type cannot be determined.\n",
+            "example": ""
+          },
+          "route": {
+            "type": "string",
+            "description": "BGP route prefix in CIDR notation.",
+            "example": "91.128.0.0/14"
+          },
+          "is_anycast": {
+            "type": "boolean",
+            "description": "Whether the IP is part of an anycast network.",
+            "example": false
+          }
+        }
+      },
+      "Currency": {
+        "type": "object",
+        "description": "Local currency of the country where the IP is located.",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "ISO 4217 currency code.",
+            "example": "SEK"
+          },
+          "name": {
+            "type": "string",
+            "description": "Currency name.",
+            "example": "Swedish Krona"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Currency symbol.",
+            "example": "kr"
+          }
+        }
+      },
+      "Asn": {
+        "type": "object",
+        "description": "Autonomous System Number details for the IP. Free plans receive `as_number`,\n`organization`, and `country` only. Paid plans also receive `type`, `domain`,\n`date_allocated`, and `rir`.\n",
+        "properties": {
+          "as_number": {
+            "type": "string",
+            "description": "AS number prefixed with `AS` (e.g. `AS1257`).",
+            "example": "AS1257"
+          },
+          "organization": {
+            "type": "string",
+            "description": "Name of the organization that owns the ASN.",
+            "example": "Tele2 Sverige AB"
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country where the ASN is registered.",
+            "example": "SE"
+          },
+          "type": {
+            "type": "string",
+            "description": "Organization type. Values: `ISP`, `HOSTING`, `BUSINESS`, `EDUCATION`,\n`GOVERNMENT`. Paid plans only.\n",
+            "example": "ISP"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Primary domain of the ASN holder. Paid plans only.",
+            "example": "tele2.com"
+          },
+          "date_allocated": {
+            "type": "string",
+            "description": "Date when the ASN was allocated, in `YYYY-MM-DD` format (e.g.\n`2024-12-13`). Paid plans only.\n",
+            "example": "2024-12-13"
+          },
+          "rir": {
+            "type": "string",
+            "description": "Regional Internet Registry (RIR) that allocated the ASN. Possible values include `RIPE`, `ARIN`, `APNIC`, `LACNIC`, `AFRINIC`, etc.\n",
+            "example": "RIPE"
+          }
+        }
+      },
+      "Company": {
+        "type": "object",
+        "description": "Company or organization operating the IP range. Included by default on paid\nplans. Not available on the free plan.\n",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Company or organization name.",
+            "example": "Tele2 Sverige AB"
+          },
+          "type": {
+            "type": "string",
+            "description": "Company category. Documented values: `ISP`, `HOSTING`, `BUSINESS`,\n`EDUCATION`, `GOVERNMENT`. All uppercase, consistent with `asn.type`.\nMay be an empty string when the company type cannot be determined.\n",
+            "example": "ISP"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Primary domain of the company.",
+            "example": "tele2.com"
+          }
+        }
+      },
+      "Security": {
+        "type": "object",
+        "description": "Threat intelligence and anonymization signals for the IP. Only returned when\n`include=security` or `include=*` is used. Costs 2 additional credits.\n",
+        "properties": {
+          "threat_score": {
+            "type": "number",
+            "description": "Overall threat score from 0 (clean) to 100 (high risk). Aggregated from\nall the individual signals below.\n",
+            "minimum": 0,
+            "maximum": 100,
+            "example": 80
+          },
+          "is_tor": {
+            "type": "boolean",
+            "description": "Whether the IP is a known Tor exit node.",
+            "example": false
+          },
+          "is_proxy": {
+            "type": "boolean",
+            "description": "Whether the IP belongs to a known proxy service.",
+            "example": true
+          },
+          "proxy_provider_names": {
+            "type": "array",
+            "description": "Names of proxy providers associated with this IP, if any.",
+            "items": {
+              "type": "string"
+            },
+            "examples": [
+              "Zyte Proxy"
+            ]
+          },
+          "proxy_confidence_score": {
+            "type": "number",
+            "description": "Confidence that this IP is a proxy, from 0 to 100. Only meaningful when\n`is_proxy` is `true`.\n",
+            "minimum": 0,
+            "maximum": 100,
+            "example": 90
+          },
+          "proxy_last_seen": {
+            "type": "string",
+            "description": "Date when this IP was last observed acting as a proxy, in `YYYY-MM-DD`\nformat. Empty string if never seen.\n",
+            "example": "2025-12-12"
+          },
+          "is_residential_proxy": {
+            "type": "boolean",
+            "description": "Whether the IP is a known residential proxy.",
+            "example": true
+          },
+          "is_vpn": {
+            "type": "boolean",
+            "description": "Whether the IP belongs to a known VPN provider.",
+            "example": true
+          },
+          "vpn_provider_names": {
+            "type": "array",
+            "description": "Names of VPN providers associated with this IP, if any.",
+            "items": {
+              "type": "string"
+            },
+            "examples": [
+              "Nord VPN"
+            ]
+          },
+          "vpn_confidence_score": {
+            "type": "number",
+            "description": "Confidence that this IP is a VPN endpoint, from 0 to 100. Only meaningful\nwhen `is_vpn` is `true`.\n",
+            "minimum": 0,
+            "maximum": 100,
+            "example": 90
+          },
+          "vpn_last_seen": {
+            "type": "string",
+            "description": "Date when this IP was last observed as a VPN endpoint, in `YYYY-MM-DD`\nformat. Empty string if never seen.\n",
+            "example": "2026-01-19"
+          },
+          "is_relay": {
+            "type": "boolean",
+            "description": "Whether the IP is part of a known relay network (e.g. iCloud Private Relay).",
+            "example": false
+          },
+          "relay_provider_name": {
+            "type": "string",
+            "description": "Name of the relay provider, if any. Empty string if not a relay.",
+            "example": ""
+          },
+          "is_anonymous": {
+            "type": "boolean",
+            "description": "Whether the IP is associated with any anonymization method (VPN, proxy,\nTor, or relay).\n",
+            "example": true
+          },
+          "is_known_attacker": {
+            "type": "boolean",
+            "description": "Whether the IP has been flagged in known attacker or threat feeds.",
+            "example": true
+          },
+          "is_bot": {
+            "type": "boolean",
+            "description": "Whether the IP is associated with known bot activity.",
+            "example": false
+          },
+          "is_spam": {
+            "type": "boolean",
+            "description": "Whether the IP is listed in spam databases.",
+            "example": false
+          },
+          "is_cloud_provider": {
+            "type": "boolean",
+            "description": "Whether the IP belongs to a cloud hosting or data center provider.",
+            "example": true
+          },
+          "cloud_provider_name": {
+            "type": "string",
+            "description": "Name of the cloud provider, if applicable. Empty string otherwise.",
+            "example": "Packethub S.A."
+          }
+        }
+      },
+      "Abuse": {
+        "type": "object",
+        "description": "Abuse contact information for the network that owns this IP. Only returned when\n`include=abuse` or `include=*` is used. Costs 1 additional credit.\n",
+        "properties": {
+          "route": {
+            "type": "string",
+            "description": "BGP route prefix this abuse contact is responsible for, in CIDR notation.",
+            "example": "91.128.0.0/14"
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country of the abuse contact. May be empty.",
+            "example": "SE"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the abuse contact person or team.",
+            "example": "Swipnet Staff"
+          },
+          "organization": {
+            "type": "string",
+            "description": "Organization name of the abuse contact. May be empty.",
+            "example": ""
+          },
+          "kind": {
+            "type": "string",
+            "description": "Contact type from registry data. Values include `group`, `individual`.\n",
+            "example": "group"
+          },
+          "address": {
+            "type": "string",
+            "description": "Postal address of the abuse contact. Returned as a plain comma-separated string.",
+            "example": "Tele2 AB/Swedish IP Network, IP Registry, Torshamnsgatan 17 164 40 Kista SWEDEN"
+          },
+          "emails": {
+            "type": "array",
+            "description": "Email addresses for reporting abuse.",
+            "items": {
+              "type": "string",
+              "format": "email"
+            },
+            "examples": [
+              "abuse@tele2.com"
+            ]
+          },
+          "phone_numbers": {
+            "type": "array",
+            "description": "Phone numbers for the abuse contact.",
+            "items": {
+              "type": "string"
+            },
+            "examples": [
+              "+46 8 5626 42 10"
+            ]
+          }
+        }
+      },
+      "TimeZone": {
+        "type": "object",
+        "description": "Timezone information for the geographic location of the IP.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "IANA timezone identifier.",
+            "example": "Europe/Stockholm"
+          },
+          "offset": {
+            "type": "number",
+            "format": "float",
+            "description": "UTC offset in hours (without DST).",
+            "example": 1
+          },
+          "offset_with_dst": {
+            "type": "number",
+            "format": "float",
+            "description": "Current UTC offset in hours, accounting for DST if active. Same as\n`offset` when DST is not in effect.\n",
+            "example": 1
+          },
+          "current_time": {
+            "type": "string",
+            "description": "Current local time at the IP's location. Observed formats include\n`YYYY-MM-DDTHH:mm:ss±ZZZZ` and `YYYY-MM-DD HH:mm:ss.SSS±ZZZZ`.\n",
+            "example": "2026-02-13 09:19:24.410+0100"
+          },
+          "current_time_unix": {
+            "type": "number",
+            "format": "float",
+            "description": "Current time as a Unix timestamp with millisecond precision.",
+            "example": 1770970764.41
+          },
+          "current_tz_abbreviation": {
+            "type": "string",
+            "description": "Abbreviation of the timezone currently in effect (may be standard or DST).\n",
+            "example": "CET"
+          },
+          "current_tz_full_name": {
+            "type": "string",
+            "description": "Full name of the timezone currently in effect.",
+            "example": "Central European Standard Time"
+          },
+          "standard_tz_abbreviation": {
+            "type": "string",
+            "description": "Abbreviation of the standard (non-DST) timezone.",
+            "example": "CET"
+          },
+          "standard_tz_full_name": {
+            "type": "string",
+            "description": "Full name of the standard (non-DST) timezone.",
+            "example": "Central European Standard Time"
+          },
+          "is_dst": {
+            "type": "boolean",
+            "description": "Whether Daylight Saving Time is currently active.",
+            "example": false
+          },
+          "dst_savings": {
+            "type": "number",
+            "format": "float",
+            "description": "DST offset in hours applied on top of the standard offset when DST is\nactive. `0` means no DST shift (either DST is not active or does not exist).\n",
+            "example": 0
+          },
+          "dst_exists": {
+            "type": "boolean",
+            "description": "Whether this timezone observes Daylight Saving Time at all.",
+            "example": true
+          },
+          "dst_tz_abbreviation": {
+            "type": "string",
+            "description": "Abbreviation of the DST timezone. Empty string if DST is not observed.\n",
+            "example": "CEST"
+          },
+          "dst_tz_full_name": {
+            "type": "string",
+            "description": "Full name of the DST timezone. Empty string if DST is not observed.\n",
+            "example": "Central European Summer Time"
+          },
+          "dst_start": {
+            "description": "Start DST transition details. When `dst_exists` is `false`, this is\nreturned as an empty object with no properties.\n",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DstTransition"
+              },
+              {
+                "type": "object",
+                "maxProperties": 0
+              }
+            ]
+          },
+          "dst_end": {
+            "description": "End DST transition details. When `dst_exists` is `false`, this is\nreturned as an empty object with no properties.\n",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DstTransition"
+              },
+              {
+                "type": "object",
+                "maxProperties": 0
+              }
+            ]
+          }
+        }
+      },
+      "DstTransition": {
+        "type": "object",
+        "description": "Details about a DST transition (start or end). Only present when `dst_exists`\nis `true`. When `dst_exists` is `false`, `dst_start` and `dst_end` are\nreturned as empty objects with no properties.\n",
+        "properties": {
+          "utc_time": {
+            "type": "string",
+            "description": "UTC time of the transition, formatted as `YYYY-MM-DD TIME HH:mm`.",
+            "example": "2026-03-29 TIME 01:00"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Clock shift direction and amount (e.g. `+1.00H` for spring forward,\n`-1.00H` for fall back).\n",
+            "example": "+1.00H"
+          },
+          "gap": {
+            "type": "boolean",
+            "description": "Whether this transition creates a gap in local time (clocks jump forward).\n`true` for DST start, `false` for DST end.\n",
+            "example": true
+          },
+          "date_time_after": {
+            "type": "string",
+            "description": "Local time immediately after the transition.",
+            "example": "2026-03-29 TIME 03:00"
+          },
+          "date_time_before": {
+            "type": "string",
+            "description": "Local time immediately before the transition.",
+            "example": "2026-03-29 TIME 02:00"
+          },
+          "overlap": {
+            "type": "boolean",
+            "description": "Whether this transition creates an overlap in local time (clocks fall back,\nso the same local time occurs twice). `true` for DST end, `false` for DST\nstart.\n",
+            "example": false
+          }
+        }
+      },
+      "UserAgent": {
+        "type": "object",
+        "description": "Parsed User-Agent information. Only returned when `include=user_agent` or\n`include=*` is used. The API parses the `User-Agent` header from the request.\nFor server-side usage, forward your visitor's User-Agent string in the header.\n",
+        "properties": {
+          "user_agent_string": {
+            "type": "string",
+            "description": "The raw User-Agent string that was parsed.",
+            "example": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0"
+          },
+          "name": {
+            "type": "string",
+            "description": "Detected browser or client name.",
+            "example": "Edge"
+          },
+          "type": {
+            "type": "string",
+            "description": "Client type classification. Common values: `Browser`, `Robot`,\n`Mobile Browser`, `Library`.\n",
+            "example": "Browser"
+          },
+          "version": {
+            "type": "string",
+            "description": "Full version string of the detected client.",
+            "example": "143"
+          },
+          "version_major": {
+            "type": "string",
+            "description": "Major version number of the detected client.",
+            "example": "143"
+          },
+          "device": {
+            "$ref": "#/components/schemas/UserAgentDevice"
+          },
+          "engine": {
+            "$ref": "#/components/schemas/UserAgentEngine"
+          },
+          "operating_system": {
+            "$ref": "#/components/schemas/UserAgentOperatingSystem"
+          }
+        }
+      },
+      "UserAgentDevice": {
+        "type": "object",
+        "description": "Device information extracted from the User-Agent string.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Device name or model.",
+            "example": "Linux Desktop"
+          },
+          "type": {
+            "type": "string",
+            "description": "Device type. Common values: `Desktop`, `Smartphone`, `Tablet`, `Robot`,\n`Smart TV`.\n",
+            "example": "Desktop"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Device manufacturer or brand. `Unknown` if not detectable.",
+            "example": "Unknown"
+          },
+          "cpu": {
+            "type": "string",
+            "description": "CPU architecture if detectable (e.g. `Intel x86_64`, `ARM`). `Unknown` otherwise.",
+            "example": "Intel x86_64"
+          }
+        }
+      },
+      "UserAgentEngine": {
+        "type": "object",
+        "description": "Rendering engine information extracted from the User-Agent string.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Engine name (e.g. `Blink`, `Gecko`, `WebKit`).",
+            "example": "Blink"
+          },
+          "type": {
+            "type": "string",
+            "description": "Engine classification. Typically matches the client type.",
+            "example": "Browser"
+          },
+          "version": {
+            "type": "string",
+            "description": "Full version of the rendering engine.",
+            "example": "143"
+          },
+          "version_major": {
+            "type": "string",
+            "description": "Major version of the rendering engine.",
+            "example": "143"
+          }
+        }
+      },
+      "UserAgentOperatingSystem": {
+        "type": "object",
+        "description": "Operating system information extracted from the User-Agent string.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "OS name (e.g. `Windows`, `macOS`, `Linux`, `Android`, `iOS`, `Cloud`).",
+            "example": "Linux"
+          },
+          "type": {
+            "type": "string",
+            "description": "OS type. Common values: `Desktop`, `Mobile`, `Tablet`, `Cloud`.\n",
+            "example": "Desktop"
+          },
+          "version": {
+            "type": "string",
+            "description": "OS version. `??` when the version cannot be determined.",
+            "example": "??"
+          },
+          "version_major": {
+            "type": "string",
+            "description": "OS major version. `??` when the version cannot be determined.",
+            "example": "??"
+          },
+          "build": {
+            "type": "string",
+            "description": "OS build number. `??` when the build cannot be determined.",
+            "example": "??"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "apiKey",
+        "description": "API key passed as the `apiKey` query parameter. Get yours from the\n[IPGeolocation dashboard](https://app.ipgeolocation.io/). For client-side\nusage, consider using Request Origin (CORS) authentication instead to\navoid exposing your key.\n"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "IP Geolocation",
+      "description": "IP geolocation API endpoints for looking up geographic location, network routing,\nASN ownership, company attribution, timezone, currency, security threat intelligence,\nabuse contact, and User-Agent data. Accepts IPv4 addresses, IPv6 addresses, and\ndomain names. The single lookup endpoint (`GET /v3/ipgeo`) resolves one IP or domain\nper request. The bulk lookup endpoint (`POST /v3/ipgeo-bulk`) accepts up to 50,000\nentries per request and requires a paid plan.\n",
+      "externalDocs": {
+        "description": "IPGeolocation API documentation and integration guides",
+        "url": "https://ipgeolocation.io/documentation/ip-location-api.html"
+      }
+    }
+  ]
+}

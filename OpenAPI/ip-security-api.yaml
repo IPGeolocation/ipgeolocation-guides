@@ -1,0 +1,1042 @@
+openapi: 3.0.7
+info:
+  title: 'IPGeolocation.io: IP Security API'
+  version: "3.0"
+  description: |
+    Detect VPNs, proxies, residential proxies, Tor exit nodes, relays, bot activity,
+    spam activity, and other risk signals for any IPv4 or IPv6 address.
+
+    The API returns a threat score along with detailed flags indicating whether
+    the IP address belongs to anonymization services, cloud providers, or known
+    attacker infrastructure. When available, provider names, confidence scores,
+    and last-seen timestamps are also returned.
+
+    Two endpoints are available:
+
+    - **Single lookup** (`GET /v3/security`) returns security intelligence for one IP.
+    - **Bulk lookup** (`POST /v3/security-bulk`) accepts up to 50,000 IPs in a
+      single request.
+
+    Both endpoints support response filtering using the `fields`, `excludes` and `output`
+    parameters to reduce payload size and return only the data you need.
+
+     ## Authentication
+
+    Two authentication methods are supported:
+
+    ### API Key
+
+    Pass your API key as the `apiKey` query parameter on every request. You can find your
+    key in the [IPGeolocation dashboard](https://app.ipgeolocation.io/). Store it in
+    server-side environment variables. Avoid exposing it in client-side JavaScript.
+
+    ### Request Origin (CORS)
+
+    Available on paid plans only. Whitelist your domain in the dashboard under the
+    "API Keys" section. Once configured, requests from that domain (and all its subdomains)
+    are accepted without passing `apiKey`. Enter your root domain (e.g. `example.com`),
+    not the full URL.
+
+    Each plan has a limit on the number of extra API keys and request origins:
+
+    | Plan | Extra API Keys + Request Origins |
+    |---|---|
+    | Starter (150K requests) | 1 |
+    | Core (250K requests) | 1 |
+    | Plus (500K requests) | 2 |
+    | Pro (1M requests) | 2 |
+    | Business (2M requests) | 3 |
+    | Premium (5M requests) | 3 |
+
+    Additional keys or origins can be added for $2.50 per month each.
+
+    ## Response Formats
+
+    The API supports JSON (default) and XML output.
+
+    - Set the `output` query parameter to `json` or `xml`.
+    - Alternatively, set the `Accept` header to `application/json`, `application/xml`,
+      or `text/xml`.
+
+    If neither is specified, the response is returned as JSON. XML responses use a
+    `LinkedHashMap` root element.
+
+    ## Credit Usage
+
+    Credits are charged only for successful **HTTP 200** responses. The exact number of
+    credits consumed by a request is returned in the `X-Credits-Charged` response header.
+
+    A **single IP security lookup** (`GET /v3/security`) consumes **2 credits** per request.
+    For **bulk lookups** (`POST /v3/security-bulk`), **2 credits are charged for each valid IP**
+    in the request.
+
+    For bulk requests, the total credits charged equal the number of valid IPs multiplied
+    by the per-IP credit cost. Private, bogon, and malformed IP addresses are not counted
+    as valid and therefore do not consume credits.
+
+    ## Field Filtering
+
+    Use `fields` to return only specific fields, or `excludes` to remove
+    fields you do not need. Both parameters support dot-notation for
+    nested fields such as `security.is_vpn` or `security.threat_score`.
+
+    The `ip` field is always returned and cannot be excluded.
+
+    ## Parameter Name Casing
+
+    Query parameter names are case-sensitive. Use exact names such as
+    `apiKey`, `ip`, `fields`, `excludes`, and `output`.
+
+    ## Rate Limits
+
+    The IP Security API is available **only on paid plans**.
+
+    Paid subscriptions do not have fixed daily, hourly, or monthly rate limits.
+    If the monthly quota is exceeded, requests continue and a surcharge may be
+    applied according to the subscribed plan.
+
+    Free plans cannot access the IP Security API. Requests made with a free plan
+    API key return HTTP 401 Unauthorized.
+
+  contact:
+    name: IPGeolocation Support
+    url: https://ipgeolocation.io
+    email: support@ipgeolocation.io
+  termsOfService: https://ipgeolocation.io/tos.html
+  license:
+    name: Proprietary
+    url: https://ipgeolocation.io/tos.html
+
+externalDocs:
+  description: IPGeolocation IP Security API documentation
+  url: https://ipgeolocation.io/documentation/ip-security-api.html
+
+servers:
+  - url: https://api.ipgeolocation.io
+    description: Production
+security:
+  - ApiKeyAuth: []
+paths:
+  /v3/security:
+    get:
+      operationId: lookupIpSecurity
+      summary: Single IP security lookup
+      description: |
+        Returns threat intelligence and anonymization signals for a single
+        IPv4 or IPv6 address.
+
+        If the `ip` parameter is omitted, the API automatically detects the
+        caller's public IP address and returns its security risk signals.
+
+        The response includes a threat score and multiple indicators such
+        as VPN usage, proxy usage, Tor exit node detection, relay networks,
+        bot activity, spam activity, and cloud hosting infrastructure.
+
+        When available, provider names, confidence scores, and last-seen
+        timestamps are included.
+
+        Use the `fields` and `excludes` parameters to control which parts
+        of the response are returned.
+      tags:
+        - IP Security
+      parameters:
+        - $ref: "#/components/parameters/Ip"
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Excludes"
+        - $ref: "#/components/parameters/Output"
+      responses:
+        "200":
+          description: Security intelligence for the requested IP.
+          headers:
+            X-Credits-Charged:
+              description: Number of API credits consumed by this request.
+              schema:
+                type: number
+                example: 1
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IpSecurityResponse"
+              example:
+                security:
+                  threat_score: 80
+                  is_tor: false
+                  is_proxy: true
+                  proxy_provider_names: [
+                    "Zyte Proxy"
+                  ]
+                  proxy_confidence_score: 80
+                  proxy_last_seen: "2025-12-12"
+                  is_residential_proxy: true
+                  is_vpn: true
+                  vpn_provider_names: [
+                    "Nord VPN"
+                  ]
+                  vpn_confidence_score: 80
+                  vpn_last_seen: "2026-01-19"
+                  is_relay: false
+                  relay_provider_name: ""
+                  is_anonymous: true
+                  is_known_attacker: true
+                  is_bot: false
+                  is_spam: false
+                  is_cloud_provider: true
+                  cloud_provider_name: "Packethub S.A."
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/IpSecurityResponse"
+              example:  |
+                <LinkedHashMap>
+                  <ip>2.56.188.34</ip>
+                  <security>
+                      <threat_score>80</threat_score>
+                      <is_tor>false</is_tor>
+                      <is_proxy>true</is_proxy>
+                      <proxy_provider_names>Zyte Proxy</proxy_provider_names>
+                      <proxy_confidence_score>80</proxy_confidence_score>
+                      <proxy_last_seen>2025-12-12</proxy_last_seen>
+                      <is_residential_proxy>true</is_residential_proxy>
+                      <is_vpn>true</is_vpn>
+                      <vpn_provider_names>Nord VPN</vpn_provider_names>
+                      <vpn_confidence_score>80</vpn_confidence_score>
+                      <vpn_last_seen>2026-01-19</vpn_last_seen>
+                      <is_relay>false</is_relay>
+                      <relay_provider_name></relay_provider_name>
+                      <is_anonymous>true</is_anonymous>
+                      <is_known_attacker>true</is_known_attacker>
+                      <is_bot>false</is_bot>
+                      <is_spam>false</is_spam>
+                      <is_cloud_provider>true</is_cloud_provider>
+                      <cloud_provider_name>Packethub S.A.</cloud_provider_name>
+                  </security>
+                </LinkedHashMap>
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "423":
+          $ref: "#/components/responses/Locked"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "499":
+          $ref: "#/components/responses/ClientClosedRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "502":
+          $ref: "#/components/responses/BadGateway"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
+        "505":
+          $ref: "#/components/responses/HttpVersionNotSupported"
+
+  /v3/security-bulk:
+    post:
+      operationId: bulkLookupIpSecurity
+      summary: Bulk IP security lookup
+      description: |
+        Returns security intelligence for up to **50,000 IPv4 or IPv6
+        addresses** in a single request.
+
+        The request body must contain an `ips` array.
+
+        Each IP is processed independently. Invalid, bogon, or private
+        IP addresses return an object containing only a `message` field.
+
+        Credits are charged **per valid IP address** using the same
+        pricing rules as the single lookup endpoint.
+
+        When at least one entry is invalid, the response header
+        `X-Successful-Record` indicates the number of successful
+        lookups.
+
+        Only the `POST` method is supported for this endpoint.
+      tags:
+        - IP Security
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Excludes"
+        - $ref: "#/components/parameters/Output"
+      requestBody:
+        required: true
+        description: |
+          A JSON object containing an `ips` array. Each element is a string representing
+          an IPv4 address or IPv6 address. The array must not be empty and
+          must not contain more than 50,000 entries.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkSecurityRequest"
+            examples:
+              mixedIps:
+                summary: Mixed IPv4 and IPv6
+                value:
+                  ips:
+                    - "8.8.8.8"
+                    - "91.128.103.196"
+                    - "2607:fb91:16c6:8860:e531:2d1d:4944:6c7c"
+              ipv4Only:
+                summary: Multiple IPv4 addresses
+                value:
+                  ips:
+                    - "1.1.1.1"
+                    - "8.8.4.4"
+                    - "165.227.0.0"
+      responses:
+        "200":
+          description: |
+            An array of results, one per input IP address.
+
+            Valid entries return a security lookup object containing the IP address
+            and its associated security intelligence.
+
+            Invalid, private, or bogon IP addresses return an object containing only
+            a `message` field.
+
+            The `X-Successful-Record` response header is returned only when the request
+            contains one or more invalid entries and indicates the number of successful
+            lookups.
+          headers:
+            X-Credits-Charged:
+              description: |
+                Total number of API credits consumed. Equals credits per lookup
+                multiplied by the count of valid IPs.
+              schema:
+                type: number
+                example: 3
+            X-Successful-Record:
+              description: |
+                Number of valid IP addresses that were successfully resolved in
+                this bulk request. Invalid, bogon, and private IPs are not counted.
+                This header is included only when at least one bulk entry returns an
+                error message and total successful lookups are fewer than submitted
+                entries.
+              schema:
+                type: number
+                example: 4
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BulkSecurityResponseItem"
+              example:
+                - ip: "2.56.188.34"
+                  security:
+                    threat_score: 80
+                    is_tor: false
+                    is_proxy: true
+                    proxy_provider_names: [
+                      "Zyte Proxy"
+                    ]
+                    proxy_confidence_score: 80
+                    proxy_last_seen: "2025-12-12"
+                    is_residential_proxy: true
+                    is_vpn: true
+                    vpn_provider_names: [
+                      "Nord VPN"
+                    ]
+                    vpn_confidence_score: 80
+                    vpn_last_seen: "2026-01-19"
+                    is_relay: false
+                    relay_provider_name: ""
+                    is_anonymous: true
+                    is_known_attacker: true
+                    is_bot: false
+                    is_spam: false
+                    is_cloud_provider: true
+                    cloud_provider_name: "Packethub S.A."
+                - message: "'10.0.0.1' is a bogon IP address."
+            application/xml:
+              schema:
+                type: array
+                xml:
+                  name: ArrayList
+                  wrapped: true
+                items:
+                  $ref: "#/components/schemas/BulkSecurityResponseItem"
+                  xml:
+                    name: item
+              example: |
+                <ArrayList>
+                  <item>
+                    <ip>2.56.188.34</ip>
+                    <security>
+                        <threat_score>80</threat_score>
+                        <is_tor>false</is_tor>
+                        <is_proxy>true</is_proxy>
+                        <proxy_provider_names>Zyte Proxy</proxy_provider_names>
+                        <proxy_confidence_score>80</proxy_confidence_score>
+                        <proxy_last_seen>2025-12-12</proxy_last_seen>
+                        <is_residential_proxy>true</is_residential_proxy>
+                        <is_vpn>true</is_vpn>
+                        <vpn_provider_names>Nord VPN</vpn_provider_names>
+                        <vpn_confidence_score>80</vpn_confidence_score>
+                        <vpn_last_seen>2026-01-19</vpn_last_seen>
+                        <is_relay>false</is_relay>
+                        <relay_provider_name></relay_provider_name>
+                        <is_anonymous>true</is_anonymous>
+                        <is_known_attacker>true</is_known_attacker>
+                        <is_bot>false</is_bot>
+                        <is_spam>false</is_spam>
+                        <is_cloud_provider>true</is_cloud_provider>
+                        <cloud_provider_name>Packethub S.A.</cloud_provider_name>
+                    </security>
+                  <item>
+                      <message>'10.0.0.0' is a bogon IP address.</message>
+                  </item>
+                </ArrayList>
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/PayloadTooLarge"
+        "415":
+          $ref: "#/components/responses/UnsupportedMediaType"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "499":
+          $ref: "#/components/responses/ClientClosedRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "502":
+          $ref: "#/components/responses/BadGateway"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
+        "505":
+          $ref: "#/components/responses/HttpVersionNotSupported"
+
+components:
+  parameters:
+    Ip:
+      name: ip
+      in: query
+      required: false
+      description: |
+        An IPv4 address or IPv6 address to look up. When omitted, the API
+        resolves the public IP of the requesting client. Empty or whitespace-only values
+        are treated the same as omission and resolve caller IP. Pass `ip` only once. If multiple `ip` query parameters are sent,
+        values may be merged and treated as invalid input (HTTP 400).
+      schema:
+        type: string
+      examples:
+        ipv4:
+          summary: IPv4 address
+          value: "91.128.103.196"
+        ipv6:
+          summary: IPv6 address
+          value: "2607:fb91:16c6:8860:e531:2d1d:4944:6c7c"
+
+    Fields:
+      name: fields
+      in: query
+      required: false
+      description: |
+        Comma-separated list of fields or objects to return. Everything else is omitted.
+        The `ip` field is always returned regardless of this filter.
+
+        Supports dot-notation for nested fields: `security.is_tor`, `security.threat_score`.
+
+        If the same field or object is specified in both `fields` and `excludes`, the
+        object is still returned, but it will be empty.
+
+        If you list both an object key and one of its nested fields separated by comma
+        (e.g. `security,security.is_vpn`), the full object is returned.
+
+        Unknown field paths are ignored. The API still returns HTTP 200.
+
+        Available on all plans including Free.
+      schema:
+        type: string
+      examples:
+        none:
+          summary: Return the full response (no field filtering)
+          value: ""
+        threatScoreOnly:
+          summary: Return only the threat score
+          value: "security.threat_score"
+        moreThanOneFields:
+          summary: Return specific fields
+          value: "security.is_tor,security.is_vpn"
+
+    Excludes:
+      name: excludes
+      in: query
+      required: false
+      description: |
+        Comma-separated list of fields or objects to remove from the response. The `ip`
+        field cannot be excluded.
+
+        Supports dot-notation for nested fields: `security.is_relay`.
+
+        If the same field or object is specified in both `fields` and `excludes`, the
+        object is still returned, but it will be empty.
+
+        Unknown fields or object keys in `excludes` are ignored. The API still returns
+        HTTP 200.
+
+        Available on all plans including Free.
+      schema:
+        type: string
+      examples:
+        none:
+          summary: Do not exclude any fields
+          value: ""
+        excludeFields:
+          summary: Exclude proxy provider names and residential proxy flag
+          value: "security.proxy_provider_names,security.is_residential_proxy"
+
+    Output:
+      name: output
+      in: query
+      required: false
+      description: |
+        Desired response format. Defaults to `json` if not specified. You can also
+        control the format using the `Accept` header (`application/json`,
+        `application/xml`, or `text/xml`). If both are provided, the `output` parameter
+        takes precedence.
+
+        If `output` is unknown or unsupported, it is ignored and the response defaults
+        to JSON (`application/json`) with HTTP 200.
+      schema:
+        type: string
+        enum: [json, xml]
+        default: json
+
+  responses:
+    BadRequest:
+      description: |
+        Bad request. Returned for one of the following reasons:
+
+        - The provided IPv4 or IPv6 address is invalid.
+        - Special characters such as ( ) [ ] { } | ^ ` are present in the API URL,
+          either in a parameter name or its value (especially in the API key).
+        - For the `security-bulk` endpoint:
+          - The request payload is empty or missing.
+          - The JSON body is malformed.
+          - The `ips` field is missing or the `ips` array is empty.
+          - More than 50,000 IP addresses are provided in the request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            invalidIp:
+              summary: Invalid IPv4/IPv6 input
+              value:
+                message: "Provided name, service or IP address '999.999.999.999' is not valid."
+            specialCharacters:
+              summary: Special characters in API URL or key
+              value:
+                message: "Invalid character found in the request target."
+            malformedJson:
+              summary: Malformed JSON body for bulk endpoint
+              value:
+                message: "Malformed JSON request or invalid field"
+            missingIps:
+              summary: Bulk body missing ips field
+              value:
+                message: "IP addresses for bulk lookup are missing"
+            emptyBulkIps:
+              summary: Bulk ips array is empty
+              value:
+                message: "'ips' must not be empty or null"
+            tooManyBulkEntries:
+              summary: Bulk body exceeds 50,000 entries
+              value:
+                message: "No. of lookup queries cannot be more than 50000"
+
+    Unauthorized:
+      description: |
+        Unauthorized. Returned for one of the following reasons:
+
+        - The `apiKey` URL parameter is missing.
+        - An invalid (random or incorrect) API key is provided.
+        - The account has been disabled or locked due to abuse or illegal activity.
+        - The API request is made using an API key for a database subscription.
+        - The API request is made using a free subscription API key.
+        - The subscription is in a 'paused' state.
+        - The subscription trial has expired.
+        - The account’s active-until date has passed and renewal or upgrade is required.
+        - A domain name is passed in the `ip` parameter when calling the IP Security API.
+        - The bulk IP security lookup endpoint is called using a free subscription API key.
+        - The bulk IP security lookup endpoint is called using Request Origin (CORS)
+          authentication. Bulk requests require an `apiKey` and cannot be authenticated
+          using Request Origin alone.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            missingApiKey:
+              summary: Missing API key
+              value:
+                message: "Please provide an API key (as 'apiKey=YOUR_API_KEY' URL parameter) to use IPGeolocation API. To get your free API Key, sign up at https://app.ipgeolocation.io/login"
+
+            invalidApiKey:
+              summary: Invalid API key
+              value:
+                message: "Provided API key is not valid. Contact technical support for assistance at support@ipgeolocation.io"
+
+            lockedAccount:
+              summary: Account locked or disabled
+              value:
+                message: "Your account has been locked to use IPGeolocation API. Contact technical support for assistance at support@ipgeolocation.io"
+
+            databaseSubscriptionKey:
+              summary: Database subscription API key used for REST API
+              value:
+                message: "You cannot query IPGeolocation API on a database plan subscription."
+
+            freePlanAccess:
+              summary: Free subscription used for IP Security API
+              value:
+                message: "IP Security API is not supported on your current subscription. This feature is available on paid subscriptions only."
+
+            pausedSubscription:
+              summary: Subscription is paused
+              value:
+                message: "Your subscription has been paused. Please resume your subscription to use IPGeolocation API."
+
+            expiredSubscription:
+              summary: Subscription expired or trial ended
+              value:
+                message: "Your subscription has expired. Please subscribe to a paid plan to continue using IPGeolocation API."
+
+            domainLookupNotSupported:
+              summary: Domain lookup used with Security API
+              value:
+                message: "Domain lookup is not supported for the IP Security API."
+
+            requestOriginBulk:
+              summary: Bulk endpoint called using Request Origin authentication
+              value:
+                message: "Bulk queries are not allowed with request origins. Please use an API key to perform bulk queries."
+
+    NotFound:
+      description: |
+        Not found. Returned for one of the following reasons:
+
+        - A syntactically valid IPv4 or IPv6 address does not exist in the IPGeolocation database.
+        - An IPv4 address, IPv6 address, or domain name is passed as a path variable
+          instead of as a URL query parameter (e.g., using `/v3/ipgeo/8.8.8.8`
+          instead of `/v3/ipgeo?ip=8.8.8.8`).
+        - A non-existent or incorrect API endpoint is called.
+
+        Invalid or malformed IPv4, IPv6, or domain input returns HTTP 400 instead.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            ipNotInDatabase:
+              summary: IPv4/IPv6 not found in database
+              value:
+                message: "Provided IPv4 or IPv6 address does not exist in our database."
+            ipAsPathVariable:
+              summary: IP passed as path variable instead of query parameter
+              value:
+                message: "No endpoint GET /v3/ipgeo/8.8.8.8."
+            wrongEndpoint:
+              summary: Incorrect or non-existent endpoint
+              value:
+                message: "No endpoint GET /v3/security-invalid."
+
+    MethodNotAllowed:
+      description: |
+        Method Not Allowed. Returned when an unsupported HTTP method is used
+        to call an endpoint.
+
+        Only GET and POST methods are supported:
+
+        - `GET` is allowed for the `ipgeo` endpoint.
+        - `POST` is allowed for the `ipgeo-bulk` endpoint.
+
+        Any other HTTP method, or using the correct method on the wrong endpoint,
+        results in HTTP 405.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            getNotAllowedForBulk:
+              summary: GET used on bulk endpoint
+              value:
+                message: "Request method 'GET' is not supported"
+            postNotAllowedForSingle:
+              summary: POST used on single lookup endpoint
+              value:
+                message: "Request method 'POST' is not supported"
+            unsupportedMethod:
+              summary: Unsupported HTTP method
+              value:
+                message: "Request method is not supported"
+
+    PayloadTooLarge:
+      description: |
+        Payload too large. Returned by the edge proxy (nginx) when raw POST body size
+        exceeds configured limits before the request reaches the application.
+
+        This status is based on payload byte size, not on the number of IP entries. It
+        can occur even when `ips` contains only one very large value.
+
+        If both conditions apply (oversized body and `ips` count > 50,000), HTTP 413 may
+        be returned first because edge validation runs before application-level checks.
+      content:
+        text/html:
+          schema:
+            type: string
+          example: |
+            <html>
+              <head>
+                <title>413 Request Entity Too Large</title>
+              </head>
+              <body>
+                <center><h1>413 Request Entity Too Large</h1></center>
+                <hr><center>nginx/1.24.0 (Ubuntu)</center>
+              </body>
+            </html>
+
+    UnsupportedMediaType:
+      description: |
+        Unsupported media type. The `Content-Type` header is not set to `application/json`.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Content-Type 'application/x-www-form-urlencoded' is not supported"
+
+    Locked:
+      description: |
+        Locked. The provided IP address belongs to a bogon IP range or a private
+        network and cannot be looked up.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "'10.0.0.1' is a bogon IP address."
+
+    TooManyRequests:
+      description: |
+        Too Many Requests. Returned for one of the following reasons:
+        - The API usage limit has been reached for a Paid subscription with
+          status 'past due', 'deleted', or 'trial expired'.
+        - The surcharge API usage limit has been reached for the subscribed plan.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            usageLimitReached:
+              summary: API usage limit reached
+              value:
+                message: "You have exceeded the limit of PLAN_USAGE_LIMIT requests per PLAN_INERVAL for your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+            surchargeLimitReached:
+              summary: Surcharge usage limit reached
+              value:
+                message: "You have reached the surcharge amount limit of PLAN_USAGE_LIMIT_AND_SURCHARGE_LIMIT on your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+
+    ClientClosedRequest:
+      description: |
+        The client closed the connection before the server finished processing the
+        request. This usually happens when the client sets a very short request or
+        connection timeout. Increase the timeout on the client side.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Client closed the request before the server could respond."
+
+    InternalServerError:
+      description: |
+        Internal Server Error. The server encountered an unexpected condition
+        that prevented it from fulfilling the request. If the issue persists,
+        contact support@ipgeolocation.io.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Something went wrong on the server side."
+    BadGateway:
+      description: |
+        Bad Gateway. The API server received an invalid response from an upstream
+        server while processing the request. This is usually temporary.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Upstream service error. Please try again later."
+    ServiceUnavailable:
+      description: |
+        Service Unavailable. The API is temporarily unavailable due to maintenance
+        or overload. Please try again later.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Service temporarily unavailable. Please try again later."
+    GatewayTimeout:
+      description: |
+        Gateway Timeout. The API server did not receive a timely response from
+        an upstream server.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "The server timed out while processing the request."
+    HttpVersionNotSupported:
+      description: |
+        HTTP Version Not Supported. The server does not support the HTTP protocol
+        version used in the request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "HTTP version not supported."
+    
+
+  schemas:
+    ErrorResponse:
+      type: object
+      description: |
+        Returned for any non-200 response. Contains only a human-readable `message`.
+        Message text can vary by status and condition; examples in this spec are
+        representative, not exhaustive, and should not be treated as stable machine
+        codes.
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Human-readable explanation of what went wrong. Use HTTP status for control flow.
+          example: "Provided name, service or IP address '999.999.999.999' is not valid."
+
+    BulkSecurityRequest:
+      type: object
+      description: |
+        Request body for the bulk security lookup. Contains a single `ips` field
+        with an array of IP addresses to look up.
+      required:
+        - ips 
+      properties:
+        ips:
+          type: array
+          description: |
+            Array of IPv4 addresses or IPv6 addresses to look up.
+            Must not be empty. Maximum 50,000 entries per request. Each entry is
+            resolved independently, so you can mix IPv4 and IPv6 freely.
+          minItems: 1
+          maxItems: 50000
+          items:
+            type: string
+          examples:
+            - "8.8.8.8"
+            - "91.128.103.196"
+            - "2607:fb91:16c6:8860:e531:2d1d:4944:6c7c"
+
+    BulkSecurityResponseItem:
+      description: |
+        A single element in the bulk lookup response array. Each element is either a
+        full security object or an error object containing only `message`.
+      oneOf:
+        - $ref: "#/components/schemas/BulkSecuritySuccessItem"
+        - $ref: "#/components/schemas/BulkSecurityErrorItem"
+      
+
+    BulkSecuritySuccessItem:
+      type: object
+      required:
+        - ip
+        - security
+      properties:
+        ip:
+          type: string
+          description: IP address for this lookup result.
+          example: "2.56.188.34"
+
+        security:
+          $ref: "#/components/schemas/Security"
+
+    BulkSecurityErrorItem:
+      type: object
+      description: |
+        Error object returned for an invalid entry in the bulk lookup request. Contains only
+        a `message` field. Note: unlike success entries, error entries do NOT include the
+        original `ip` field, so the only way to correlate errors to inputs is by array
+        index. The response array preserves the same order as the request `ips` array.
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error for the specific bulk entry.
+          example: "Provided name, service or IP address 'invalid-ip' is not valid."
+
+    IpSecurityResponse:
+      type: object
+      xml:
+        name: LinkedHashMap
+      required:
+        - ip
+      properties:
+        ip:
+          type: string
+          description: IP address used for the lookup.
+          example: "2.56.188.34"
+
+        security:
+          $ref: "#/components/schemas/Security"
+
+    Security:
+      type: object
+      description: |
+        Threat intelligence and anonymization signals for the IP. Costs 2 credits.
+      properties:
+        threat_score:
+          type: number
+          description: |
+            Overall threat score from 0 (clean) to 100 (high risk). Aggregated from
+            all the individual signals below.
+          minimum: 0
+          maximum: 100
+          example: 80
+        is_tor:
+          type: boolean
+          description: Whether the IP is a known Tor exit node.
+          example: false
+        is_proxy:
+          type: boolean
+          description: Whether the IP belongs to a known proxy service.
+          example: true
+        proxy_provider_names:
+          type: array
+          description: Names of proxy providers associated with this IP, if any.
+          items:
+            type: string
+          examples:
+            - "Zyte Proxy"
+        proxy_confidence_score:
+          type: number
+          description: |
+            Confidence that this IP is a proxy, from 0 to 100. Only meaningful when
+            `is_proxy` is `true`.
+          minimum: 0
+          maximum: 100
+          example: 90
+        proxy_last_seen:
+          type: string
+          description: |
+            Date when this IP was last observed acting as a proxy, in `YYYY-MM-DD`
+            format. Empty string if never seen.
+          example: "2025-12-12"
+        is_residential_proxy:
+          type: boolean
+          description: Whether the IP is a known residential proxy.
+          example: true
+        is_vpn:
+          type: boolean
+          description: Whether the IP belongs to a known VPN provider.
+          example: true
+        vpn_provider_names:
+          type: array
+          description: Names of VPN providers associated with this IP, if any.
+          items:
+            type: string
+          examples:
+            - "Nord VPN"
+        vpn_confidence_score:
+          type: number
+          description: |
+            Confidence that this IP is a VPN endpoint, from 0 to 100. Only meaningful
+            when `is_vpn` is `true`.
+          minimum: 0
+          maximum: 100
+          example: 90
+        vpn_last_seen:
+          type: string
+          description: |
+            Date when this IP was last observed as a VPN endpoint, in `YYYY-MM-DD`
+            format. Empty string if never seen.
+          example: "2026-01-19"
+        is_relay:
+          type: boolean
+          description: Whether the IP is part of a known relay network (e.g. iCloud Private Relay).
+          example: false
+        relay_provider_name:
+          type: string
+          description: Name of the relay provider, if any. Empty string if not a relay.
+          example: ""
+        is_anonymous:
+          type: boolean
+          description: |
+            Whether the IP is associated with any anonymization method (VPN, proxy,
+            Tor, or relay).
+          example: true
+        is_known_attacker:
+          type: boolean
+          description: Whether the IP has been flagged in known attacker or threat feeds.
+          example: true
+        is_bot:
+          type: boolean
+          description: Whether the IP is associated with known bot activity.
+          example: false
+        is_spam:
+          type: boolean
+          description: Whether the IP is listed in spam databases.
+          example: false
+        is_cloud_provider:
+          type: boolean
+          description: Whether the IP belongs to a cloud hosting or data center provider.
+          example: true
+        cloud_provider_name:
+          type: string
+          description: Name of the cloud provider, if applicable. Empty string otherwise.
+          example: "Packethub S.A."
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: apiKey
+      description: |
+        API key passed as the `apiKey` query parameter. Get yours from the
+        [IPGeolocation dashboard](https://app.ipgeolocation.io/). For client-side
+        usage, consider using Request Origin (CORS) authentication instead to
+        avoid exposing your key.
+
+
+tags:
+  - name: IP Security
+    description: |
+      IP security intelligence endpoints used to detect VPNs,
+      proxies, Tor exit nodes, relay networks, bot activity,
+      spam activity, cloud providers, and other anonymization
+      technologies associated with IP addresses.
+
+      The single lookup endpoint (`GET /v3/security`) analyzes
+      one IP per request.
+
+      The bulk lookup endpoint (`POST /v3/security-bulk`)
+      accepts up to 50,000 IP addresses per request.
+    externalDocs:
+      description: IPGeolocation IP Security API documentation
+      url: https://ipgeolocation.io/documentation/ip-security-api.html

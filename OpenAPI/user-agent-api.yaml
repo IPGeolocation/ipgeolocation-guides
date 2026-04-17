@@ -1,0 +1,922 @@
+openapi: 3.0.7
+info:
+  title: 'IPGeolocation.io: User Agent API'
+  version: "3.0"
+  description: |
+    Parse browser, device, and operating system details from a User Agent string.
+    The API also detects crawlers, bots, and potential attackers based on anomalies
+    in the user agent string.
+
+    Two endpoints are available, supporting three usage modes:
+
+    - **`GET /v3/user-agent`** supports two modes: omit the `User-Agent` header to
+      auto-detect the caller's own user agent, or pass any string in the `User-Agent`
+      header to parse it explicitly.
+    - **`POST /v3/user-agent`** parses a custom user agent string from a JSON body
+      (`uaString` field). Available on paid plans only.
+    - **`POST /v3/user-agent-bulk`** parses up to 50,000 user agent strings in a
+      single request. Available on paid plans only.
+
+    User agent data can also be retrieved alongside IP geolocation data via the
+    `/v3/ipgeo` endpoint using `include=user_agent`.
+
+    ## Authentication
+
+    Two authentication methods are supported:
+
+    ### API Key
+
+    Pass your API key as the `apiKey` query parameter on every request. You can find your
+    key in the [IPGeolocation dashboard](https://app.ipgeolocation.io/). Store it in
+    server-side environment variables. Avoid exposing it in client-side JavaScript.
+
+    ### Request Origin (CORS)
+
+    Available on paid plans only. Whitelist your domain in the dashboard under the
+    "API Keys" section. Once configured, requests from that domain (and all its subdomains)
+    are accepted without passing `apiKey`. Enter your root domain (e.g. `example.com`),
+    not the full URL.
+
+    Each plan has a limit on the number of extra API keys and request origins:
+
+    | Plan | Extra API Keys + Request Origins |
+    |---|---|
+    | Starter (150K requests) | 1 |
+    | Core (250K requests) | 1 |
+    | Plus (500K requests) | 2 |
+    | Pro (1M requests) | 2 |
+    | Business (2M requests) | 3 |
+    | Premium (5M requests) | 3 |
+
+    Additional keys or origins can be added for $2.50 per month each.
+
+    ## Credit Usage
+
+    Credits are charged only for successful **HTTP 200** responses. The exact number of
+    credits consumed by a request is returned in the `X-Credits-Charged` response header.
+
+    Each successful user agent lookup costs **1 credit** per user agent string parsed.
+    For bulk requests, the total credits charged equals the number of user agent strings
+    submitted.
+
+    When using `/v3/ipgeo` with `include=user_agent`, no additional credits are charged
+    beyond the base IP lookup cost.
+
+    ## Plan Availability
+
+    - **`GET /v3/user-agent`** (auto-detect or explicit `User-Agent` header) is available
+      on all plans including Free.
+    - **`POST /v3/user-agent`** (custom string via JSON body) is available on **paid plans only**.
+    - **`POST /v3/user-agent-bulk`** is available on **paid plans only**.
+    - User agent data via `/v3/ipgeo?include=user_agent` is available on **paid plans only**.
+
+    ## Parameter Name Casing
+
+    Query parameter names are case-sensitive. Use exact names such as `apiKey`.
+
+  contact:
+    name: IPGeolocation Support
+    url: https://ipgeolocation.io
+    email: support@ipgeolocation.io
+  termsOfService: https://ipgeolocation.io/tos.html
+  license:
+    name: Proprietary
+    url: https://ipgeolocation.io/tos.html
+
+externalDocs:
+  description: IPGeolocation User Agent API documentation
+  url: https://ipgeolocation.io/documentation/user-agent-api.html
+
+servers:
+  - url: https://api.ipgeolocation.io
+    description: Production
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /v3/user-agent:
+    get:
+      operationId: parseUserAgent
+      summary: Parse user agent string (auto-detect or explicit header)
+      description: |
+        Parses a user agent string and returns browser, device, and operating system
+        details. Also detects bots, crawlers, and malicious or malformed user agent strings.
+
+        This endpoint supports two usage modes:
+
+        **Mode 1 — Auto-detect caller's user agent:**
+        Omit the `User-Agent` header entirely. The API will parse the user agent string
+        of the calling client automatically. This is the default browser behavior — when
+        executed in browser JavaScript, the header is appended automatically and no
+        additional configuration is needed.
+
+        **Mode 2 — Explicit user agent header:**
+        Pass any user agent string in the `User-Agent` request header. The API parses
+        that string instead of detecting the caller's own user agent. Use this to
+        simulate or test specific user agent strings server-side.
+
+        Each successful lookup consumes **1 credit**.
+
+      tags:
+        - User Agent
+
+      parameters:
+        - $ref: "#/components/parameters/ApiKey"
+        - name: User-Agent
+          in: header
+          required: false
+          description: |
+            The user agent string to parse. When omitted, the API automatically parses
+            the user agent of the calling client. When provided, the supplied string is
+            parsed instead.
+          schema:
+            type: string
+          example: "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.96 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+
+      responses:
+        "200":
+          description: Parsed user agent details for the resolved user agent string.
+          headers:
+            X-Credits-Charged:
+              description: Number of API credits consumed by this request.
+              schema:
+                type: number
+                example: 1
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAgentResponse"
+              example:
+                user_agent_string: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9"
+                name: "Safari"
+                type: "Browser"
+                version: "9.0.2"
+                version_major: "9"
+                device:
+                  name: "Apple Macintosh"
+                  type: "Desktop"
+                  brand: "Apple"
+                  cpu: "Intel"
+                engine:
+                  name: "AppleWebKit"
+                  type: "Browser"
+                  version: "601.3.9"
+                  version_major: "601"
+                operating_system:
+                  name: "Mac OS"
+                  type: "Desktop"
+                  version: "10.11.2"
+                  version_major: "10.11"
+                  build: "??"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/UserAgentResponse"
+              example: |
+                <LinkedHashMap>
+                  <user_agent_string>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9</user_agent_string>
+                  <name>Safari</name>
+                  <type>Browser</type>
+                  <version>9.0.2</version>
+                  <version_major>9</version_major>
+                  <device>
+                      <name>Apple Macintosh</name>
+                      <type>Desktop</type>
+                      <brand>Apple</brand>
+                      <cpu>Intel</cpu>
+                  </device>
+                  <engine>
+                      <name>AppleWebKit</name>
+                      <type>Browser</type>
+                      <version>601.3.9</version>
+                      <version_major>601</version_major>
+                  </engine>
+                  <operating_system>
+                      <name>Mac OS</name>
+                      <type>Desktop</type>
+                      <version>10.11.2</version>
+                      <version_major>10.11</version_major>
+                      <build>??</build>
+                  </operating_system>
+                </LinkedHashMap>
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "499":
+          $ref: "#/components/responses/ClientClosedRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "502":
+          $ref: "#/components/responses/BadGateway"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
+        "505":
+          $ref: "#/components/responses/HttpVersionNotSupported"
+
+    post:
+      operationId: parseCustomUserAgent
+      summary: Parse custom user agent string (payload)
+      description: |
+        Parses a custom user agent string supplied in the JSON request body and returns
+        browser, device, and operating system details.
+
+        **Mode 3 — Custom user agent string via POST body:**
+        Pass the user agent string as the `uaString` field in a JSON payload. This is
+        intended for server-side use cases where the string to be parsed is different
+        from the caller's own user agent and is known at request time.
+
+        This endpoint is available on **paid plans only**.
+
+        Each successful lookup consumes **1 credit**.
+
+      tags:
+        - User Agent
+
+      parameters:
+        - $ref: "#/components/parameters/ApiKey"
+
+      requestBody:
+        required: true
+        description: JSON body containing the custom user agent string to parse.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - uaString
+              properties:
+                uaString:
+                  type: string
+                  description: The custom user agent string to parse.
+                  example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9"
+
+      responses:
+        "200":
+          description: Parsed user agent details for the submitted user agent string.
+          headers:
+            X-Credits-Charged:
+              description: Number of API credits consumed by this request.
+              schema:
+                type: number
+                example: 1
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAgentResponse"
+              example:
+                user_agent_string: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9"
+                name: "Safari"
+                type: "Browser"
+                version: "9.0.2"
+                version_major: "9"
+                device:
+                  name: "Apple Macintosh"
+                  type: "Desktop"
+                  brand: "Apple"
+                  cpu: "Intel"
+                engine:
+                  name: "AppleWebKit"
+                  type: "Browser"
+                  version: "601.3.9"
+                  version_major: "601"
+                operating_system:
+                  name: "Mac OS"
+                  type: "Desktop"
+                  version: "10.11.2"
+                  version_major: "10.11"
+                  build: "??"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/UserAgentResponse"
+              example: |
+                <LinkedHashMap>
+                  <user_agent_string>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9</user_agent_string>
+                  <name>Safari</name>
+                  <type>Browser</type>
+                  <version>9.0.2</version>
+                  <version_major>9</version_major>
+                  <device>
+                      <name>Apple Macintosh</name>
+                      <type>Desktop</type>
+                      <brand>Apple</brand>
+                      <cpu>Intel</cpu>
+                  </device>
+                  <engine>
+                      <name>AppleWebKit</name>
+                      <type>Browser</type>
+                      <version>601.3.9</version>
+                      <version_major>601</version_major>
+                  </engine>
+                  <operating_system>
+                      <name>Mac OS</name>
+                      <type>Desktop</type>
+                      <version>10.11.2</version>
+                      <version_major>10.11</version_major>
+                      <build>??</build>
+                  </operating_system>
+                </LinkedHashMap>
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "499":
+          $ref: "#/components/responses/ClientClosedRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "502":
+          $ref: "#/components/responses/BadGateway"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
+        "505":
+          $ref: "#/components/responses/HttpVersionNotSupported"
+
+  /v3/user-agent-bulk:
+    post:
+      operationId: parseUserAgentBulk
+      summary: Bulk parse user agent strings
+      description: |
+        Parses up to **50,000 user agent strings** in a single request.
+
+        Pass a JSON body containing the `uaStrings` array. Each entry in the array
+        is parsed independently. The total credits charged equals the number of strings
+        in the array.
+
+        This endpoint is available on **paid plans only**.
+
+      tags:
+        - User Agent
+
+      parameters:
+        - $ref: "#/components/parameters/ApiKey"
+
+      requestBody:
+        required: true
+        description: JSON body containing the array of user agent strings to parse.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - uaStrings
+              properties:
+                uaStrings:
+                  type: array
+                  description: |
+                    Array of user agent strings to parse. Maximum 50,000 entries per request.
+                  maxItems: 50000
+                  minItems: 1
+                  items:
+                    type: string
+                  example:
+                    - "Mozilla/5.0 (Linux; Android 8.0.0; SM-G960F Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.84 Mobile Safari/537.36"
+                    - "Mozilla/5.0 (X11; U; Linux armv7l like Android; en-us) AppleWebKit/531.2+ (KHTML, like Gecko) Version/5.0 Safari/533.2+ Kindle/3.0+"
+                    - "Mozilla/5.0 (Linux; U; en-US) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)"
+
+      responses:
+        "200":
+          description: |
+            Array of parsed user agent results, one object per submitted string,
+            in the same order as the input array.
+          headers:
+            X-Credits-Charged:
+              description: |
+                Total number of API credits consumed by this request.
+                Equals the number of user agent strings submitted.
+              schema:
+                type: number
+                example: 3
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserAgentResponse"
+              example:
+              - user_agent_string: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G960F Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.84 Mobile Safari/537.36"
+                name: "Chrome"
+                type: "Browser"
+                version: "62.0.3202.84"
+                version_major: "62"
+                device:
+                  name: "Samsung SM-G960F"
+                  type: "Phone"
+                  brand: "Samsung"
+                  cpu: "Unknown"
+                engine:
+                  name: "Blink"
+                  type: "Browser"
+                  version: "62.0"
+                  version_major: "62"
+                operating_system:
+                  name: "Android"
+                  type: "Mobile"
+                  version: "8.0.0"
+                  version_major: "8"
+                  build: "R16NW"
+              - user_agent_string: "Mozilla/5.0 (X11; U; Linux armv7l like Android; en-us) AppleWebKit/531.2+ (KHTML, like Gecko) Version/5.0 Safari/533.2+ Kindle/3.0+"
+                name: "Kindle"
+                type: "Browser"
+                version: "3.0"
+                version_major: "3"
+                device:
+                  name: "Amazon Kindle"
+                  type: "eReader"
+                  brand: "Amazon"
+                  cpu: "ARMv7l"
+                engine:
+                  name: "AppleWebKit"
+                  type: "Browser"
+                  version: "531.2"
+                  version_major: "531"
+                operating_system:
+                  name: "FireOS"
+                  type: "Mobile"
+                  version: "??"
+                  version_major: "??"
+                  build: "??"
+            application/xml:
+              schema:
+                type: array
+                xml:
+                  name: ArrayList
+                  wrapped: true
+                items:
+                  $ref: "#/components/schemas/UserAgentResponse"
+                  xml:
+                    name: item
+              example: |
+                <ArrayList>
+                  <item>
+                      <user_agent_string>Mozilla/5.0 (Linux; Android 8.0.0; SM-G960F Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.84 Mobile Safari/537.36</user_agent_string>
+                      <name>Chrome</name>
+                      <type>Browser</type>
+                      <version>62.0.3202.84</version>
+                      <version_major>62</version_major>
+                      <device>
+                          <name>Samsung SM-G960F</name>
+                          <type>Phone</type>
+                          <brand>Samsung</brand>
+                          <cpu>Unknown</cpu>
+                      </device>
+                      <engine>
+                          <name>Blink</name>
+                          <type>Browser</type>
+                          <version>62.0</version>
+                          <version_major>62</version_major>
+                      </engine>
+                      <operating_system>
+                          <name>Android</name>
+                          <type>Mobile</type>
+                          <version>8.0.0</version>
+                          <version_major>8</version_major>
+                          <build>R16NW</build>
+                      </operating_system>
+                  </item>
+                  <item>
+                      <user_agent_string>Mozilla/5.0 (X11; U; Linux armv7l like Android; en-us) AppleWebKit/531.2+ (KHTML, like Gecko) Version/5.0 Safari/533.2+ Kindle/3.0+</user_agent_string>
+                      <name>Kindle</name>
+                      <type>Browser</type>
+                      <version>3.0</version>
+                      <version_major>3</version_major>
+                      <device>
+                          <name>Amazon Kindle</name>
+                          <type>eReader</type>
+                          <brand>Amazon</brand>
+                          <cpu>ARMv7l</cpu>
+                      </device>
+                      <engine>
+                          <name>AppleWebKit</name>
+                          <type>Browser</type>
+                          <version>531.2</version>
+                          <version_major>531</version_major>
+                      </engine>
+                      <operating_system>
+                          <name>FireOS</name>
+                          <type>Mobile</type>
+                          <version>??</version>
+                          <version_major>??</version_major>
+                          <build>??</build>
+                      </operating_system>
+                  </item>
+                </ArrayList>
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "499":
+          $ref: "#/components/responses/ClientClosedRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "502":
+          $ref: "#/components/responses/BadGateway"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
+        "505":
+          $ref: "#/components/responses/HttpVersionNotSupported"
+
+
+components:
+  parameters:
+    ApiKey:
+      name: apiKey
+      in: query
+      required: false
+      description: |
+        Your IPGeolocation API key. Required unless Request Origin (CORS) authentication
+        is configured for your domain on a paid plan. Get your key from the
+        [IPGeolocation dashboard](https://app.ipgeolocation.io/).
+      schema:
+        type: string
+      example: "YOUR_API_KEY"
+
+  responses:
+    BadRequest:
+      description: |
+        Bad Request. Returned for one of the following reasons:
+        - Special characters ( ) [ ] { } | ^ ` are passed in the API URL (either in parameters or values), especially in the API key.
+        - The `uaString` is empty or null when calling `/v3/user-agent`(POST).
+        - The `uaStrings` array is empty, or the JSON body does not contain a `uaStrings`
+          field when calling `/v3/user-agent-bulk`.
+        - More than 50,000 user agent strings are provided in a single bulk request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            specialCharacters:
+              summary: Invalid special characters in request
+              value:
+                message: "Invalid character found in the request target."
+            emptyUaString:
+              summary: Empty or null user agent string
+              value:
+                message: "User-Agent string must not be blank"
+            emptyBulkList:
+              summary: Empty uaStrings array or missing field
+              value:
+                message: "User-Agent strings for bulk lookup are missing"
+            bulkLimitExceeded:
+              summary: More than 50,000 strings in bulk request
+              value:
+                message: "No. of lookup queries cannot be more than 50000"
+
+    Unauthorized:
+      description: |
+        Unauthorized. Returned for one of the following reasons:
+        - The `apiKey` URL parameter is missing from the request.
+        - The provided API key is not valid.
+        - The request is made using an API key of a database subscription.
+        - The account has been disabled or locked due to illegal activity.
+        - Requests are made after the subscription trial has expired.
+        - The subscription is paused or not active.
+        - The account’s active-until date has passed.
+        - A paid feature is accessed using a free subscription.
+        - The bulk user agent parsing endpoint is called using a free subscription API key.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            missingApiKey:
+              summary: Missing API key
+              value:
+                message: "Please provide an API key (as 'apiKey=YOUR_API_KEY' URL parameter) to use IPGeolocation API. To get your free API Key, sign up at https://app.ipgeolocation.io/login"
+            invalidApiKey:
+              summary: Invalid API key
+              value:
+                message: "Provided API key is not valid. Contact technical support for assistance at support@ipgeolocation.io"
+            databaseSubscriptionKey:
+              summary: Database subscription API key used
+              value:
+                message: "You cannot query IPGeolocation API on a database plan subscription."
+            lockedAccount:
+              summary: Account locked or disabled
+              value:
+                message: "Your account has been locked to use IPGeolocation API. Contact technical support for assistance at support@ipgeolocation.io"
+            expiredTrial:
+              summary: Subscription trial expired
+              value:
+                message: "Your subscription has expired. Please subscribe to a paid plan to continue using IPGeolocation API."
+            inactiveSubscription:
+              summary: Subscription inactive or paused
+              value:
+                message: "Your subscription is not active."
+            expiredAccount:
+              summary: Account active-until date passed
+              value:
+                message: "Your subscription has been paused. Please resume your subscription to use IPGeolocation API."
+            freePlanPaidFeature:
+              summary: Paid feature accessed on free plan
+              value:
+                message: "Custom User-Agent lookup is not supported on your current subscription. This feature is available to all paid subscriptions only."
+            bulkOnFreePlan:
+              summary: Bulk endpoint called with free subscription key
+              value:
+                message: "Bulk User-Agent lookup is not supported on your current subscription. This feature is available to all paid subscriptions only."
+
+    NotFound:
+      description: |
+        Not Found. Returned when an invalid or non-existent endpoint is called.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "No endpoint GET /v3/user-agent-invalid."
+
+    MethodNotAllowed:
+      description: |
+        Method Not Allowed. Returned when an unsupported HTTP method is used.
+
+        - `/v3/user-agent` supports GET and POST.
+        - `/v3/user-agent-bulk` supports POST only.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            getNotAllowedForBulk:
+              summary: GET used on bulk endpoint
+              value:
+                message: "Request method 'GET' is not supported"
+
+    ContentTooLarge:
+      description: |
+        Content Too Large. Returned when the POST request payload exceeds
+        the allowed size limit.
+      content:
+        text/html:
+          schema:
+            type: string
+          example: |
+            <html>
+              <head>
+                <title>413 Request Entity Too Large</title>
+              </head>
+              <body>
+                <center><h1>413 Request Entity Too Large</h1></center>
+                <hr><center>nginx/1.24.0 (Ubuntu)</center>
+              </body>
+            </html>
+
+    UnsupportedMediaType:
+      description: |
+        Unsupported Media Type. Returned when the `Content-Type` header is not
+        set to `application/json` for POST requests to:
+        - `/v3/user-agent`
+        - `/v3/user-agent-bulk`
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Content-Type 'application/x-www-form-urlencoded' is not supported"
+
+    TooManyRequests:
+      description: |
+        Too Many Requests. Returned for one of the following reasons:
+        - The API usage limit has been reached for a free subscription.
+        - The API usage limit has been reached for a paid subscription with
+          status 'past due', 'deleted', or 'trial expired'.
+        - The surcharge API usage limit has been reached.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            usageLimitReached:
+              summary: API usage limit reached
+              value:
+                message: "You have exceeded the limit of PLAN_USAGE_LIMIT requests per PLAN_INERVAL for your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+            surchargeLimitReached:
+              summary: Surcharge usage limit reached
+              value:
+                message: "You have reached the surcharge amount limit of PLAN_USAGE_LIMIT_AND_SURCHARGE_LIMIT on your subscribed PLAN plan. Please throttle your requests or upgrade your plan to continue using IPGeolocation API without interruption."
+
+    ClientClosedRequest:
+      description: |
+        Client Closed Request. Returned when the client sets a very short timeout,
+        causing the connection to close before the server responds.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Client closed the request before the server could respond."
+
+    InternalServerError:
+      description: |
+        Internal Server Error. The server encountered an unexpected condition
+        that prevented it from fulfilling the request. If the issue persists,
+        contact support@ipgeolocation.io.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Something went wrong on the server side."
+    BadGateway:
+      description: |
+        Bad Gateway. The API server received an invalid response from an upstream
+        server while processing the request. This is usually temporary.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Upstream service error. Please try again later."
+    ServiceUnavailable:
+      description: |
+        Service Unavailable. The API is temporarily unavailable due to maintenance
+        or overload. Please try again later.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "Service temporarily unavailable. Please try again later."
+    GatewayTimeout:
+      description: |
+        Gateway Timeout. The API server did not receive a timely response from
+        an upstream server.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "The server timed out while processing the request."
+    HttpVersionNotSupported:
+      description: |
+        HTTP Version Not Supported. The server does not support the HTTP protocol
+        version used in the request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            message: "HTTP version not supported."
+
+  schemas:
+    ErrorResponse:
+      type: object
+      description: |
+        Returned for any non-200 response. Contains only a human-readable `message`.
+        Message text can vary by status and condition; examples in this spec are
+        representative, not exhaustive, and should not be treated as stable machine codes.
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Human-readable explanation of what went wrong. Use HTTP status for control flow.
+          example: "User agent string is empty or null."
+
+    UserAgentResponse:
+      type: object
+      description: |
+        Parsed user agent details including browser, device, layout engine, and
+        operating system information. Also indicates bots, crawlers, or malicious
+        user agent strings.
+      properties:
+        user_agent_string:
+          type: string
+          description: The raw user agent string that was parsed.
+          example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9"
+        name:
+          type: string
+          description: |
+            Name of the detected agent (e.g. browser name, bot name, or `"Hacker"`
+            if the string is malformed or contains injected scripts).
+          example: "Safari"
+        type:
+          type: string
+          description: |
+            Type of the detected user agent. See possible values in the documentation.
+          example: "Browser"
+        version:
+          type: string
+          description: Full version string of the detected agent.
+          example: "9.0.2"
+        version_major:
+          type: string
+          description: Major version of the detected agent.
+          example: "9"
+        device:
+          $ref: "#/components/schemas/Device"
+        engine:
+          $ref: "#/components/schemas/Engine"
+        operating_system:
+          $ref: "#/components/schemas/OperatingSystem"
+
+    Device:
+      type: object
+      description: Hardware device information extracted from the user agent string.
+      properties:
+        name:
+          type: string
+          description: Name of the device (e.g. model name or manufacturer).
+          example: "Apple Macintosh"
+        type:
+          type: string
+          description: |
+            Type of the device. See possible values in the documentation.
+          example: "Desktop"
+        brand:
+          type: string
+          description: Brand or manufacturer of the device.
+          example: "Apple"
+        cpu:
+          type: string
+          description: CPU architecture or model of the device. May be `"Unknown"`.
+          example: "Intel"
+
+    Engine:
+      type: object
+      description: Layout engine information extracted from the user agent string.
+      properties:
+        name:
+          type: string
+          description: Name of the layout engine (e.g. `"AppleWebKit"`, `"Blink"`, `"Gecko"`).
+          example: "AppleWebKit"
+        type:
+          type: string
+          description: |
+            Type of the layout engine. See possible values in the documentation.
+          example: "Browser"
+        version:
+          type: string
+          description: Full version string of the layout engine. May be `"??"` if unknown.
+          example: "601.3.9"
+        version_major:
+          type: string
+          description: Major version of the layout engine. May be `"??"` if unknown.
+          example: "601"
+
+    OperatingSystem:
+      type: object
+      description: Operating system information extracted from the user agent string.
+      properties:
+        name:
+          type: string
+          description: Name of the operating system.
+          example: "Mac OS"
+        type:
+          type: string
+          description: |
+            Type of the operating system. See possible values in the documentation.
+          example: "Desktop"
+        version:
+          type: string
+          description: Full version string of the operating system. May be `"??"` if unknown.
+          example: "10.11.2"
+        version_major:
+          type: string
+          description: Major version of the operating system. May be `"??"` if unknown.
+          example: "10.11"
+        build:
+          type: string
+          description: Build identifier of the operating system. May be `"??"` if unknown.
+          example: "??"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: apiKey
+      description: |
+        API key passed as the `apiKey` query parameter. Get yours from the
+        [IPGeolocation dashboard](https://app.ipgeolocation.io/). For client-side
+        usage, consider using Request Origin (CORS) authentication instead to
+        avoid exposing your key.
+
+tags:
+  - name: User Agent
+    description: |
+      API endpoints for parsing user agent strings into browser, device, layout engine,
+      and operating system details. Supports single lookups via request header, custom
+      string lookups via JSON body, and bulk parsing of up to 50,000 strings per request.
+      Also detects bots, crawlers, and malicious or malformed user agent strings.
+    externalDocs:
+      description: User Agent API documentation
+      url: https://ipgeolocation.io/documentation/user-agent-api.html
