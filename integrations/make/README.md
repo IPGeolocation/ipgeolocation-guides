@@ -89,8 +89,8 @@ The availability of actions depends on the plan you are subscribed to. The follo
 |--------|----------|---------|
 | Get IP Geolocation | ✔ | ✔ |
 | Get Bulk IP Geolocation | ✖ | ✔ |
-| IP Security Lookup | ✖ | ✖ |
-| Bulk IP Security Lookup | ✖ | ✖ |
+| IP Security Lookup | ✖ | ✔ |
+| Bulk IP Security Lookup | ✖ | ✔ |
 | Lookup ASN | ✖ | ✔ |
 | Lookup Abuse Contact | ✖ | ✔ |
 | Lookup Astronomy | ✔ | ✔ |
