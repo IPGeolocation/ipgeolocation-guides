@@ -44,7 +44,7 @@ Before installing the app, make sure you have the following:
 
 There are multiple ways of deploying apps to Splunk environment and in this document, we’ll be referring installation via CLI (Command Line Interface).
 
-### Case 1: Single Stand Alone Splunk Installation (CLI)
+### Single Stand Alone Splunk Installation (CLI)
 
 Single standalone Splunk Enterprise Installation on Windows/*NIX
 
@@ -52,7 +52,7 @@ Single standalone Splunk Enterprise Installation on Windows/*NIX
 2. **Copy** the unzipped directory **ipgeolocation_app** to **$SPLUNK_HOME/etc/apps/**
 3. **Open CLI** and restart Splunk using **./splunk restart --run-as-root**
 
-### Case 2: Distributed Architecture
+### Distributed Architecture
 
 Single Indexer Single Search Head and Single Forwarder (Heavy or Universal) and Deployment server
 
@@ -71,7 +71,7 @@ Single Indexer Single Search Head and Single Forwarder (Heavy or Universal) and 
     
 4. **Open CLI** and deploy the apps using following command: **./splunk reload deploy-server**
 
-### Case 3: Distributed Architecture
+### Distributed Architecture
 
 Multiple non-clustered Indexers, Multiple non-clustered Search Heads, Forwarder (Heavy or Universal) and Deployment server
 
@@ -87,7 +87,7 @@ Multiple non-clustered Indexers, Multiple non-clustered Search Heads, Forwarder 
 
 4. **Open CLI** and deploy the apps using following command: **./splunk reload deploy-server**
 
-### Case 4: Distributed Architecture
+### Distributed Architecture
 
 Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Universal).
 
@@ -99,7 +99,7 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
     ./splunk apply shcluster-bundle -target <URI>:<management_port> -auth <username>:<password>
     ```
     
-### Case 5: Standalone Installation (WEB)
+###  Standalone Installation (WEB)
 
 1. On the Splunk Home Page, Click on “Manage”
     
@@ -157,7 +157,7 @@ Syncing will be a bit slow as compared to separate download as it has to copy MM
 
 #### Replicate MMDB on Indexers
 
-Select `**Yes**` against `**Replicate MMDB on Indexers**` to enable replication on MMDB bundle. This will also make a bunch of changes in the code that will enable *ipgeolocation* & *ipsecurity* to work in streaming mode. This is expected to cause performance boost on the query at the expense of increase in bundle size. This setting is applicable if you're using ipgeolocation.io app on splunk search head cluster and you have indexer cluster.
+Select `Yes` against `Replicate MMDB on Indexers` to enable replication on MMDB bundle. This will also make a bunch of changes in the code that will enable *ipgeolocation* & *ipsecurity* to work in streaming mode. This is expected to cause performance boost on the query at the expense of increase in bundle size. This setting is applicable if you're using ipgeolocation.io app on splunk search head cluster and you have indexer cluster.
 
 #### MMDB Subscription Credentials
 
@@ -190,7 +190,7 @@ For your subscribed database plan on ipgeolocation.io, provide the following con
 
 ##### **Enable**
 
-Select `**Yes**` against `Enable` buttons to enable MMDB lookup from it.
+Select `Yes` against `Enable` buttons to enable MMDB lookup from it.
 
 ##### **Key**
 
