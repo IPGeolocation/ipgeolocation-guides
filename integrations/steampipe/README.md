@@ -461,7 +461,7 @@ where
 
 ## Real-World Use Cases
 
-### 1. Log Enrichment for Security Teams
+### Log Enrichment for Security Teams
 
 Security engineers frequently need to enrich raw server logs with geolocation and threat context before investigating alerts. Instead of building a Python script that loops over IPs and calls the API, you can use Steampipe to pull location and threat signals alongside your internal log data.
 
@@ -492,7 +492,7 @@ In a single query you get the country, the ISP, VPN and Tor flags, a threat scor
 
 ---
 
-### 2. Threat Triage for SOC Analysts
+### Threat Triage for SOC Analysts
 
 When working a security incident, analysts often need to triage a list of IPs quickly. This use case shows how to enrich a set of IPs flagged by your SIEM or IDS.
 
@@ -532,7 +532,7 @@ Sort by `threat_score` descending to prioritize the most suspicious IPs first.
 
 ---
 
-### 3. Compliance Audits for Restricted Jurisdictions
+### Compliance Audits for Restricted Jurisdictions
 
 If your service has geographic access restrictions (sanctions compliance, licensing rules, or regional regulations), you can use Steampipe to audit specific IPs and confirm whether they fall inside or outside permitted regions.
 
@@ -556,7 +556,7 @@ If the query returns no rows, the IP is from a restricted country. You can adapt
 
 ---
 
-### 4. Infrastructure Inventory and Network Mapping
+### Infrastructure Inventory and Network Mapping
 
 DevOps and network teams can use the ASN table to map out the ownership and routing of IPs across their cloud infrastructure or third-party vendor networks.
 
@@ -581,7 +581,7 @@ Use the `type` field to distinguish between hosting provider IPs (`HOSTING`), IS
 
 ---
 
-### 5. Abuse Reporting Workflow
+### Abuse Reporting Workflow
 
 When you detect malicious traffic from an IP, you need to report it to the right abuse contact. This query gives you everything needed to file a report: the IP's network block, the abuse email, and the responsible organization.
 
@@ -603,7 +603,7 @@ The `network` column returns the CIDR block that the IP belongs to, which is use
 
 ---
 
-### 6. Timezone Routing for Scheduled Jobs
+### Timezone Routing for Scheduled Jobs
 
 If you are building a scheduling system that needs to assign jobs based on a user's timezone, you can query the timezone data for their IP.
 
