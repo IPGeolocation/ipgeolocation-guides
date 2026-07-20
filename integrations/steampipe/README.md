@@ -388,10 +388,10 @@ where
 ```sql
 select
   ip,
-  abuse_email,
-  abuse_phone,
+  emails,
+  phone_numbers,
   organization,
-  network
+  route
 from
   ipgeolocation_abuse
 where
@@ -589,7 +589,7 @@ When you detect malicious traffic from an IP, you need to report it to the right
 select
   ip,
   organization,
-  network,
+  route,
   emails,
   phone_numbers,
   country
@@ -599,7 +599,7 @@ where
   ip = '45.142.212.100';
 ```
 
-The `network` column returns the CIDR block that the IP belongs to, which is useful when you want to report or block the entire range rather than just the single address.
+The `route` column returns the CIDR block that the IP belongs to, which is useful when you want to report or block the entire range rather than just the single address.
 
 ---
 
