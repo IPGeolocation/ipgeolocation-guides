@@ -20,7 +20,7 @@ Five transforms are registered against IPv4 entities. Each maps to a specific st
 |---|---|---|
 | IP to Threat Profile | Threat score (0–100), VPN/proxy/Tor/bot flags | Initial triage |
 | Enrich IPv4 Address | Country, city, coordinates, ISP, org name | Geographic context |
-| IP to Company Intel | Company name, domain, ASN, route, anycast status | Ownership attribution |
+| IP to Company Intel | Company name, domain and type | Ownership attribution |
 | IP to ASN | ASN number, org, RIR details, route counts | Infrastructure grouping |
 | IP to Abuse Contact | Abuse email, phone, org, registered address | Incident reporting |
 
@@ -139,14 +139,11 @@ This transform adds geographic and network context that Maltego doesn't provide 
 
 ### IP to Company Intel
 
-Company attribution helps you understand who actually controls an IP address — not just who hosts it.
+Company attribution helps you understand who actually controls an IP address.
 
 **Returned Data:**
-- **Company name and type** – Organization name with classification (ISP, hosting, business, etc.)
+- **Company name and type** – Company name with classification (ISP, hosting, business, etc, when available)
 - **Domain** – Associated domain when available
-- **ASN** – Full ASN record
-- **Network route** – CIDR block containing the IP
-- **Anycast status** – Whether the IP uses anycast routing
 
 ![IP to Company Intel](https://static.ipgeolocation.io/web-assets/images/integrations/maltego/ip-to-company-intel.png)
 
@@ -154,7 +151,7 @@ Company attribution helps you understand who actually controls an IP address —
 
 ### IP to ASN
 
-Autonomous System data provides network-level context that's essential for infrastructure analysis.
+Autonomous System data provides full network-level context that's essential for infrastructure analysis.
 
 **Returned Data:**
 - **ASN number and name** – Standard ASN identifier and registered name
@@ -228,7 +225,7 @@ These workflows show how to chain transforms together for real investigative sce
 
 This is the most common issue and has a few distinct causes.
 
-**Plan restriction** — Three transforms (IP to Threat Profile, IP to ASN, IP to Abuse Contact) are unavailable on the Developer (free) plan. When called, they fail silently — no error is shown and no entities are added to the graph. Check the [plan comparison table](#transforms-availability-across-our-plans) and verify your subscription in the [dashboard](https://app.ipgeolocation.io/dashboard).
+**Plan restriction** — Four transforms (IP to Threat Profile, IP to ASN, IP to Abuse Contact, IP to Company Intel ) are unavailable on the Developer (free) plan. When called, they fail silently — no error is shown and no entities are added to the graph. Check the [plan comparison table](#transforms-availability-across-our-plans) and verify your subscription in the [dashboard](https://app.ipgeolocation.io/dashboard).
 
 **Invalid or missing API key** — If your API key is not configured correctly in Maltego's transform settings, all transforms will return empty results with 401 status code, you can see in the output window of the transform.
 
