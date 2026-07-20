@@ -19,12 +19,12 @@ The integration includes **12 Action Modules**, grouped into 6 core categories:
 
 | **Category** | **Modules** |
 | --- | --- |
-| **Geolocation** | Single IP Lookup, Bulk IP Lookup |
-| **IP Security** | IP Security Lookup, Bulk IP Security Lookup |
-| **Network Intelligence** | ASN Lookup, Abuse Contact Lookup |
-| **Time Services** | Timezone Information, Time Conversion |
-| **Astronomy** | Astronomy Details, Astronomy Time Series |
-| **User-Agent Parsing** | Single Parsing, Bulk Parsing |
+| **Geolocation** | Find Geolocation Information, Find Bulk IP Geolocation |
+| **IP Security** | Find IP Security, Find Bulk IP Security |
+| **Network Intelligence** | Find ASN Information, Find Abuse Information |
+| **Time Services** | Find Timezone Information, Find Time Conversion |
+| **Astronomy** | Find Astronomy Information, Find Astronomy Timeseries Information |
+| **User-Agent Parsing** | Find User Agent, Find Bulk User Agents |
 
 ## API Key & Connection Setup
 
