@@ -96,7 +96,7 @@ A Geo Redirect Rule allows you to redirect visitors based on their country. When
 **Redirect URL**
 
 - The destination URL where matching visitors will be redirected
-- Supports both relative (**/example**) and absolute URLs
+- Supports relative (**/example**) URLs
 
 **Redirect Type**
 
