@@ -89,7 +89,7 @@ We offer **two API plans**: **Developer**, **Paid**. The transform availability 
 |---|---|---|
 | **IP to Threat Profile** | ✖ | ✔ |
 | **Enrich IPv4 Address** | ✔ | ✔ |
-| **IP to Company Intel** | ✔ | ✔ |
+| **IP to Company Intel** | ✖ | ✔ |
 | **IP to ASN** | ✖ | ✔ |
 | **IP to Abuse Contact** | ✖ | ✔ |
 
