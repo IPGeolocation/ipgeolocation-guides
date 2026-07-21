@@ -266,10 +266,10 @@ Returns the abuse contact information for an IP address. This is the contact det
 ```sql
 select
   ip,
-  abuse_email,
-  abuse_phone,
+  emails,
+  phone_numbers,
   organization,
-  network
+  route
 from
   ipgeolocation_abuse
 where
