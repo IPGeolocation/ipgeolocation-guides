@@ -105,7 +105,7 @@ from ipgeolocation_ip
 where ip = '8.8.8.8';
 ```
 
-If you see a row with Google's ASN details and geolocation for `8.8.8.8`, the plugin is configured correctly.
+If you see a row for 8.8.8.8 containing its geolocation and company information, the plugin is configured correctly.
 
 ---
 
