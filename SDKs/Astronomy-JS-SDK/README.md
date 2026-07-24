@@ -14,6 +14,8 @@ Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period
    - [Get Astronomical Information for Location Coordinates](#get-astronomical-information-for-location-coordinates)
    - [Get Astronomical Information for an IP Address](#get-astronomical-information-for-an-ip-address)
    - [Get Astronomical Information for a Specific Date](#get-astronomical-information-for-a-specific-date)
+   - [Get Astronomical Event Times in a Specific Time Zone](#get-astronomical-event-times-in-a-specific-time-zone)
+   - [Get Astronomical Information for a Date Range](#get-astronomical-information-for-a-date-range)
 7. [Error Handling](#error-handling)
 
 ## Requirements
@@ -31,7 +33,7 @@ Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period
 ## Installation
 To access this service, add the following Javascript call (usually within `head` block of your pages).
 ```html
-<script language="JavaScript" src="https://static.ipgeolocation.io/astronomy-api-plugin.js" type="text/javascript"></script>
+<script language="JavaScript" src="https://static.ipgeolocation.io/astronomy-api-plugin.v3.0.0.js" type="text/javascript"></script>
 ```
 
 > [!NOTE]
@@ -42,13 +44,20 @@ To instantiate the AstronomyAPI, you can use the following configuration options
 - `apiKey (optional: string)`: API key used for request authentication. This field is mandatory unless you have added your request origin in the dashboard, in which case it becomes optional.
 - `ipAddress (optional: string)`: Specify an IP address for which you want the astronomical information. If not provided, the client’s IP address is used by default.
 - `location (optional: string)`: Specify the location for which you want the astronomical information.
-- `Coordinates (optional: string)`: Specify the location coordinates for which you want the astronomical information.
-- `date (optional: string)`: Specify the date for which you want the astronomical information. You can pass this along with other parameters (ipAddress, location, coordinates)
-- `lang (optional: boolean)`: Language of the response. Default is en. Supported languages include: ru, de, ja, fr, cn, es, cs, it, fa, ko.
-- `saveToSessionStorage (optional: boolean)`: Saves geolocation data to session storage for temporary use.
+- `lat (optional: number)`: Latitude of the location. Provide together with `long`.
+- `long (optional: number)`: Longitude of the location. Provide together with `lat`.
+- `elevation (optional: number)`: Elevation of the location in meters. The maximum supported value is 10,000 meters.
+- `date (optional: string)`: Date for a single lookup in YYYY-MM-DD format. You can pass it with `ipAddress`, `location`, or `lat` and `long`.
+- `timeZone (optional: string)`: IANA time zone, such as `Europe/London`, used to convert returned event times.
+- `dateStart (optional: string)`: Start date for a time-series lookup in YYYY-MM-DD format.
+- `dateEnd (optional: string)`: End date for a time-series lookup in YYYY-MM-DD format. The maximum time-series range is 90 days.
+- `lang (optional: string)`: Language of the response. Default is en. Supported languages include: ru, de, ja, fr, cn, es, cs, it, fa, ko, pt, ar.
+- `saveToSessionStorage (optional: boolean)`: Caches successful responses in session storage for the current browser tab. Cache entries are specific to the lookup parameters.
 
 > [!TIP]
 > For detailed documentation for the Astronomy API, please visit [https://ipgeolocation.io/astronomy-api.html#documentation-overview](https://ipgeolocation.io/astronomy-api.html#documentation-overview).
+
+Use `getAstronomy()` for a single-date lookup. Use `getAstronomyTimeSeries()` with `dateStart` and `dateEnd` for a date range.
 
 ## Code Examples
 ### Get Astronomical Information for a specific location
@@ -75,33 +84,63 @@ Sample Response:
 {
   "location": {
     "location_string": "New York, US",
-    "country": "United States",
-    "state": "New York",
+    "country_name": "United States",
+    "state_prov": "New York",
     "city": "New York",
     "locality": "Clinton",
-    "latitude": 40.76473335,
-    "longitude": -74.00083980660943
+    "latitude": "40.76473",
+    "longitude": "-74.00084",
+    "elevation": "9"
   },
-  "date": "2024-11-04",
-  "current_time": "08:13:22.978",
-  "sunrise": "06:30",
-  "sunset": "16:48",
-  "sun_status": "-",
-  "solar_noon": "11:39",
-  "day_length": "10:18",
-  "sun_altitude": 16.120293371563754,
-  "sun_distance": 148361706.39355108,
-  "sun_azimuth": 128.26575101712496,
-  "moonrise": "09:49",
-  "moonset": "18:29",
-  "moon_status": "-",
-  "moon_altitude": -14.81836182838389,
-  "moon_distance": 396331.25698682835,
-  "moon_azimuth": 113.85094239453929,
-  "moon_parallactic_angle": -51.40390182984849,
-  "moon_phase": "WAXING_CRESCENT",
-  "moon_illumination_percentage": "8.43",
-  "moon_angle": 33.74826084504092
+  "astronomy": {
+    "date": "2024-11-04",
+    "current_time": "08:12:44.883",
+    "mid_night": "23:39",
+    "night_end": "04:57",
+    "morning": {
+      "astronomical_twilight_begin": "04:57",
+      "astronomical_twilight_end": "05:29",
+      "nautical_twilight_begin": "05:29",
+      "nautical_twilight_end": "06:01",
+      "civil_twilight_begin": "06:01",
+      "civil_twilight_end": "06:30",
+      "blue_hour_begin": "05:51",
+      "blue_hour_end": "06:13",
+      "golden_hour_begin": "06:13",
+      "golden_hour_end": "07:10"
+    },
+    "sunrise": "06:30",
+    "sunset": "16:48",
+    "evening": {
+      "golden_hour_begin": "16:08",
+      "golden_hour_end": "17:05",
+      "blue_hour_begin": "17:05",
+      "blue_hour_end": "17:27",
+      "civil_twilight_begin": "16:48",
+      "civil_twilight_end": "17:16",
+      "nautical_twilight_begin": "17:16",
+      "nautical_twilight_end": "17:49",
+      "astronomical_twilight_begin": "17:49",
+      "astronomical_twilight_end": "18:21"
+    },
+    "night_begin": "18:21",
+    "sun_status": "-",
+    "solar_noon": "11:39",
+    "day_length": "10:18",
+    "sun_altitude": 16.025928084156632,
+    "sun_distance": 148361706.3935511,
+    "sun_azimuth": 128.14060120476182,
+    "moon_phase": "WAXING_CRESCENT",
+    "moonrise": "09:48",
+    "moonset": "18:29",
+    "moon_status": "-",
+    "moon_altitude": -14.923954777733469,
+    "moon_distance": 396332.621613144,
+    "moon_azimuth": 113.76283054867883,
+    "moon_parallactic_angle": -51.452160801531605,
+    "moon_illumination_percentage": "8.42",
+    "moon_angle": 33.74321660247666
+  }
 }
 ```
 If there is some error while fetching the response from the API, following response will be returned, so handle it accordingly:
@@ -202,7 +241,7 @@ Sample Response:
     (async () => {
         const astronomyAPI = new AstronomyAPI({
             apiKey: "YOUR_API_KEY",
-            ip: "8.8.8.8"
+            ipAddress: "8.8.8.8"
         });
 
         const resp = await astronomyAPI.getAstronomy();
@@ -295,7 +334,7 @@ Sample Response:
     (async () => {
         const astronomyAPI = new AstronomyAPI({
             apiKey: "YOUR_API_KEY",
-            location: "New York, US"
+            location: "New York, US",
             date: "2024-11-04"
         });
 
@@ -322,59 +361,186 @@ Sample Response:
     "elevation": "9"
   },
   "astronomy": {
-    "date": "2026-01-01",
-    "current_time": "10:21:09.529",
-    "mid_night": "23:59",
-    "night_end": "05:41",
+    "date": "2024-11-04",
+    "current_time": "08:12:44.883",
+    "mid_night": "23:39",
+    "night_end": "04:57",
     "morning": {
-      "astronomical_twilight_begin": "05:41",
-      "astronomical_twilight_end": "06:15",
-      "nautical_twilight_begin": "06:15",
-      "nautical_twilight_end": "06:49",
-      "civil_twilight_begin": "06:49",
-      "civil_twilight_end": "07:19",
-      "blue_hour_begin": "06:37",
-      "blue_hour_end": "07:01",
-      "golden_hour_begin": "07:01",
-      "golden_hour_end": "08:03"
+      "astronomical_twilight_begin": "04:57",
+      "astronomical_twilight_end": "05:29",
+      "nautical_twilight_begin": "05:29",
+      "nautical_twilight_end": "06:01",
+      "civil_twilight_begin": "06:01",
+      "civil_twilight_end": "06:30",
+      "blue_hour_begin": "05:51",
+      "blue_hour_end": "06:13",
+      "golden_hour_begin": "06:13",
+      "golden_hour_end": "07:10"
     },
-    "sunrise": "07:19",
-    "sunset": "16:40",
+    "sunrise": "06:30",
+    "sunset": "16:48",
     "evening": {
-      "golden_hour_begin": "15:55",
-      "golden_hour_end": "16:58",
-      "blue_hour_begin": "16:58",
-      "blue_hour_end": "17:21",
-      "civil_twilight_begin": "16:40",
-      "civil_twilight_end": "17:10",
-      "nautical_twilight_begin": "17:10",
-      "nautical_twilight_end": "17:44",
-      "astronomical_twilight_begin": "17:44",
-      "astronomical_twilight_end": "18:17"
+      "golden_hour_begin": "16:08",
+      "golden_hour_end": "17:05",
+      "blue_hour_begin": "17:05",
+      "blue_hour_end": "17:27",
+      "civil_twilight_begin": "16:48",
+      "civil_twilight_end": "17:16",
+      "nautical_twilight_begin": "17:16",
+      "nautical_twilight_end": "17:49",
+      "astronomical_twilight_begin": "17:49",
+      "astronomical_twilight_end": "18:21"
     },
-    "night_begin": "18:17",
+    "night_begin": "18:21",
     "sun_status": "-",
-    "solar_noon": "11:59",
-    "day_length": "09:20",
-    "sun_altitude": 22.285602788421738,
-    "sun_distance": 147102938.88036564,
-    "sun_azimuth": 155.50096343869086,
-    "moon_phase": "WAXING_GIBBOUS",
-    "moonrise": "14:31",
-    "moonset": "05:42",
+    "solar_noon": "11:39",
+    "day_length": "10:18",
+    "sun_altitude": 16.025928084156632,
+    "sun_distance": 148361706.3935511,
+    "sun_azimuth": 128.14060120476182,
+    "moon_phase": "WAXING_CRESCENT",
+    "moonrise": "09:48",
+    "moonset": "18:29",
     "moon_status": "-",
-    "moon_altitude": -21.431610505859357,
-    "moon_distance": 360835.8162008277,
-    "moon_azimuth": 2.859017413960146,
-    "moon_parallactic_angle": -2.4464836911657195,
-    "moon_illumination_percentage": "95.35",
-    "moon_angle": 155.1019848933602
+    "moon_altitude": -14.923954777733469,
+    "moon_distance": 396332.621613144,
+    "moon_azimuth": 113.76283054867883,
+    "moon_parallactic_angle": -51.452160801531605,
+    "moon_illumination_percentage": "8.42",
+    "moon_angle": 33.74321660247666
   }
 }
 ```
 
+### Return Astronomical Event Times in a Specific Time Zone
+The API performs the astronomical calculation for the resolved location and converts event times to the requested time zone. Converted events include a date because some events can fall on the previous or next calendar day.
+
+```html
+<script>
+    (async () => {
+        const astronomyAPI = new AstronomyAPI({
+            apiKey: "YOUR_API_KEY",
+            ipAddress: "115.186.118.130",
+            date: "2026-03-07",
+            timeZone: "Europe/London"
+        });
+
+        const resp = await astronomyAPI.getAstronomy();
+
+        if (!resp.error_message) {
+            console.log(resp.astronomy.time_zone);
+            console.log(resp.astronomy.sunrise);
+        } else {
+            console.log("Something went wrong while fetching data", resp);
+        }
+    })();
+</script>
+```
+Sample Response (excerpt):
+```json
+{
+  "location": {
+    "country_name": "Pakistan",
+    "state_prov": "Punjab",
+    "city": "Faisalabad",
+    "latitude": "31.45037",
+    "longitude": "73.13496",
+    "elevation": "190"
+  },
+  "astronomy": {
+    "time_zone": "Europe/London",
+    "date": "2026-03-07",
+    "sunrise": "2026-03-07 01:25",
+    "sunset": "2026-03-07 13:11",
+    "solar_noon": "2026-03-07 07:18"
+  }
+}
+```
+
+### Get Astronomical Information for a Date Range
+Use `getAstronomyTimeSeries()` to retrieve daily Sun and Moon events for up to 90 days. In a time-series response, `astronomy` is an array. Date-level entries do not include current-time position fields such as `current_time`, `sun_altitude`, or `moon_altitude`.
+
+```html
+<script>
+    (async () => {
+        const astronomyAPI = new AstronomyAPI({
+            apiKey: "YOUR_API_KEY",
+            lat: 40.76473,
+            long: -74.00084,
+            dateStart: "2025-06-16",
+            dateEnd: "2025-06-18"
+        });
+
+        const resp = await astronomyAPI.getAstronomyTimeSeries();
+
+        if (!resp.error_message) {
+            resp.astronomy.forEach((day) => {
+                console.log(day.date, day.sunrise, day.sunset);
+            });
+        } else {
+            console.log("Something went wrong while fetching data", resp);
+        }
+    })();
+</script>
+```
+Sample Response (excerpt):
+```json
+{
+  "location": {
+    "latitude": "40.76473",
+    "longitude": "-74.00084",
+    "country_name": "United States",
+    "state_prov": "New York",
+    "city": "New York",
+    "locality": "Midtown West",
+    "elevation": "9"
+  },
+  "astronomy": [
+    {
+      "date": "2025-06-16",
+      "mid_night": "00:56",
+      "night_end": "03:18",
+      "morning": {
+        "astronomical_twilight_begin": "03:18",
+        "astronomical_twilight_end": "04:08",
+        "nautical_twilight_begin": "04:08",
+        "nautical_twilight_end": "04:50",
+        "civil_twilight_begin": "04:50",
+        "civil_twilight_end": "05:23",
+        "blue_hour_begin": "04:37",
+        "blue_hour_end": "05:04",
+        "golden_hour_begin": "05:04",
+        "golden_hour_end": "06:05"
+      },
+      "sunrise": "05:23",
+      "sunset": "20:30",
+      "evening": {
+        "golden_hour_begin": "19:48",
+        "golden_hour_end": "20:49",
+        "blue_hour_begin": "20:49",
+        "blue_hour_end": "21:16",
+        "civil_twilight_begin": "20:30",
+        "civil_twilight_end": "21:03",
+        "nautical_twilight_begin": "21:03",
+        "nautical_twilight_end": "21:45",
+        "astronomical_twilight_begin": "21:45",
+        "astronomical_twilight_end": "22:36"
+      },
+      "night_begin": "22:36",
+      "sun_status": "-",
+      "solar_noon": "12:56",
+      "day_length": "15:06",
+      "moon_phase": "WANING_GIBBOUS",
+      "moonrise": "-:-",
+      "moonset": "10:28",
+      "moon_status": "-"
+    }
+  ]
+}
+```
+
 ## Error Handling
-Inspect the status field in the response to detect any errors. A missing status field typically indicates a successful request, while its presence signals an issue. For example, if you are trying to fetch the data for a location that does not exist, you will get the following error response:
+Inspect the error_status field in the response to detect any errors. A missing error_status field typically indicates a successful request, while its presence signals an issue. HTTP errors return the API status code. Network and response parsing failures return `error_status: 0`. For example, if you are trying to fetch data using invalid coordinates, you will get the following error response:
 
 ```html
 <script>
