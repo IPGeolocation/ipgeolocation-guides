@@ -6,6 +6,8 @@ Product page: <https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html>
 
 Blocklists miss residential proxies, because those IPs belong to ordinary consumer ISPs and look clean. This runs at request time and watches how the connection actually behaves, so it catches anonymization no list has caught yet, and it gives you graded scores instead of a bare yes or no.
 
+> **Note:** This is a lightweight client side script, much like a CAPTCHA widget. Because it runs live tests on the connection instead of just database lookup, a verdict takes a few seconds. Start it early and ask for the result at your decision point, and never hold up your initial render waiting on it.
+
 ---
 
 ## 1. Setup
@@ -88,57 +90,6 @@ Two things to keep in mind. Tune these numbers against your own confirmed fraud 
 ---
 
 ## 5. Full response when `includeIPSecurity` is `true`
-
-### `security` is the block that matters
-
-It holds the threat score, the anonymizer type and the name of the VPN or proxy provider. Everything else in `ip_security` is context around it, so if you read one block, read this one.
-
-```json
-"security": {
-  "threat_score": 90,
-  "is_tor": false,
-  "is_proxy": false,
-  "proxy_provider_names": [],
-  "proxy_confidence_score": 0,
-  "proxy_last_seen": "",
-  "is_residential_proxy": false,
-  "is_vpn": true,
-  "vpn_provider_names": ["Browsec VPN"],
-  "vpn_confidence_score": 80,
-  "vpn_last_seen": "2026-06-25",
-  "is_relay": false,
-  "relay_provider_name": "",
-  "is_anonymous": true,
-  "is_known_attacker": true,
-  "is_bot": false,
-  "is_spam": true,
-  "is_cloud_provider": true,
-  "cloud_provider_name": "SIA Digitalas Ekonomikas Attistibas Centrs"
-}
-```
-
-| Field | Why it matters |
-|---|---|
-| **`threat_score`** (0 to 100) | The most useful single number in the response. Treat `>= 70` as strong corroboration for any anonymization verdict. |
-| **`is_vpn`**, **`is_proxy`**, **`is_residential_proxy`**, **`is_relay`**, **`is_tor`** | The anonymizer type, as five separate booleans instead of one label. This is how you split VPN handling from proxy handling, and `is_residential_proxy` is the one most worth its own rule, since residential proxies correlate with abuse far more than a commercial VPN does. |
-| **`vpn_provider_names`**, **`proxy_provider_names`** | Arrays of named services, for example `["Browsec VPN"]`. Lets you allow a corporate VPN you recognize, block a provider you keep seeing in confirmed fraud, and tell a support agent exactly what the user is on. Empty when nothing is identified. |
-| **`vpn_confidence_score`**, **`proxy_confidence_score`** | How sure the database is about that VPN or proxy classification, 0 to 100. Separate from the live `confidence` field in `live_vpn_proxy_detection`, which is about the live verdict. |
-| `vpn_last_seen`, `proxy_last_seen` | Date the IP was last observed acting as a VPN or proxy, for example `2026-06-25`. A recent date makes the listing stronger evidence, an old one makes it weaker. Empty when never seen. |
-| `relay_provider_name` | The named relay service when `is_relay` is `true`. Empty otherwise. |
-| `is_known_attacker`, `is_spam`, `is_bot` | Hard evidence of past abuse. `is_known_attacker` is strong enough to act on by itself. |
-| `is_cloud_provider`, `cloud_provider_name` | A hosting network rather than a consumer ISP. Very common for VPN exit nodes, and a poor fit for a genuine retail customer. |
-| `is_anonymous` | The database view of the IP. |
-
-```js
-const sec = result.ip_security?.security;
-sec.threat_score;           // 90
-sec.is_vpn;                 // true
-sec.vpn_provider_names;     // ["Browsec VPN"]
-sec.vpn_confidence_score;   // 80
-sec.vpn_last_seen;          // "2026-06-25"
-```
-
-**There are two `is_anonymous` fields, and the pair is useful.** `live_vpn_proxy_detection.is_anonymous` is the live view. `ip_security.security.is_anonymous` is the IP reputation database view. Both `true` gives you strong corroboration. Database only means the IP is listed but may not be anonymizing right now. Live only means anonymization no blocklist has caught yet, which is the residential proxy case and the whole reason this product exists.
 
 ### The complete response
 
@@ -239,8 +190,35 @@ sec.vpn_last_seen;          // "2026-06-25"
 | `currency` | `code`, `name`, `symbol` |
 | `asn` | `as_number`, `organization`, `country`, `type`, `domain`, `date_allocated`, `rir` |
 | `company` | `name`, `type`, `domain` |
-| `security` | The risk block. See above. |
+| `security` | The risk block. See below. |
 | `time_zone` | `name`, `offset`, `current_time`, DST fields |
+
+### `security` is the block that matters
+
+It holds the threat score, the anonymizer flags and the name of the VPN or proxy provider. Everything else in `ip_security` is context around it, so if you read one block, read this one.
+
+| Field | Why it matters |
+|---|---|
+| **`threat_score`** (0 to 100) | The most useful single number in the response. Treat `>= 70` as strong corroboration for any anonymization verdict. |
+| **`is_vpn`**, **`is_proxy`**, **`is_residential_proxy`**, **`is_relay`**, **`is_tor`** | The anonymizer type, as five separate booleans instead of one label. This is how you split VPN handling from proxy handling, and `is_residential_proxy` is the one most worth its own rule, since residential proxies correlate with abuse far more than a commercial VPN does. |
+| **`vpn_provider_names`**, **`proxy_provider_names`** | Arrays of named services, for example `["Browsec VPN"]`. Lets you allow a corporate VPN you recognize, block a provider you keep seeing in confirmed fraud, and tell a support agent exactly what the user is on. Empty when nothing is identified. |
+| **`vpn_confidence_score`**, **`proxy_confidence_score`** | How sure the database is about that VPN or proxy classification, 0 to 100. Separate from the live `confidence` field in `live_vpn_proxy_detection`, which is about the live verdict. |
+| `vpn_last_seen`, `proxy_last_seen` | Date the IP was last observed acting as a VPN or proxy, for example `2026-06-25`. A recent date makes the listing stronger evidence, an old one makes it weaker. Empty when never seen. |
+| `relay_provider_name` | The named relay service when `is_relay` is `true`. Empty otherwise. |
+| `is_known_attacker`, `is_spam`, `is_bot` | Hard evidence of past abuse. `is_known_attacker` is strong enough to act on by itself. |
+| `is_cloud_provider`, `cloud_provider_name` | A hosting network rather than a consumer ISP. Very common for VPN exit nodes, and a poor fit for a genuine retail customer. |
+| `is_anonymous` | The database view of the IP. |
+
+```js
+const sec = result.ip_security?.security;
+sec.threat_score;           // 90
+sec.is_vpn;                 // true
+sec.vpn_provider_names;     // ["Browsec VPN"]
+sec.vpn_confidence_score;   // 80
+sec.vpn_last_seen;          // "2026-06-25"
+```
+
+**There are two `is_anonymous` fields, and the pair is useful.** `live_vpn_proxy_detection.is_anonymous` is the live view. `ip_security.security.is_anonymous` is the IP reputation database view. Both `true` gives you strong corroboration. Database only means the IP is listed but may not be anonymizing right now. Live only means anonymization no blocklist has caught yet, which is the residential proxy case and the whole reason this product exists.
 
 ### Reading that example
 
