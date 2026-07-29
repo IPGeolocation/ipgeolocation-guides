@@ -91,6 +91,8 @@ Two things to keep in mind. Tune these numbers against your own confirmed fraud 
 
 ## 5. Full response when `includeIPSecurity` is `true`
 
+Setting the flag to `true` enriches the live verdict with an `ip_security` object, resolved from our IP intelligence database in the same round trip. That lookup supplies the reputation and risk signals for the address, together with contextual geolocation, network, ASN, company, currency and timezone data. The two halves answer different questions: `live_vpn_proxy_detection` describes how the connection behaves right now, while `ip_security` describes what is already known about the address it arrives from.
+
 ### The complete response
 
 ```json
@@ -196,6 +198,30 @@ Two things to keep in mind. Tune these numbers against your own confirmed fraud 
 ### `security` is the block that matters
 
 It holds the threat score, the anonymizer flags and the name of the VPN or proxy provider. Everything else in `ip_security` is context around it, so if you read one block, read this one.
+
+```json
+"security": {
+  "threat_score": 90,
+  "is_tor": false,
+  "is_proxy": false,
+  "proxy_provider_names": [],
+  "proxy_confidence_score": 0,
+  "proxy_last_seen": "",
+  "is_residential_proxy": false,
+  "is_vpn": true,
+  "vpn_provider_names": ["Browsec VPN"],
+  "vpn_confidence_score": 80,
+  "vpn_last_seen": "2026-06-25",
+  "is_relay": false,
+  "relay_provider_name": "",
+  "is_anonymous": true,
+  "is_known_attacker": true,
+  "is_bot": false,
+  "is_spam": true,
+  "is_cloud_provider": true,
+  "cloud_provider_name": "SIA Digitalas Ekonomikas Attistibas Centrs"
+}
+```
 
 | Field | Why it matters |
 |---|---|
