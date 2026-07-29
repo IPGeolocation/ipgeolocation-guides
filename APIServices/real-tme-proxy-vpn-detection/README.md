@@ -80,7 +80,7 @@ This is the part worth getting right. When `is_anonymous` is `true`, `confidence
 | **Below 30** | Very weak signal. Expect false positives in this band. | **Allow.** Log the result for later analysis, add nothing to the user's path. Do not challenge on this alone. |
 | **30 to 50** | Uncertain. Could easily be an unusual network, a mobile carrier or a corporate gateway. | **Allow and monitor.** Let the action through, tag the session as slightly elevated risk, feed it into your wider risk score. Add friction only if another signal agrees, such as a brand new account or a mismatched billing country. |
 | **51 to 80** | Likely anonymized. Enough for friction, not enough for a hard denial on its own. | **Challenge.** MFA, email or SMS verification, or a CAPTCHA. On payouts and first orders, hold for manual review instead of denying outright. |
-| **81 and above** | Confidently anonymized. | **Block or restrict**, with the score type deciding how hard. High `proxy_score` means treat it as abuse: block, or hold the order and send it to review. High `vpn_score` usually deserves a hard challenge instead, since plenty of ordinary people browse through a VPN. Go to an outright block when a second signal backs it up, such as `threat_score >= 70`, `is_known_attacker` or `is_bot`. |
+| **81 and above** | Confidently anonymized. | **Block or restrict**, with the score type deciding how hard. High `proxy_score` usually means abuse: block, or hold the order and send it to review. High `vpn_score` deserves a hard challenge instead, since plenty of ordinary people browse through a VPN. Two caveats: a high `proxy_score` next to a named consumer VPN in `vpn_provider_names` is not automatically abuse, since it can come from a browser extension, a desktop or CLI client, or a residential proxy (see section 5), and an outright block is safest when a second signal backs it up, such as `threat_score >= 70`, `is_known_attacker` or `is_bot`. |
 
 Two things to keep in mind. Tune these numbers against your own confirmed fraud data, because the right cutoff depends on your traffic and on how much a false positive costs you. And since `confidence` describes certainty about `is_anonymous`, these bands apply only when `is_anonymous` is `true`. High confidence with `is_anonymous: false` is a clean visitor, not a risky one.
 
@@ -246,22 +246,20 @@ sec.vpn_last_seen;          // "2026-06-25"
 
 Almost every signal points the same way, which makes it a good case to walk through.
 
-`confidence: 100` puts it in the 81 and above band immediately, and `proxy_score: 100` says treat it as proxy abuse rather than a VPN inconvenience. The `security` block backs that up hard: `threat_score: 90`, a known attacker, spam history, a hosting network, and a named VPN endpoint (Browsec VPN, `vpn_confidence_score: 80`, last seen `2026-06-25`).
+`confidence: 100` puts it in the 81 and above band immediately. The `security` block is what turns that into a block rather than a challenge: `threat_score: 90`, a known attacker, spam history, a hosting network, and a named VPN endpoint (Browsec VPN, `vpn_confidence_score: 80`, last seen `2026-06-25`).
 
 Two details worth noticing:
 
 - **`location` says Frankfurt, Germany while `asn.country` is `LV`** and the AS belongs to a Latvian hosting company. A hosting ASN in one country geolocating to a datacenter city in another is a classic VPN exit node fingerprint, so do not treat Germany as where this user actually is.
 - **The live scores and the database disagree on the type.** Live says `proxy_score: 100`, the database says `is_vpn: true` with `is_proxy: false`. That is not a contradiction, and you take the higher risk reading of the two.
 
-> **Why a VPN service shows up as a proxy connection.** Browsec is sold as a VPN and the IP is listed as one, yet our live network tests see a proxy connection. That is normal, and it is worth understanding because you will meet it often.
+> **Why a VPN service shows up as a proxy connection.** Browsec is sold as a VPN and listed as one, yet connecting through its browser extension makes our live tests see a proxy. That is normal, and you will meet it often.
 >
-> A browser extension cannot open an operating system level tunnel. It has no way to install a virtual network adapter or capture traffic from the whole machine, and the only network hook browsers expose to an extension is the browser's own proxy configuration. So a "browser VPN" is, at the transport level, an encrypted proxy that carries browser traffic only. Our tests measure how the connection behaves rather than what it is marketed as, which is why `proxy_score` goes to 100 while `vpn_score` stays moderate.
+> A browser extension cannot open an operating system level tunnel, because it cannot install a virtual network adapter, so the only hook it has is the browser's proxy configuration. That shows up in the protocol: extensions speak proxy protocols (HTTP or HTTPS `CONNECT`, SOCKS4 and SOCKS5), while desktop and mobile apps speak real VPN protocols (OpenVPN, IKEv2/IPsec, WireGuard). The two look nothing alike on the wire, so a live test separates them even within one brand.
 >
-> It comes down to the protocol. Extensions speak proxy protocols, meaning HTTP or HTTPS `CONNECT` and SOCKS4 or SOCKS5, because that is all the browser can be pointed at. Desktop and mobile apps speak real VPN protocols such as OpenVPN, IKEv2/IPsec and WireGuard, which need a virtual adapter and system level privileges. Those two families look completely different on the wire, so a live test can tell them apart even when both belong to the same brand.
+> Providers ship extensions anyway because they install in one click with no admin rights or driver, work on locked down and ChromeOS machines, leave other applications untouched, and allow per site routing a full device tunnel cannot. "VPN" is what users search for, so the whole product line gets that name.
 >
-> Anonymization providers ship it this way deliberately. An extension installs in one click with no admin rights, no driver and no system change, so it works on locked down corporate machines and on ChromeOS. It leaves other applications untouched, and it allows per tab or per site routing that a full device tunnel cannot do. Many providers offer both, with the extension as a proxy and a separate desktop app as a real VPN. The word VPN is what users search for, so that is what the whole product line gets called.
->
-> The takeaway: read the live scores for how the connection behaves right now, and the provider fields for who owns the endpoint. Neither is wrong, they are answering different questions.
+> So read the live scores for how the connection behaves, and the provider fields for who owns the endpoint. Neither is wrong.
 
 Verdict: **block**, and log the payload so you can point at the specific reason if the user appeals.
 
@@ -294,11 +292,11 @@ Verdict: **block**, and log the payload so you can point at the specific reason 
 
 **Do `proxy_score` and `vpn_score` add up to 100?** No. They are independent likelihoods, so both can be high, and a 100 in one does not force a 0 in the other.
 
-**Why is `proxy_score` 100 when the `security` block says `is_vpn: true` and `is_proxy: false`?** The live scores describe how the connection behaves right now, while `is_vpn` and `vpn_provider_names` name the service that owns the endpoint. Traffic through a commercial VPN can behave like a proxy, especially on shared or chained exit nodes. When the two views differ, take the higher risk reading.
+**Why is `proxy_score` 100 when the `security` block says `is_vpn: true` and `is_proxy: false`?** The live scores describe how the connection behaves right now, while `is_vpn` and `vpn_provider_names` name the service that owns the endpoint. One common cause is a browser VPN extension, which is a proxy at the transport level, but the same reading can come from a desktop or CLI client or a residential proxy. See the note in section 5.
 
 **What is the difference between `confidence` and `vpn_confidence_score`?** `confidence` is certainty about the live `is_anonymous` verdict. `vpn_confidence_score` and `proxy_confidence_score` are how sure the IP reputation database is about its own VPN or proxy classification.
 
-**Should I block every anonymized user?** Usually not. Many are ordinary privacy conscious or corporate users, which is what the bands in section 5 are for.
+**Should I block every anonymized user?** Usually not. Many are ordinary privacy conscious or corporate users, which is what the bands in section 4 are for.
 
 **What about Tor?** `ip_security.security.is_tor` flags known Tor exit nodes when `includeIPSecurity` is `true`.
 
