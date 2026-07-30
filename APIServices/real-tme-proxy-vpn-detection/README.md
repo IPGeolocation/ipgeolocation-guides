@@ -34,7 +34,7 @@ The script runs in the browser and carries no API key. Requests are authorized b
             .startMonitoring(includeIPSecurity)
             .get()
             .then(result => console.log(result))
-            .catch(error => console.error(error));
+            .catch(error => console.error(error instanceof Error ? error.message : String(error)));
 </script>
 ```
 
