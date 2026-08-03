@@ -127,7 +127,7 @@ Setting the flag to `true` enriches the live verdict with an `ip_security` objec
 | `currency` | `code`, `name`, `symbol` |
 | `asn` | `as_number`, `organization`, `country`, `type`, `domain`, `date_allocated`, `rir` |
 | `company` | `name`, `type`, `domain` |
-| `security` | The risk block. See below. |
+| `security` | The risk block. See [`security` is the block that matters](#security-is-the-block-that-matters). |
 | `time_zone` | `name`, `offset`, `current_time`, DST fields |
 
 ### `security` is the block that matters
@@ -217,73 +217,61 @@ Verdict: **block**, and log the payload so you can point at the specific reason 
 
 <details>
 <summary><strong>Do I need an API key in the frontend?</strong></summary>
-
 No. Authorization is by origin, so there is no secret to leak.
 </details>
 
 <details>
 <summary><strong>Can I use this from a backend or a mobile app?</strong></summary>
-
-Not this script, it is browser only. Use the [IP Security API](https://ipgeolocation.io/ip-security-api.html) instead.
+Not this script, it is browser only. Use the <a href="https://ipgeolocation.io/ip-security-api.html">IP Security API</a> instead.
 </details>
 
 <details>
 <summary><strong>How often should I call it?</strong></summary>
-
 Once per meaningful action, not once per page view.
 </details>
 
 <details>
 <summary><strong>Does it detect residential proxies?</strong></summary>
-
 Yes, and that is the main reason it exists. Blocklists miss them because the IPs belong to ordinary consumer ISPs, while live analysis catches the anonymization itself.
 </details>
 
 <details>
-<summary><strong>Is <code>confidence</code> a risk score?</strong></summary>
-
-No, it is certainty about `is_anonymous`. Risk lives in `proxy_score`, `vpn_score` and `threat_score`.
+<summary><strong>Is confidence a risk score?</strong></summary>
+No, it is certainty about <code>is_anonymous</code>. Risk lives in <code>proxy_score</code>, <code>vpn_score</code> and <code>threat_score</code>.
 </details>
 
 <details>
-<summary><strong>Do <code>proxy_score</code> and <code>vpn_score</code> add up to 100?</strong></summary>
-
+<summary><strong>Do proxy_score and vpn_score add up to 100?</strong></summary>
 No. They are independent likelihoods, so both can be high, and a 100 in one does not force a 0 in the other.
 </details>
 
 <details>
-<summary><strong>Why is <code>proxy_score</code> 100 when the <code>security</code> block says <code>is_vpn: true</code> and <code>is_proxy: false</code>?</strong></summary>
-
-The live scores describe how the connection behaves right now, while `is_vpn` and `vpn_provider_names` name the service that owns the endpoint. One common cause is a browser VPN extension, which is a proxy at the transport level, but the same reading can come from a desktop or CLI client or a residential proxy. See the note in section 5.
+<summary><strong>Why is proxy_score 100 when the security block says is_vpn true and is_proxy false?</strong></summary>
+The live scores describe how the connection behaves right now, while <code>is_vpn</code> and <code>vpn_provider_names</code> name the service that owns the endpoint. One common cause is a browser VPN extension, which is a proxy at the transport level, but the same reading can come from a desktop or CLI client or a residential proxy. See the note in section 5.
 </details>
 
 <details>
-<summary><strong>What is the difference between <code>confidence</code> and <code>vpn_confidence_score</code>?</strong></summary>
-
-`confidence` is certainty about the live `is_anonymous` verdict. `vpn_confidence_score` and `proxy_confidence_score` are how sure the IP reputation database is about its own VPN or proxy classification.
+<summary><strong>What is the difference between confidence and vpn_confidence_score?</strong></summary>
+<code>confidence</code> is certainty about the live <code>is_anonymous</code> verdict. <code>vpn_confidence_score</code> and <code>proxy_confidence_score</code> are how sure the IP reputation database is about its own VPN or proxy classification.
 </details>
 
 <details>
 <summary><strong>Should I block every anonymized user?</strong></summary>
-
 Usually not. Many are ordinary privacy conscious or corporate users, which is what the bands in section 4 are for.
 </details>
 
 <details>
 <summary><strong>What about Tor?</strong></summary>
-
-`ip_security.security.is_tor` flags known Tor exit nodes when `includeIPSecurity` is `true`.
+<code>ip_security.security.is_tor</code> flags known Tor exit nodes when <code>includeIPSecurity</code> is <code>true</code>.
 </details>
 
 <details>
 <summary><strong>Will it slow down my page?</strong></summary>
-
-It is lightweight and promise based. Load it with `async` and never await a verdict during your initial render.
+It is lightweight and promise based. Load it with <code>async</code> and never await a verdict during your initial render.
 </details>
 
 <details>
 <summary><strong>Can users bypass it?</strong></summary>
-
 Client side code can always be tampered with, which is why the result should feed a server side decision alongside your own signals rather than being the decision.
 </details>
 
