@@ -411,4 +411,4 @@ The complete, untrimmed payload for `includeIPSecurity: true`, and the example [
 
 ---
 
-**Related:** [IP Security API](https://ipgeolocation.io/ip-security-api.html) · [Guides and SDKs](https://github.com/IPGeolocation/ipgeolocation-guides) · [Full documentation](https://ipgeolocation.io/documentation.html) · <support@ipgeolocation.io>
+**Related:** [IP Security API](https://ipgeolocation.io/ip-security-api.html) · [Full documentation](https://ipgeolocation.io/documentation.html) · <support@ipgeolocation.io>
