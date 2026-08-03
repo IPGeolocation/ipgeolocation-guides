@@ -8,7 +8,7 @@ Product page: <https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html>
 
 ---
 
-## 1. Setup
+## Setup
 
 The script runs in the browser and carries no API key. Requests are authorized by **origin** instead, so you have to register the domain you will call from as a **Request Origin** in your IPGeolocation dashboard before your first call works.
 
@@ -20,7 +20,7 @@ The script runs in the browser and carries no API key. Requests are authorized b
 
 ---
 
-## 2. Quick start
+## Quick start
 
 ```html
 <script src="https://static.ipgeolocation.io/web-assets/static/security/session-analysis.js"></script>
@@ -54,7 +54,7 @@ In plain words: this connection is not anonymized, and we are certain about it.
 
 ---
 
-## 3. `live_vpn_proxy_detection`
+## `live_vpn_proxy_detection`
 
 Always present. Four fields, and they are meant to be read together.
 
@@ -71,7 +71,7 @@ The two scores are independent likelihoods, not two halves of a split, so they d
 
 ---
 
-## 4. What to do at each confidence level
+## What to do at each confidence level
 
 This is the part worth getting right. When `is_anonymous` is `true`, `confidence` decides how much friction the user deserves. Blocking everything the service flags will cost you real customers, and ignoring the flag defeats the point of running the check, so work in bands.
 
@@ -89,7 +89,7 @@ Tune these numbers against your own confirmed fraud data, because the right cuto
 
 ---
 
-## 5. Full response when `includeIPSecurity` is `true`
+## Full response when `includeIPSecurity` is `true`
 
 Setting the flag to `true` enriches the live verdict with an `ip_security` object, resolved from our IP intelligence database in the same round trip. That lookup supplies the reputation and risk signals for the address, together with contextual geolocation, network, ASN, company, currency and timezone data. The two halves answer different questions: `live_vpn_proxy_detection` describes how the connection behaves right now, while `ip_security` describes what is already known about the address it arrives from.
 
@@ -203,7 +203,7 @@ Verdict: **block**, and log the payload so you can point at the specific reason 
 ---
 
 
-## 6. Do and don't
+## Do and don't
 
 **Do:** run it on high value actions (signup, login, checkout, payout, promo redemption, referral claims), start monitoring on load and call `.get()` at the decision point, always gate on `confidence`, treat VPN and proxy as different risks, store payloads so you can tune your thresholds against real outcomes, and prefer a challenge over a hard block.
 
@@ -213,7 +213,7 @@ Verdict: **block**, and log the payload so you can point at the specific reason 
 
 ---
 
-## 7. Frequently Asked Questions
+## Frequently Asked Questions
 
 <details>
 <summary><strong>Do I need an API key in the frontend?</strong></summary>
