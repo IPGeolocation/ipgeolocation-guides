@@ -75,7 +75,7 @@ The two scores are independent likelihoods, not two halves of a split, so they d
 
 This is the part worth getting right. When `is_anonymous` is `true`, `confidence` decides how much friction the user deserves. Blocking everything the service flags will cost you real customers, and ignoring the flag defeats the point of running the check, so work in bands.
 
-> **Note:** Every band below assumes `is_anonymous` is `true`. The same `confidence` value alongside `is_anonymous: false` means the opposite: a confidently clean visitor.
+> **Note:** Every band in the following table assumes `is_anonymous` is `true`.
 
 | Confidence | What it means | Recommended action |
 |---|---|---|
