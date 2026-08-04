@@ -369,4 +369,8 @@ Client side code can always be tampered with, which is why the result should fee
 
 ---
 
-**Related:** [IP Security API](https://ipgeolocation.io/ip-security-api.html) · [Full documentation](https://ipgeolocation.io/documentation.html) · <support@ipgeolocation.io>
+## Related Links
+
+- [IP Security API](https://ipgeolocation.io/ip-security-api.html)
+- [Full documentation](https://ipgeolocation.io/documentation.html)
+- <support@ipgeolocation.io>
