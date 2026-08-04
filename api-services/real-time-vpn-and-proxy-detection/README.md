@@ -1,4 +1,4 @@
-# Real-Time Proxy and VPN Detection
+# Real-Time VPN and Proxy Detection
 
 Detect VPNs, proxies and residential proxies live in the browser, at the moment a user acts.
 
@@ -65,7 +65,7 @@ Always present. Four fields, and they are meant to be read together.
 | `proxy_score` | 0 to 100  | Chance that the connection runs through a **proxy**, including residential and rotating proxies. |
 | `vpn_score` | 0 to 100  | Chance that the connection runs through a **VPN**. |
 
-The mental model: `is_anonymous` tells you whether the connection is hiding, `confidence` tells you how much to trust that yes or no, and `proxy_score` / `vpn_score` tell you what kind of hiding it looks like.
+The mental model: `is_anonymous` tells you whether the connection is hiding, `confidence` tells you how much to trust that yes or no, and `vpn_score` / `proxy_score` tell you what kind of hiding it looks like.
 
 The two scores are independent likelihoods, not two halves of a split, so they do not add up to 100.
 
@@ -329,11 +329,11 @@ Yes, and that is the main reason it exists. Blocklists miss them because the IPs
 
 <details>
 <summary><strong>Is confidence a risk score?</strong></summary>
-No, it is certainty about <code>is_anonymous</code>. Risk lives in <code>proxy_score</code>, <code>vpn_score</code> and <code>threat_score</code>.
+No, it is certainty about <code>is_anonymous</code>. Risk lives in <code>vpn_score</code>, <code>proxy_score</code> and <code>threat_score</code>.
 </details>
 
 <details>
-<summary><strong>Do proxy_score and vpn_score add up to 100?</strong></summary>
+<summary><strong>Do vpn_score and proxy_score add up to 100?</strong></summary>
 No. They are independent likelihoods, so both can be high, and a 100 in one does not force a 0 in the other.
 </details>
 
