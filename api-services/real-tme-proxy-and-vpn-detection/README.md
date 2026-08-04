@@ -105,19 +105,111 @@ Setting the flag to `true` enriches the live verdict with an `ip_security` objec
   },
   "ip_security": {
     "ip": "37.203.37.112",
-    "location": { "...": "..." },
-    "country_metadata": { "...": "..." },
-    "network": { "...": "..." },
-    "currency": { "...": "..." },
-    "asn": { "...": "..." },
-    "company": { "...": "..." },
-    "security": { "...": "..." },
-    "time_zone": { "...": "..." }
+    "location": {
+      "continent_code": "EU",
+      "continent_name": "Europe",
+      "country_code2": "DE",
+      "country_code3": "DEU",
+      "country_name": "Germany",
+      "country_name_official": "Federal Republic of Germany",
+      "country_capital": "Berlin",
+      "state_prov": "Hesse",
+      "state_code": "DE-HE",
+      "district": "Frankfurt",
+      "city": "Frankfurt",
+      "zipcode": "60311",
+      "latitude": "50.11090",
+      "longitude": "8.68210",
+      "is_eu": true,
+      "country_flag": "https://ipgeolocation.io/static/flags/de_64.png",
+      "geoname_id": "12218247",
+      "country_emoji": "🇩🇪"
+    },
+    "country_metadata": {
+      "calling_code": "+49",
+      "tld": ".de",
+      "languages": ["de"]
+    },
+    "network": {
+      "connection_type": "",
+      "route": "37.203.37.0/24",
+      "is_anycast": false
+    },
+    "currency": {
+      "code": "EUR",
+      "name": "Euro",
+      "symbol": "€"
+    },
+    "asn": {
+      "as_number": "AS215373",
+      "organization": "Sabiedriba ar ierobezotu atbildibu DELSKA Latvia",
+      "country": "LV",
+      "type": "ISP",
+      "domain": "delska.com",
+      "date_allocated": "2025-09-10",
+      "rir": "RIPE"
+    },
+    "company": {
+      "name": "SIA Digitalas Ekonomikas Attistibas Centrs",
+      "type": "GOVERNMENT",
+      "domain": "deac.eu"
+    },
+    "security": {
+      "threat_score": 90,
+      "is_tor": false,
+      "is_proxy": false,
+      "proxy_provider_names": [],
+      "proxy_confidence_score": 0,
+      "proxy_last_seen": "",
+      "is_residential_proxy": false,
+      "is_vpn": true,
+      "vpn_provider_names": ["Browsec VPN"],
+      "vpn_confidence_score": 80,
+      "vpn_last_seen": "2026-06-25",
+      "is_relay": false,
+      "relay_provider_name": "",
+      "is_anonymous": true,
+      "is_known_attacker": true,
+      "is_bot": false,
+      "is_spam": true,
+      "is_cloud_provider": true,
+      "cloud_provider_name": "SIA Digitalas Ekonomikas Attistibas Centrs"
+    },
+    "time_zone": {
+      "name": "Europe/Berlin",
+      "offset": 1,
+      "offset_with_dst": 2,
+      "current_time": "2026-08-03 13:49:56.890+0200",
+      "current_time_unix": 1785757796.89,
+      "current_tz_abbreviation": "CEST",
+      "current_tz_full_name": "Central European Summer Time",
+      "standard_tz_abbreviation": "CET",
+      "standard_tz_full_name": "Central European Standard Time",
+      "is_dst": true,
+      "dst_savings": 1,
+      "dst_exists": true,
+      "dst_tz_abbreviation": "CEST",
+      "dst_tz_full_name": "Central European Summer Time",
+      "dst_start": {
+        "utc_time": "2026-03-29 TIME 01:00",
+        "duration": "+1.00H",
+        "gap": true,
+        "date_time_after": "2026-03-29 TIME 03:00",
+        "date_time_before": "2026-03-29 TIME 02:00",
+        "overlap": false
+      },
+      "dst_end": {
+        "utc_time": "2026-10-25 TIME 01:00",
+        "duration": "-1.00H",
+        "gap": false,
+        "date_time_after": "2026-10-25 TIME 02:00",
+        "date_time_before": "2026-10-25 TIME 03:00",
+        "overlap": true
+      }
+    }
   }
 }
 ```
-
-> **The full payload**, with every block expanded field by field, is in the [appendix at the end of this page](#appendix-full-example-response). It is the same example the rest of this section walks through.
 
 | Block | Key fields |
 |---|---|
@@ -274,128 +366,6 @@ It is lightweight and promise based. Load it with <code>async</code> and never a
 <summary><strong>Can users bypass it?</strong></summary>
 Client side code can always be tampered with, which is why the result should feed a server side decision alongside your own signals rather than being the decision.
 </details>
-
----
-
-## Appendix: Full example response
-
-The complete, untrimmed payload for `includeIPSecurity: true`, and the example [section 5](#5-full-response-when-includeipsecurity-is-true) walks through.
-
-```json
-{
-  "live_vpn_proxy_detection": {
-    "is_anonymous": true,
-    "confidence": 100,
-    "proxy_score": 100,
-    "vpn_score": 30
-  },
-  "ip_security": {
-    "ip": "37.203.37.112",
-    "location": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "DE",
-      "country_code3": "DEU",
-      "country_name": "Germany",
-      "country_name_official": "Federal Republic of Germany",
-      "country_capital": "Berlin",
-      "state_prov": "Hesse",
-      "state_code": "DE-HE",
-      "district": "Frankfurt",
-      "city": "Frankfurt",
-      "zipcode": "60311",
-      "latitude": "50.11090",
-      "longitude": "8.68210",
-      "is_eu": true,
-      "country_flag": "https://ipgeolocation.io/static/flags/de_64.png",
-      "geoname_id": "12218247",
-      "country_emoji": "🇩🇪"
-    },
-    "country_metadata": {
-      "calling_code": "+49",
-      "tld": ".de",
-      "languages": ["de"]
-    },
-    "network": {
-      "connection_type": "",
-      "route": "37.203.37.0/24",
-      "is_anycast": false
-    },
-    "currency": {
-      "code": "EUR",
-      "name": "Euro",
-      "symbol": "€"
-    },
-    "asn": {
-      "as_number": "AS215373",
-      "organization": "Sabiedriba ar ierobezotu atbildibu DELSKA Latvia",
-      "country": "LV",
-      "type": "ISP",
-      "domain": "delska.com",
-      "date_allocated": "2025-09-10",
-      "rir": "RIPE"
-    },
-    "company": {
-      "name": "SIA Digitalas Ekonomikas Attistibas Centrs",
-      "type": "GOVERNMENT",
-      "domain": "deac.eu"
-    },
-    "security": {
-      "threat_score": 90,
-      "is_tor": false,
-      "is_proxy": false,
-      "proxy_provider_names": [],
-      "proxy_confidence_score": 0,
-      "proxy_last_seen": "",
-      "is_residential_proxy": false,
-      "is_vpn": true,
-      "vpn_provider_names": ["Browsec VPN"],
-      "vpn_confidence_score": 80,
-      "vpn_last_seen": "2026-06-25",
-      "is_relay": false,
-      "relay_provider_name": "",
-      "is_anonymous": true,
-      "is_known_attacker": true,
-      "is_bot": false,
-      "is_spam": true,
-      "is_cloud_provider": true,
-      "cloud_provider_name": "SIA Digitalas Ekonomikas Attistibas Centrs"
-    },
-    "time_zone": {
-      "name": "Europe/Berlin",
-      "offset": 1,
-      "offset_with_dst": 2,
-      "current_time": "2026-08-03 13:49:56.890+0200",
-      "current_time_unix": 1785757796.89,
-      "current_tz_abbreviation": "CEST",
-      "current_tz_full_name": "Central European Summer Time",
-      "standard_tz_abbreviation": "CET",
-      "standard_tz_full_name": "Central European Standard Time",
-      "is_dst": true,
-      "dst_savings": 1,
-      "dst_exists": true,
-      "dst_tz_abbreviation": "CEST",
-      "dst_tz_full_name": "Central European Summer Time",
-      "dst_start": {
-        "utc_time": "2026-03-29 TIME 01:00",
-        "duration": "+1.00H",
-        "gap": true,
-        "date_time_after": "2026-03-29 TIME 03:00",
-        "date_time_before": "2026-03-29 TIME 02:00",
-        "overlap": false
-      },
-      "dst_end": {
-        "utc_time": "2026-10-25 TIME 01:00",
-        "duration": "-1.00H",
-        "gap": false,
-        "date_time_after": "2026-10-25 TIME 02:00",
-        "date_time_before": "2026-10-25 TIME 03:00",
-        "overlap": true
-      }
-    }
-  }
-}
-```
 
 ---
 
