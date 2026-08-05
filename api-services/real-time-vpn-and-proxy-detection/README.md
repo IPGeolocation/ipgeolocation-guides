@@ -288,4 +288,3 @@ Client side code can always be tampered with, which is why the result should fee
 </details>
 
 ---
-

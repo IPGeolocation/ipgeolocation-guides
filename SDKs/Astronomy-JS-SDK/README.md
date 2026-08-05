@@ -31,7 +31,7 @@ Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period
 4. After logging in, navigate to your **Dashboard** to find your API key: [https://app.ipgeolocation.io/dashboard](https://app.ipgeolocation.io/dashboard)
 
 ## Installation
-To access this service, add the following Javascript call (usually within `head` block of your pages).
+To access this service, add the following JavaScript call (usually within `head` block of your pages).
 ```html
 <script language="JavaScript" src="https://static.ipgeolocation.io/astronomy-api-plugin.v3.0.0.js" type="text/javascript"></script>
 ```
@@ -71,7 +71,7 @@ Use `getAstronomy()` for a single-date lookup. Use `getAstronomyTimeSeries()` wi
 
         const resp = await astronomyAPI.getAstronomy();
 
-        if (!resp.error_message) {
+        if (!resp.error_status) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
@@ -163,7 +163,7 @@ If there is some error while fetching the response from the API, following respo
 
         const resp = await astronomyAPI.getAstronomy();
 
-        if (!resp.error_message) {
+        if (!resp.error_status) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
@@ -246,7 +246,7 @@ Sample Response:
 
         const resp = await astronomyAPI.getAstronomy();
 
-        if (!resp.error_message) {
+        if (!resp.error_status) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
@@ -339,7 +339,7 @@ Sample Response:
         });
 
         const resp = await astronomyAPI.getAstronomy();
-        if (!resp.error_message) {
+        if (!resp.error_status) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
@@ -427,7 +427,7 @@ The API performs the astronomical calculation for the resolved location and conv
 
         const resp = await astronomyAPI.getAstronomy();
 
-        if (!resp.error_message) {
+        if (!resp.error_status) {
             console.log(resp.astronomy.time_zone);
             console.log(resp.astronomy.sunrise);
         } else {
@@ -473,7 +473,7 @@ Use `getAstronomyTimeSeries()` to retrieve daily Sun and Moon events for up to 9
 
         const resp = await astronomyAPI.getAstronomyTimeSeries();
 
-        if (!resp.error_message) {
+        if (!resp.error_status) {
             resp.astronomy.forEach((day) => {
                 console.log(day.date, day.sunrise, day.sunset);
             });
@@ -554,7 +554,7 @@ Inspect the error_status field in the response to detect any errors. A missing e
 
         const resp = await astronomyAPI.getAstronomy();
 
-        if (!resp.error_message) {
+        if (!resp.error_status) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
