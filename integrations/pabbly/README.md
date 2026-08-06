@@ -90,7 +90,7 @@ If the test fails, the response usually indicates the cause. Two common messages
 
 An invalid API key returns:
 
-```text
+```bash
 Provided API key is not valid. Contact technical support for assistance at support@ipgeolocation.io
 ```
 
@@ -98,7 +98,7 @@ Provided API key is not valid. Contact technical support for assistance at suppo
 
 Using a free key for a paid action returns the following message:
 
-```text
+```bash
 IP Security Lookup is not supported on your current subscription. This feature is available to Paid subscriptions only.
 ```
 
@@ -119,7 +119,7 @@ A few parameters appear across several actions:
 - **Include**: add optional data modules to the response that are not returned by default. This parameter is available on paid plans only. This parameter is available only in `Get IP Geolocation`, `Find Bulk IP Geolocation` and `Lookup ASN` actions.
 - **Language**: return location text in a supported language. This parameter is available on paid plans only.
 
-### Action availability by plan
+**Action availability by plan**
 
 IPGeolocation.io offers a free (Developer) plan and paid plans. The table below shows which actions each plan can run.
 
@@ -312,7 +312,7 @@ This example enriches incoming IP data and routes a notification based on the vi
 3. **Router or Filter:** Branch the workflow based on the returned country name.
 4. **Send a notification:** Send a message to your team channel or email tool for the branch you care about, including the location fields from step 2.
 
-```text
+```bash
 Webhook (visitor IP)
       |
       v
