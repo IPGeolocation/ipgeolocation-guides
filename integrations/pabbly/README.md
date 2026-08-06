@@ -142,11 +142,11 @@ For more information about IPGeolocation.io plans, see the [IPGeolocation.io pri
 
 ### Geolocation
 
-**Get IP Geolocation**
+#### Get IP Geolocation
 
 Retrieves geolocation, country metadata and currency related information for a single IPv4 or IPv6 address. Paid plans also support resolving domain names and returning additional enrichment data such as network, company, security, abuse, hostname, user agent, and advanced ASN information.
 
-- Required input: IP Address or Domain (paid-only), for example `8.8.8.8`, or `example.com`.
+- Required input: An IP address on any plan, or a domain name on a paid plan., for example `8.8.8.8`, or `example.com`.
 - Optional inputs:
   - **Include** (paid only): add one or more optional modules. Accepted values are `geo_accuracy`, `dma_code`, `user_agent`, `security`, `abuse`, and the hostname options `hostname`, `liveHostname`, and `hostnameFallbackLive`. Use `*` to add every module at once.
   - **Fields**: return only the objects or fields you name.
@@ -154,7 +154,7 @@ Retrieves geolocation, country metadata and currency related information for a s
   - **Language** (paid only): return location text in English (en), German (de), Russian (ru), Japanese (ja), French (fr), Chinese Simplified (cn), Spanish (es), Czech (cs), Italian (it), Korean (ko), Persian (fa), Portuguese (pt), or Standard Arabic (ar). The default is English.
 - Output: the `location`, `country_metadata`, `currency`, `asn`, and `time_zone` objects, plus additional objects on paid plans as described below. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
 
-What Get IP Geolocation returns by plan:
+**What Get IP Geolocation returns by plan:**
 
 | Response content | Developer (Free) | Paid |
 | --- | --- | --- |
@@ -179,11 +179,11 @@ On the free plan, the Include parameter is not available. A free plan request re
 
 ![Pabbly Connect Get IP Geolocation action setup with input fields](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/ipgeo.png)
 
-**Find Bulk IP Geolocation**
+#### Find Bulk IP Geolocation
 
 Retrieves geolocation and related data for multiple IPv4/IPv6 addresses or Domains in a single request. Available on `paid` plans, with support for the same optional enrichment modules as the single IP Geolocation action.
 
-- Required input: IP Addresses, a list of up to 50,000 IPv4 or IPv6 addresses or Domains, for example `["2.2.2.2","3.3.3.3"]`.
+- Required input: IP Addresses, a list of up to 50,000 IPv4 or IPv6 addresses, or Domains, for example `["2.2.2.2","3.3.3.3", "8.8.8.8", "example.com"]`.
 - Optional inputs: **Include** (same module values as Get IP Geolocation), **Fields**, and **Excludes**.
 - Output: an array of geolocation objects, one entry per submitted address. Invalid or private addresses return a descriptive `message` entry instead. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
 
@@ -191,7 +191,7 @@ Retrieves geolocation and related data for multiple IPv4/IPv6 addresses or Domai
 
 ### IP Security
 
-**Find IP Security**
+#### Find IP Security
 
 Returns security and threat intelligence for a single IP address. Requires a `paid` plan.
 
@@ -201,7 +201,7 @@ Returns security and threat intelligence for a single IP address. Requires a `pa
 
 ![Pabbly Connect Find IP Security action setup with input fields](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/ip-security.png)
 
-**Find Bulk IP Security**
+#### Find Bulk IP Security
 
 Returns security intelligence for many IP addresses in a single request. Requires a `paid` plan.
 
@@ -213,7 +213,7 @@ Returns security intelligence for many IP addresses in a single request. Require
 
 ### Network Intelligence
 
-**Lookup ASN**
+#### Lookup ASN
 
 Retrieves Autonomous System Number details for an IP address or an ASN number. Requires a `paid` plan.
 
@@ -226,7 +226,7 @@ Retrieves Autonomous System Number details for an IP address or an ASN number. R
 
 ![Pabbly Connect Lookup ASN action setup with input fields](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/asn-api.png)
 
-**Lookup Abuse Contact**
+#### Lookup Abuse Contact
 
 Retrieves abuse contact information for an IP address. Requires a `paid` plan.
 
@@ -238,7 +238,7 @@ Retrieves abuse contact information for an IP address. Requires a `paid` plan.
 
 ### Time Services
 
-**Lookup Timezone Information**
+#### Lookup Timezone Information
 
 Returns time zone and related location/airport information. The action accepts several lookup inputs, so you provide whichever identifies your target.
 
@@ -248,7 +248,7 @@ Returns time zone and related location/airport information. The action accepts s
 
 ![Pabbly Connect Lookup Timezone Information action setup with input fields](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/timezone-api.png)
 
-**Time Conversion**
+#### Time Conversion
 
 Converts a time from a source location or zone to a destination location or zone.
 
@@ -260,7 +260,7 @@ Converts a time from a source location or zone to a destination location or zone
 
 ### Astronomy
 
-**Lookup Astronomy**
+#### Lookup Astronomy
 
 Returns Sun and Moon data for a location on a single date.
 
@@ -270,7 +270,7 @@ Returns Sun and Moon data for a location on a single date.
 
 ![Pabbly Connect Lookup Astronomy action setup with input fields](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/astronomy-api.png)
 
-**Lookup Astronomy Timeseries**
+#### Lookup Astronomy Timeseries
 
 Returns daily Sun and Moon data across a date range.
 
@@ -283,7 +283,7 @@ Returns daily Sun and Moon data across a date range.
 
 ### User Agent Parsing
 
-**Parse User Agent**
+#### Parse User Agent
 
 Parses a single user agent string into structured client details. Requires a `paid` plan.
 
@@ -292,7 +292,7 @@ Parses a single user agent string into structured client details. Requires a `pa
 
 ![Pabbly Connect Parse User Agent action setup with input fields](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/user-agent.png)
 
-**Parse Bulk User Agents**
+#### Parse Bulk User Agents
 
 Parses many user agent strings in a single request. Requires a `paid` plan.
 
