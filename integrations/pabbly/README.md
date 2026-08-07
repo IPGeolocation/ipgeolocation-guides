@@ -146,7 +146,7 @@ For more information about IPGeolocation.io plans, see the [IPGeolocation.io pri
 
 Retrieves geolocation, country metadata and currency related information for a single IPv4 or IPv6 address. Paid plans also support resolving domain names and returning additional enrichment data such as network, company, security, abuse, hostname, user agent, and advanced ASN information.
 
-- Required input: An IP address on any plan, or a domain name on a paid plan. For example `8.8.8.8`, or `example.com`.
+- Required input: An IP address on any plan, or a domain name on a paid plan., for example `8.8.8.8`, or `example.com`.
 - Optional inputs:
   - **Include** (paid only): add one or more optional modules. Accepted values are `geo_accuracy`, `dma_code`, `user_agent`, `security`, `abuse`, and the hostname options `hostname`, `liveHostname`, and `hostnameFallbackLive`. Use `*` to add every module at once.
   - **Fields**: return only the objects or fields you name.
@@ -183,7 +183,7 @@ On the free plan, the Include parameter is not available. A free plan request re
 
 Retrieves geolocation and related data for multiple IPv4/IPv6 addresses or Domains in a single request. Available on `paid` plans, with support for the same optional enrichment modules as the single IP Geolocation action.
 
-- Required input: a list of up to 50,000 IPv4 or IPv6 addresses or domain names, for example `["2.2.2.2", "3.3.3.3", "8.8.8.8", "example.com"]`.
+- Required input: IP Addresses, a list of up to 50,000 IPv4 or IPv6 addresses, or Domains, for example `["2.2.2.2","3.3.3.3", "8.8.8.8", "example.com"]`.
 - Optional inputs: **Include** (same module values as Get IP Geolocation), **Fields**, and **Excludes**.
 - Output: an array of geolocation objects, one entry per submitted address. Invalid or private addresses return a descriptive `message` entry instead. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
 
