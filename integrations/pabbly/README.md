@@ -4,7 +4,7 @@
 
 The Pabbly Connect IPGeolocation Integration lets you use the full [IPGeolocation.io v3](https://ipgeolocation.io) APIs inside your Pabbly Connect workflows without writing code. You add an IPGeolocation.io action to a workflow, map an IP address or a list of IP addresses, and enriched data flows to the next step.
 
-With the IPGeolocation Pabbly integration you can retrieve:
+With the Pabbly Connect IPGeolocation integration you can retrieve:
 
 - Geolocation details for any IPv4 or IPv6 address
 - Threat intelligence and security risk signals
@@ -12,7 +12,7 @@ With the IPGeolocation Pabbly integration you can retrieve:
 - Abuse contact details for an IP address
 - Time zone data and time conversion results
 - Astronomy information such as sunrise and sunset
-- User agent details including browser, operating system, and device
+- User-agent details including browser, operating system, and device
 
 The integration exposes 12 actions grouped into 6 categories. This makes Pabbly Connect IP Geolocation automation useful for lead enrichment, fraud detection, security alerting, CRM enrichment, and geo-based notifications.
 
@@ -47,9 +47,9 @@ The integration authenticates with your IPGeolocation.io API key. To obtain it:
 2. Open your [dashboard](https://app.ipgeolocation.io/dashboard).
 3. In the API Keys section, copy your API key.
 
-Keep this key private. For more detail on authentication, see the [IPGeolocation.io API Authentication](https://ipgeolocation.io/documentation/api-authentication.html).
+Keep this key private. For more detail on authentication, see the [IPGeolocation.io API Authentication Documentation](https://ipgeolocation.io/documentation/api-authentication.html).
 
-![IPGeolocation.io dashboard showing the API Keys section with the copy button.](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/copy-api-key-from-dashboard.png)
+![IPGeolocation.io dashboard showing the API Keys section with the copy button](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/copy-api-key-from-dashboard.png)
 
 ---
 
@@ -61,7 +61,7 @@ Follow these steps to add IPGeolocation.io as an action in a Pabbly Connect work
 2. Add or select an action step, then open the **Choose App** field under the **Action Setup** tab.
 3. Type **IPGeolocation** in the search box and select **IPGeolocation.io** under the **Public Apps** tab.
 
-   ![Pabbly Connect Choose App panel with IPGeolocation.io listed under Public Apps.](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/search-ipgeolocation.png)
+   ![Pabbly Connect Choose App panel with IPGeolocation.io listed under Public Apps](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/search-ipgeolocation.png)
 
 4. Open the **App Event** dropdown and select the action you want to run, for example **Get IP Geolocation**.
 5. Switch to the **Connections** tab and select **Add New Connection**.
@@ -114,7 +114,7 @@ The integration provides 12 actions. Each action below lists its purpose, requir
 
 A few parameters appear across several actions:
 
-- **Fields**: return only the fields you name, using dot notation for nested fields (for example `location.city` or `security.threat_score`) or full object names (for example `security` or `currency`). Available on all plans, including the free plan.
+- **Fields**: return only the fields you name, using dot notation for nested fields (for example `location.city` or `time_zone.name`) or full object names (for example `location` or `currency`). Fields can only select data the action and your plan already return; it does not add modules. Available on all plans, including the free plan.
 - **Excludes**: remove specific fields or whole objects you do not need. Available on all plans.
 - **Include**: add optional data modules to the response that are not returned by default. This parameter is available on paid plans only. This parameter is available only in `Get IP Geolocation`, `Find Bulk IP Geolocation` and `Lookup ASN` actions.
 - **Language**: return location text in a supported language. This parameter is available on paid plans only.
@@ -151,7 +151,7 @@ Retrieves geolocation, country metadata and currency related information for a s
   - **Include** (paid only): add one or more optional modules. Accepted values are `geo_accuracy`, `dma_code`, `user_agent`, `security`, `abuse`, and the hostname options `hostname`, `liveHostname`, and `hostnameFallbackLive`. Use `*` to add every module at once.
   - **Fields**: return only the objects or fields you name.
   - **Excludes**: remove objects or fields you do not need.
-  - **Language** (paid only): return location text in English (en), German (de), Russian (ru), Japanese (ja), French (fr), Chinese Simplified (cn), Spanish (es), Czech (cs), Italian (it), Korean (ko), Persian (fa), Portuguese (pt), or Standard Arabic (ar). The default is English.
+  - **Language** (paid only): return location text in English (en), German (de), Russian (ru), Japanese (ja), French (fr), Chinese Simplified (cn), Spanish (es), Czech (cs), Italian (it), Korean (ko), Persian (fa), Portuguese (pt). The default is English.
 - Output: the `location`, `country_metadata`, `currency`, `asn`, and `time_zone` objects, plus additional objects on paid plans as described below. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
 
 **What Get IP Geolocation returns by plan:**
@@ -331,7 +331,7 @@ You can extend this workflow by adding **Find IP Security** after the geolocatio
 
 ## Common Use Cases
 
-- **Lead enrichment:** Add country, city, ISP, and ASN to inbound leads using **Get IP Geolocation**, then write the enriched record to your CRM or spreadsheet.
+- **Lead enrichment:** Add country, city, company, and ASN to inbound leads using **Get IP Geolocation**, then write the enriched record to your CRM or spreadsheet.
 - **Fraud detection:** Screen signup or checkout IP addresses with **Find IP Security** to flag proxy, VPN, Tor, or high threat score addresses for review.
 - **Security automation:** Combine **Get IP Geolocation** and **Find IP Security** to detect logins from unusual locations and send an alert to your team.
 - **CRM enrichment:** Append location and network fields to contact or account records so your team has context on where a lead is based.
@@ -347,8 +347,8 @@ You can extend this workflow by adding **Find IP Security** after the geolocatio
 | Authentication failure | The connection was saved with an incorrect key. | Open the Connections tab, add a new connection with the correct key, and select it for the action. |
 | Paid feature on a free plan | A paid action, such as IP Security, ASN, Abuse Contact, User Agent, or any bulk action, was run with a free plan key. The response indicates the feature is available to paid subscriptions only. | Upgrade on the [pricing page](https://ipgeolocation.io/pricing.html) or switch the action to one available on your plan. |
 | Missing required fields | A required field, such as IP Address or User Agent, is empty. | Fill in the required field for the action, or map a value from an earlier step, then run the test again. |
-| Include or Language ignored on a free plan | The Include and Language parameters are paid features. | Use a paid plan key, or rely on the Fields and Excludes parameters, which work on all plans. |
-| Daily usage limit reached | The free plan includes a daily request allowance. | Wait for the daily reset or upgrade your plan for a higher limit. See the [pricing page](https://ipgeolocation.io/pricing.html). |
+| Include or Language throw an error on a free plan | The Include and Language parameters are paid features. | Use a paid plan key, or rely on the Fields and Excludes parameters, which work on all plans. |
+| Daily usage limit reached | The free plan includes 1000 requests per day. | Wait for the daily reset or upgrade your plan for a higher limit. See the [pricing page](https://ipgeolocation.io/pricing.html). |
 
 If the problem continues, contact IPGeolocation.io support at [support@ipgeolocation.io](mailto:support@ipgeolocation.io).
 
