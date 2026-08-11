@@ -1,30 +1,3 @@
-<!-- ---
-canonical: https://ipgeolocation.io/documentation/workato-integration
-meta-application-name: IP Geolocation API
-meta-category: IP Geolocation API Integrations
-meta-description: Step-by-step guide to connect IPGeolocation.io with Workato. Configure 12 actions for IP geolocation, security, ASN, timezone, astronomy, and user agent data.
-meta-generator: IPGeolocation
-meta-keywords: ipgeolocation workato integration, workato ipgeolocation, connect ipgeolocation to workato, ip geolocation workato connector, workato ip security integration, ip intelligence workato
-meta-og:description: Step-by-step guide to connect IPGeolocation.io with Workato. Configure 12 actions for IP geolocation, security, ASN, timezone, and user agent lookups.
-meta-og:image: https://static.ipgeolocation.io/web-assets/images/brand/ipgeo-og.jpeg
-meta-og:image:alt: IPGeolocation.io Logo
-meta-og:title: IPGeolocation.io Workato Integration Documentation
-meta-og:type: website
-meta-og:url: https://ipgeolocation.io/documentation/workato-integration
-meta-twitter:card: summary_large_image
-meta-twitter:description: Step-by-step guide to connect IPGeolocation.io with Workato. Configure 12 actions for IP geolocation, security, ASN, timezone, and more.
-meta-twitter:image: https://static.ipgeolocation.io/web-assets/images/brand/ipgeolocation-logo-with-bg.svg
-meta-twitter:image:alt: IPGeolocation.io Logo
-meta-twitter:site: @ipgeolocationio
-meta-twitter:title: IPGeolocation.io Workato Integration Documentation
-meta-viewport: width=device-width, initial-scale=1
-title: IPGeolocation.io Workato Integration Documentation | Setup & Action Reference
---- -->
-
-<!-- [Home](https://ipgeolocation.io/)1. [Integrations](https://ipgeolocation.io/integrations.html)
-2. [Workato](https://ipgeolocation.io/integrations/workato)
-3. Workato Integration Documentation -->
-
 # IPGeolocation Workato Integration
 
 ## Overview
