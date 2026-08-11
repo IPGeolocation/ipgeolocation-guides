@@ -35,7 +35,7 @@ You need a valid IPGeolocation.io API key to use this connector. Follow these st
 
 ---
 
-### 1. Create or log in to your IPGeolocation.io account
+### Create or log in to your IPGeolocation.io account
 
 - Go to [IPGeolocation.io](https://ipgeolocation.io/).
 - New to IPGeolocation.io? Click [Sign Up](https://app.ipgeolocation.io/signup) and complete the registration.
@@ -43,14 +43,14 @@ You need a valid IPGeolocation.io API key to use this connector. Follow these st
 
 ---
 
-### 2. Get your API key
+### Get your API key
 
 - Once logged in, open your [dashboard](https://app.ipgeolocation.io/dashboard).
 - Copy your **API Key**. You will paste this into Workato in a later step.
 
 ---
 
-### 3. Open Workato and start a recipe
+### Open Workato and start a recipe
 
 - Log in to your [Workato](https://www.workato.com/) workspace.
 - Create a new recipe, or open an existing one where you want to add IP intelligence.
@@ -59,7 +59,7 @@ You need a valid IPGeolocation.io API key to use this connector. Follow these st
 
 ---
 
-### 4. Add a new connection
+### Add a new connection
 
 - On the connection screen, click to add a new connection.
 - Give the connection a name so it is easy to identify if you connect multiple API keys later.
@@ -69,7 +69,7 @@ You need a valid IPGeolocation.io API key to use this connector. Follow these st
 
 ---
 
-### 5. Confirm the connection
+### Confirm the connection
 
 - Click to save and connect.
 - Workato validates the API key against IPGeolocation.io and confirms the connection is active.
@@ -79,7 +79,7 @@ You need a valid IPGeolocation.io API key to use this connector. Follow these st
 
 ---
 
-### 6. Reuse the connection across recipes
+### Reuse the connection across recipes
 
 - Any action step that uses IPGeolocation.io in this workspace can reuse the same connection.
 - Configure the action inputs, such as an IP address, IP array, or user agent string, using data pills from earlier steps or static values.
@@ -114,7 +114,7 @@ See the [IPGeolocation.io pricing page](https://ipgeolocation.io/pricing.html) f
 
 Each Workato action connects to an IPGeolocation.io API endpoint. The sections below describe the inputs and outputs available in each action. For the complete response schema, see the linked API documentation.
 
-### 1. Geolocation
+### Geolocation
 
 #### Get IP Geolocation
 
@@ -153,7 +153,7 @@ Returns a collection of geolocation objects, one for each submitted address. See
 
 ---
 
-### 2. IP Security
+### IP Security
 
 #### Get IP Security
 
@@ -189,7 +189,7 @@ Returns a collection of security objects. See the [IP Security API response fiel
 
 ---
 
-### 3. Network Intelligence
+### Network Intelligence
 
 #### Lookup ASN Information
 
@@ -226,7 +226,7 @@ Returns abuse contact data such as `abuse.emails`, `abuse.kind`, `abuse.organiza
 
 ---
 
-### 4. Time Services
+### Time Services
 
 #### Find Timezone Information
 
@@ -268,7 +268,7 @@ Returns the converted date and time. See the [Time Conversion API response field
 
 ---
 
-### 5. Astronomy
+### Astronomy
 
 #### Lookup Astronomy Data
 
@@ -309,7 +309,7 @@ Returns daily astronomy data for each date in the requested range. See the [Astr
 
 ---
 
-### 6. User Agent Parsing
+### User Agent Parsing
 
 #### Parse User Agent
 
@@ -369,7 +369,7 @@ If a recipe step fails on an action such as Get IP Security, Get Bulk IP Geoloca
 
 ## Recipe Use Cases
 
-### 1. Enrich Leads with IP Geolocation
+### Enrich Leads with IP Geolocation
 
 Add location data to new leads before sending them to your CRM or other business systems.
 
@@ -379,7 +379,7 @@ Use **Get IP Geolocation** to retrieve the lead's country, region, and city from
 
 ---
 
-### 2. Detect Risky IP Addresses
+### Detect Risky IP Addresses
 
 Check IP security data during login or transaction workflows and alert your team when an IP matches your security rules.
 
@@ -389,7 +389,7 @@ Use **Get IP Security** to check signals such as proxy, VPN, Tor, relay, cloud p
 
 ---
 
-### 3. Personalize Workflows by Location
+### Personalize Workflows by Location
 
 Use a customer's location to route records or apply different actions based on country or region.
 
@@ -399,7 +399,7 @@ Use **Get IP Geolocation** to retrieve location data from the customer's IP addr
 
 ---
 
-### 4. Route Support Workflows by Time Zone
+### Route Support Workflows by Time Zone
 
 Use a customer's location to determine their time zone and apply time-based rules to support workflows.
 
@@ -413,46 +413,33 @@ Use **Get IP Geolocation** to identify the customer's location, then use **Find 
 
 <details>
 <summary><strong>Is there a free way to try the IPGeolocation.io Workato integration?</strong></summary>
-
 Yes. IPGeolocation.io offers a <strong>Developer (Free)</strong> API key that works with <strong>Get IP Geolocation</strong>, <strong>Find Timezone Information</strong>, <strong>Convert Timezone</strong>, <strong>Lookup Astronomy Data</strong>, and <strong>Lookup Astronomy Timeseries</strong> in Workato. No credit card is required to start.
-
 </details>
 
 <details>
 <summary><strong>How many actions does the IPGeolocation.io Workato connector include?</strong></summary>
-
 The connector includes <strong>12 actions</strong> across geolocation, IP security, network intelligence, time services, astronomy, and user agent parsing. See the <a href="#actions-reference">Actions Reference</a> for the complete list.
-
 </details>
 
 <details>
 <summary><strong>Do I need to write code to use IPGeolocation.io in a Workato recipe?</strong></summary>
-
 No. Each action is available as a <strong>pre-built step</strong> in the Workato recipe editor. Connect your API key and configure the action inputs using <strong>data pills</strong>. You do not need to make manual API requests or parse JSON responses.
-
 </details>
 
 <details>
 <summary><strong>Can I look up multiple IP addresses in a single Workato action?</strong></summary>
-
 Yes. <strong>Get Bulk IP Geolocation</strong> and <strong>Get Bulk IP Security</strong> accept an array of IP addresses and return a collection of results in a single action. <strong>Parse Bulk User Agents</strong> also accepts multiple user agent strings and returns a collection of parsed results.
-
 </details>
 
 <details>
 <summary><strong>Why is my Workato connection to IPGeolocation.io failing?</strong></summary>
-
 Check that your <strong>API key is correct and active</strong>. Also check that the action you are using is available on your API plan. Actions that require the <strong>Paid</strong> plan will not work with a <strong>Developer (Free)</strong> API key. See <a href="#troubleshooting-connection-errors">Troubleshooting Connection Errors</a> for more information.
-
 </details>
 
 <details>
 <summary><strong>Does the Workato integration support timezone conversion?</strong></summary>
-
 Yes. <strong>Find Timezone Information</strong> retrieves timezone data, including the current time and offset, for supported locations. <strong>Convert Timezone</strong> converts a specific date and time between supported time zones using inputs such as time zone names, coordinates, IP addresses, and location codes.
-
 </details>
-
 
 ---
 

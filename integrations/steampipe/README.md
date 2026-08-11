@@ -776,5 +776,3 @@ Complete documentation for all available tables and columns is available in the 
 <summary><strong>How do I get an API key?</strong></summary>
 Create an account through the IPGeolocation dashboard and retrieve your API key from your account dashboard. A free plan is available and does not require a credit card.
 </details>
-
-
