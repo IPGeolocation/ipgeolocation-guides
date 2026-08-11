@@ -418,7 +418,7 @@ Yes. IPGeolocation.io offers a <strong>Developer (Free)</strong> API key that wo
 
 <details>
 <summary><strong>How many actions does the IPGeolocation.io Workato connector include?</strong></summary>
-The connector includes <strong>12 actions</strong> across geolocation, IP security, network intelligence, time services, astronomy, and user agent parsing. See the <a href="#actions-reference">Actions Reference</a> for the complete list.
+The connector includes <strong>12 actions</strong> across geolocation, IP security, network intelligence, time services, astronomy, and user agent parsing. See the [Actions Reference](#actions-reference) for the complete list.
 </details>
 
 <details>
