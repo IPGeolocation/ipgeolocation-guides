@@ -55,6 +55,7 @@ You need a valid IPGeolocation.io API key to use this connector. Follow these st
 - Log in to your [Workato](https://www.workato.com/) workspace.
 - Create a new recipe, or open an existing one where you want to add IP intelligence.
 - Add a new action step and search for **IPGeolocation.io** in the app picker.
+- Follow the prompts to install `IPGeolocation.io` community connector.
 - Choose the action you need, for example **Get IP Geolocation** or **Get IP Security**.
 
 ---
