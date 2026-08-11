@@ -433,7 +433,7 @@ Yes. <strong>Get Bulk IP Geolocation</strong> and <strong>Get Bulk IP Security</
 
 <details>
 <summary><strong>Why is my Workato connection to IPGeolocation.io failing?</strong></summary>
-Check that your <strong>API key is correct and active</strong>. Also check that the action you are using is available on your API plan. Actions that require the <strong>Paid</strong> plan will not work with a <strong>Developer (Free)</strong> API key. See <a href="#troubleshooting-connection-errors">Troubleshooting Connection Errors</a> for more information.
+Check that your <strong>API key is correct and active</strong>. Also check that the action you are using is available on your API plan. Actions that require the <strong>Paid</strong> plan will not work with a <strong>Developer (Free)</strong> API key. See [Troubleshooting Connection Errors](#troubleshooting-connection-errors)</a> for more information.
 </details>
 
 <details>
