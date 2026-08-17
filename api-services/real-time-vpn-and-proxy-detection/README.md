@@ -2,7 +2,7 @@
 
 Detect VPNs, proxies and residential proxies live in the browser, at the moment a user acts. See what the service does and how it is priced on the [Real-Time VPN and Proxy Detection product page](https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html).
 
-> **Note:** This is a lightweight client side script, much like a CAPTCHA widget. Because it runs live tests on the connection instead of just database lookup, a verdict takes a few seconds. Start it early and ask for the result at your decision point, and never hold up your initial render waiting on it.
+> **Note:** This is a lightweight client side script, much like a CAPTCHA widget. Because it runs live tests on the connection instead of just a database lookup, a verdict takes a few seconds. Start it early and ask for the result at your decision point, and never hold up your initial render waiting on it.
 
 ---
 
@@ -137,7 +137,7 @@ A clean address, which is what most of your traffic will look like:
 
 ```json
 {
-  "public_ip": "119.156.100.87",
+  "public_ip": "119.156.x.x",
   "public_ip_country_code": "PK",
   "live_vpn_proxy_detection": {
     "is_anonymous": false,
@@ -146,7 +146,7 @@ A clean address, which is what most of your traffic will look like:
     "vpn_score": 0
   },
   "visitor_actual_location": {
-    "actual_ip": "119.156.100.87",
+    "actual_ip": "119.156.x.x",
     "actual_country_code": "PK",
     "confidence_score": 100
   },
@@ -180,7 +180,7 @@ And the same shape for an address that is flagged:
 
 ```json
 {
-  "public_ip": "94.237.27.213",
+  "public_ip": "94.237.x.x",
   "public_ip_country_code": "DE",
   "live_vpn_proxy_detection": {
     "is_anonymous": true,
@@ -189,7 +189,7 @@ And the same shape for an address that is flagged:
     "vpn_score": 10
   },
   "visitor_actual_location": {
-    "actual_ip": "119.156.100.87",
+    "actual_ip": "119.156.x.x",
     "actual_country_code": "PK",
     "confidence_score": 80
   },
@@ -225,7 +225,7 @@ And the same shape for an address that is flagged:
 | `is_vpn`, `is_proxy`, `is_residential_proxy`, `is_relay`, `is_tor` | The anonymizer type, as five separate booleans instead of one label. This is how you split VPN handling from proxy handling, and `is_residential_proxy` is the one most worth its own rule, since residential proxies correlate with abuse far more than a commercial VPN does. |
 | `vpn_provider_names`, `proxy_provider_names` | Arrays of named services, for example `["Browsec VPN"]`. Lets you allow a corporate VPN you recognize, block a provider you keep seeing in confirmed fraud, and tell a support agent exactly what the user is on. Empty when nothing is identified. |
 | `vpn_confidence_score`, `proxy_confidence_score` | How sure the database is about that VPN or proxy classification, 0 to 100. Separate from the `confidence_score` fields in `live_vpn_proxy_detection` and `visitor_actual_location`, which are about the live verdict and the recovered address. |
-| `vpn_last_seen`, `proxy_last_seen` | Date the IP was last observed acting as a VPN or proxy, for example `2026-06-25`. A recent date makes the listing stronger evidence, an old one makes it weaker. Empty when never seen. |
+| `vpn_last_seen`, `proxy_last_seen` | Date the IP was last observed acting as a VPN or proxy, for example `2026-08-07`. A recent date makes the listing stronger evidence, an old one makes it weaker. Empty when never seen. |
 | `relay_provider_name` | The named relay service when `is_relay` is `true`. Empty otherwise. |
 | `is_known_attacker`, `is_spam`, `is_bot` | Hard evidence of past abuse. `is_known_attacker` is strong enough to act on by itself. |
 | `is_cloud_provider`, `cloud_provider_name` | A hosting network rather than a consumer ISP, named when known. Very common for VPN exit nodes, and a poor fit for a genuine retail customer. |
@@ -248,7 +248,7 @@ result.public_ip_country_code;               // "DE"
 real.actual_country_code !== result.public_ip_country_code;   // true, the anonymizer crosses a border
 ```
 
-**There are two `is_anonymous` fields, and the pair is useful.** `live_vpn_proxy_detection.is_anonymous` is the live view. `ip_security.is_anonymous` is the IP reputation database view. Both `true` gives you strong corroboration. Database only means the IP is listed but may not be anonymizing right now. Live only means anonymization no blocklist has caught yet, which is the residential proxy case and the whole reason this product exists.
+**There are two `is_anonymous` fields, and the pair is useful.** `live_vpn_proxy_detection.is_anonymous` is the live view. `ip_security.is_anonymous` is the IP reputation database view. Both `true` gives you strong corroboration. Database only means the IP is listed but may not be anonymizing right now. Live only means anonymization that no blocklist has caught yet, which is the residential proxy case and the whole reason this product exists.
 
 ### Walking through the flagged example
 
@@ -335,7 +335,7 @@ No. They are independent likelihoods, so both can be high, and a 100 in one does
 
 <details>
 <summary><strong>Why is proxy_score 100 when ip_security says is_vpn true and is_proxy false?</strong></summary>
-The live scores describe how the connection behaves right now, while <code>is_vpn</code> and <code>vpn_provider_names</code> name the service that owns the endpoint. One common cause is a browser VPN extension, which is a proxy at the transport level, but the same reading can come from a desktop or CLI client See <a href="#walking-through-the-flagged-example">the walkthrough of the flagged example</a> for the full explanation.
+The live scores describe how the connection behaves right now, while <code>is_vpn</code> and <code>vpn_provider_names</code> name the service that owns the endpoint. One common cause is a browser VPN extension, which is a proxy at the transport level, but the same reading can come from a desktop or CLI client. See <a href="#walking-through-the-flagged-example">the walkthrough of the flagged example</a> for the full explanation.
 </details>
 
 <details>
