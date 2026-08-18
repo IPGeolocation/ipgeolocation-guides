@@ -60,14 +60,14 @@ In plain words: this connection is not anonymized, the service is certain about 
 
 ## Response fields
 
-### The address the request arrives from
+### The IP address the request comes from
 
-Two fields sit at the top level of the response, outside both objects. This is the *apparent* side: what the request presents.
+Two top-level fields, describing the IP address the user appears to be on:
 
 | Field | Type | Meaning |
 |---|---|---|
-| `public_ip` | string | The address your server sees on the request. Behind a VPN or proxy this is the exit node, not the user. |
-| `public_ip_country_code` | string | Two-letter ISO country code for that address. Behind a VPN or proxy, this is the exit node's country, not the user's. |
+| `public_ip` | string | The IP address your server sees on the request. Behind a VPN or proxy this is the exit node's IP address, not the user's. |
+| `public_ip_country_code` | string | Two-letter ISO country code for that IP address. Behind a VPN or proxy, this is the exit node's country, not the user's. |
 
 ### The live verdict: `live_vpn_proxy_detection`
 
