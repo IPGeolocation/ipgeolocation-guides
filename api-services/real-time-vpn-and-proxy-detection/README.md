@@ -192,6 +192,24 @@ Yes. `visitor_actual_location` returns the `actual_ip` and `actual_country_code`
 **Does it detect residential proxies?**
 Yes, and that is the main reason it exists. Static lists miss them because the IPs come from constantly refreshed pools of ordinary consumer ISP addresses with no listing history yet; live analysis catches the anonymization behavior itself.
 
+**How is this different from the VPN and proxy flags in the IP Security API?**
+`ip_security.is_vpn` and `is_proxy` come from our IP intelligence database, updated daily: they tell you an IP address is known to be associated with VPN or proxy infrastructure. The live `vpn_score` and `proxy_score` come from inspecting the current connection, so they describe this session rather than the address's history.
+
+**Does real-time detection run on top of the IP Security database?**
+No. It classifies a session with live connection-level techniques only, and does not consult the IP Security database or traditional IP intelligence to reach its verdict. `includeIPSecurity: true` simply attaches the database view next to the live one.
+
+**Why can a database alone not settle a residential proxy?**
+A residential IP is a real household address that may also be part of a proxy network. The homeowner's own request and an anonymous request routed through the network can arrive from it seconds apart. A database can say the address is associated with residential proxy infrastructure, but not how it is being used on this connection, so acting on the association alone can affect legitimate users too.
+
+**Will it catch VPNs and proxies no database has seen yet?**
+Yes. No offline database has complete coverage: new VPN endpoints, private proxies, and rotating residential pools may not be listed yet. Real-time detection does not depend on prior knowledge of the IP address.
+
+**How accurate is it?**
+In our testing, classification accuracy is around 98%. In the remaining cases, `confidence_score` was below 35, so gating on confidence gives you an extra signal on the sessions most likely to be misread.
+
+**Should I use this or the IP Security API?**
+Both, where you can. The IP Security API gives broader IP-level context and known associations; real-time detection tells you what the connection is doing right now. Together they support better decisions without unnecessarily blocking legitimate users.
+
 **Is `confidence_score` a risk score?**
 No. It measures certainty about the verdict it sits next to, in either direction: `100` with `is_anonymous: false` means confidently clean. Risk lives in `proxy_score`, `vpn_score`, and `ip_security.threat_score`.
 
@@ -200,9 +218,5 @@ Usually not. Many are ordinary privacy-conscious or corporate users. Work the co
 
 **What does it cost?**
 3 credits per call, or 5 with `includeIPSecurity: true`, from your plan's normal credit pool. It is a paid plan feature; contact [our support team](https://ipgeolocation.io/contact.html) for a free trial.
-
-**Why did my call fail with the `Analysis` global undefined or a rejected promise?**
-The script had not loaded yet (keep the tag above your integration code, or run from its `load` event), or the calling domain is not registered as a Request Origin. Fail open for that session either way.
-
 ---
 
