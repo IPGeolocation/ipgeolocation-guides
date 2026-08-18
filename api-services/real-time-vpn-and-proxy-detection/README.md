@@ -10,13 +10,13 @@ Detect VPNs, proxies and residential proxies live in the browser, at the moment 
 
 ## Setup
 
-Real-time detection is a paid plan feature; a free trial is available through [our support team](https://ipgeolocation.io/contact.html). The script carries no API key, so register the domain you will call from as a Request Origin:
+Real-time detection is a paid plan feature. The script runs in the browser and carries no API key; requests are authorized by origin instead, so register the domain you will call from as a [Request Origin](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use) before your first call.
 
 1. [Sign up](https://app.ipgeolocation.io/signup) for your IPGeolocation account.
 2. Add your origin, for example `https://app.example.com`.
 3. Save.
 
-> **Note:** Registration covers the domain and all of its subdomains, and requests from unregistered origins are rejected. Step-by-step walkthrough: [set up a Request Origin](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use).
+> **Note:** Registration covers the domain and all of its subdomains, and requests from unregistered origins are rejected.
 
 ---
 
@@ -60,76 +60,58 @@ In plain words: this connection is not anonymized, the service is certain about 
 
 ---
 
-## API reference
-
-| Call | Description |
-|---|---|
-| `Analysis.startMonitoring(includeIPSecurity)` | Starts monitoring the current session and returns a handle. Call it as early as possible. `includeIPSecurity` (boolean): `false` returns the live verdict and actual location for 3 credits; `true` adds the `ip_security` object for 5 credits total. |
-| `.get()` | Returns a `Promise` that resolves with the result object in 1 to 5 seconds and rejects with an `Error` when the analysis cannot complete. Always attach a `.catch`. |
-
-The script is lightweight and promise-based. Load it with `async` or `defer` if you like, but run your integration code only after it has loaded (for example from the tag's `load` event), because the `Analysis` global does not exist before then.
-
-Recommended pattern:
-
-```html
-<script src="https://static.ipgeolocation.io/web-assets/static/security/session-analysis.js"></script>
-
-<script>
-    // Start early so the verdict is ready by the decision point.
-    const session = Analysis.startMonitoring(true);
-
-    document.getElementById('checkout-btn').addEventListener('click', async () => {
-        try {
-            const { live_vpn_proxy_detection: live } = await session.get();
-            if (live.is_anonymous && live.confidence_score >= 51) {
-                // Challenge: MFA, email or SMS verification, or a CAPTCHA.
-            }
-            // Send the payload to your backend and make the final call there.
-        } catch (error) {
-            // Fail open: never let a detection error break the flow.
-            console.error(error instanceof Error ? error.message : String(error));
-        }
-    });
-</script>
-```
-
-> **Important:** Treat the browser result as a signal, not the decision. Client-side code can be tampered with, so decide server-side, next to your own risk data.
-
----
-
 ## Response fields
 
-### Top level
+### The address the request arrives from
+
+Two fields sit at the top level of the response, outside both objects. This is the *apparent* side: what the request presents.
 
 | Field | Type | Meaning |
 |---|---|---|
 | `public_ip` | string | The address your server sees on the request. Behind a VPN or proxy this is the exit node, not the user. |
 | `public_ip_country_code` | string | Two-letter ISO country code for that address. Same caveat: behind an anonymizer it is where the exit node is. |
 
-### live_vpn_proxy_detection
+### The live verdict — `live_vpn_proxy_detection`
 
-The live verdict on the connection, four fields meant to be read together:
+Four fields, meant to be read together:
 
-1. **`is_anonymous`** (boolean) — the headline answer. `true` means the connection is anonymized through a VPN or a proxy; it does not say which. Read the two scores for the type.
-2. **`confidence_score`** (number, 0 to 100) — certainty about the `is_anonymous` value. `100` with `is_anonymous: false` means confidently clean; a low value is weak evidence either way.
-3. **`proxy_score`** (number, 0 to 100) — likelihood the connection runs through a proxy, including residential and rotating proxies.
-4. **`vpn_score`** (number, 0 to 100) — likelihood the connection runs through a VPN.
+| Field | Type | Meaning |
+|---|---|---|
+| `is_anonymous` | boolean | **The headline answer.** `true` means the connection is anonymized through a VPN or a proxy. It does not say which; the two scores below do. |
+| `confidence_score` | 0 to 100 | **How much to trust that yes or no.** `100` with `is_anonymous: false` means confidently clean; a low value is weak evidence either way. |
+| `proxy_score` | 0 to 100 | **Looks like a proxy**, including residential and rotating proxies. |
+| `vpn_score` | 0 to 100 | **Looks like a VPN.** |
+
+```js
+const { is_anonymous, confidence_score, proxy_score, vpn_score } = result.live_vpn_proxy_detection;
+```
+
+The mental model: `is_anonymous` says whether the connection is hiding, `confidence_score` says how much to trust that answer, and the two scores say what kind of hiding it looks like.
 
 > **Note:** `proxy_score` and `vpn_score` are independent likelihoods, not two halves of a split. Both can be high, and a 100 in one does not force a 0 in the other.
 
-### visitor_actual_location
+### Where the visitor really is — `visitor_actual_location`
 
-Where the visitor really is, recovered from behind the anonymizer:
+Knowing a connection is anonymized only tells you the exit node is not the user. This object tells you where the user is instead, recovered by the live tests rather than read from request headers.
 
-1. **`actual_ip`** (string) — the visitor's real address behind the VPN or proxy, recovered by the live tests rather than read from request headers. Matches `public_ip` when nothing is hidden.
-2. **`actual_country_code`** (string) — country of `actual_ip`. Use this one for risk decisions, fraud rules, and compliance checks; `public_ip_country_code` is only the country the user is presenting.
-3. **`confidence_score`** (number, 0 to 100) — certainty about the recovered location. Gate on it before acting on a country mismatch; a low value means the real address was only partially recovered and should not carry a decision on its own.
+| Field | Type | Meaning |
+|---|---|---|
+| `actual_ip` | string | **The visitor's real address** behind the VPN or proxy. Matches `public_ip` when nothing is hidden. |
+| `actual_country_code` | string | **The country to build rules on** — risk decisions, fraud, compliance. `public_ip_country_code` is only the country the user is presenting. |
+| `confidence_score` | 0 to 100 | **Certainty about the recovered location.** Gate on it before acting on a country mismatch: a low value means the real address was only partially recovered and should not carry a decision alone. |
+
+```js
+const real = result.visitor_actual_location;
+real.actual_country_code !== result.public_ip_country_code;   // the anonymizer is crossing a border
+```
+
+**The two country codes are the signal.** A match means the user is not misrepresenting where they are, even on a VPN. A mismatch means the anonymizer is moving them across a border, which is the whole decision on geo-restricted content, regional pricing, sanctions screening, and billing-country checks.
 
 > **Important:** Every `confidence_score` is certainty, not risk. Risk lives in `proxy_score`, `vpn_score`, and `ip_security.threat_score`.
 
-### ip_security (when includeIPSecurity is true)
+### What is already known about the IP — `ip_security`
 
-Adds the IP's reputation from the IP Security database as a flat object: `threat_score`, the anonymizer flags (`is_vpn`, `is_proxy`, `is_residential_proxy`, `is_relay`, `is_tor`), provider names with confidence scores and last-seen dates, the abuse flags (`is_known_attacker`, `is_spam`, `is_bot`), and the cloud-provider fields.
+Present only when `includeIPSecurity` is `true`, this object adds the IP's reputation from the IP Security database as a flat object: `threat_score`, the anonymizer flags (`is_vpn`, `is_proxy`, `is_residential_proxy`, `is_relay`, `is_tor`), provider names with confidence scores and last-seen dates, the abuse flags (`is_known_attacker`, `is_spam`, `is_bot`), and the cloud-provider fields.
 
 These fields belong to the IP Security API, so they are documented once, there: see the [IP Security API response reference](https://ipgeolocation.io/documentation/ip-security-api.html#reference-to-ip-security-api-response) for every field's type and description.
 
@@ -188,8 +170,6 @@ sec.vpn_provider_names;                                       // ["Browsec VPN"]
 sec.threat_score;                                             // 50
 ```
 
-> **Note:** The live verdict and `ip_security` can disagree on the type, and that is normal. Browser VPN extensions route through proxy protocols, so live tests read them as proxies while the database lists the brand as a VPN. There are also two `is_anonymous` fields: live `true` with database `false` means anonymization no blocklist has caught yet, which is the residential proxy case. Read live scores for behavior, `ip_security` for reputation, and take the higher-risk reading.
-
 ---
 
 ## Acting on the verdict
@@ -203,15 +183,9 @@ When `is_anonymous` is `true`, `confidence_score` decides how much friction the 
 | 51 to 80 | Likely anonymized. Enough for friction, not for a hard denial alone. | **Challenge.** MFA, email or SMS verification, or a CAPTCHA. Hold payouts and first orders for review. |
 | 81 and above | Confidently anonymized. | **Block or restrict.** High `proxy_score` usually means abuse: block or hold for review. High `vpn_score` deserves a hard challenge instead, since many ordinary people browse through VPNs. |
 
-Signals that push a decision harder:
-
-- `ip_security.threat_score >= 70` escalates one band.
-- `is_known_attacker`, `is_spam`, or `is_bot` escalates to block or hard review.
-- `is_cloud_provider: true` on a consumer flow means automation: rate limit or challenge regardless of confidence.
-- `actual_country_code` differing from `public_ip_country_code` (backed by a solid `visitor_actual_location.confidence_score`) escalates on payment and compliance flows.
-- One signal alone rarely justifies a block; two or three pointing the same way usually do.
-
 These bands apply only when `is_anonymous` is `true`. High confidence with `is_anonymous: false` is a clean visitor, not a risky one.
+
+> **Important:** Treat the browser result as a signal, not the decision. Client-side code can be tampered with, so decide server-side, next to your own risk data.
 
 ---
 
@@ -260,11 +234,3 @@ The script had not loaded yet (keep the tag above your integration code, or run 
 
 ---
 
-## Related
-
-- [IP Security API documentation](https://ipgeolocation.io/documentation/ip-security-api.html): the server-side counterpart, and the reference for every `ip_security` field.
-- [Credits usage guide](https://ipgeolocation.io/documentation/credits-usage.html)
-- [Request Origin setup tutorial](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use)
-- [Product page and live test](https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html)
-- [Plan pricing](https://ipgeolocation.io/pricing.html) and [signup](https://app.ipgeolocation.io/signup)
-- [Guides and SDKs on GitHub](https://github.com/IPGeolocation/ipgeolocation-guides)
