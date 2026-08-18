@@ -82,11 +82,11 @@ Four fields, meant to be read together:
 
 ### Where the visitor really is: `visitor_actual_location`
 
-Knowing a connection is anonymized only tells you the exit node is not the user. This object tells you where the user is instead, recovered by the live tests rather than read from request headers.
+Where the user actually is, recovered by the live tests rather than read from request headers:
 
 | Field | Type | Meaning |
 |---|---|---|
-| `actual_ip` | string | **The visitor's real address** behind the VPN or proxy. Matches `public_ip` when nothing is hidden. |
+| `actual_ip` | string | **The visitor's real IP address** behind the VPN or proxy. Falls back to `public_ip` when nothing is hidden, or when the real IP cannot be detected. |
 | `actual_country_code` | string | **The country to build rules on** for risk decisions, fraud, and compliance. `public_ip_country_code` is only the country the user is presenting. |
 | `confidence_score` | up to 100 | **Certainty about the recovered location.** Gate on it before acting on a country mismatch: a low value means the real address was only partially recovered and should not carry a decision alone. |
 
