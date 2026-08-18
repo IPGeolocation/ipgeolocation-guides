@@ -82,7 +82,7 @@ Four fields, meant to be read together:
 
 ### Where the visitor really is: `visitor_actual_location`
 
-Where the user actually is, recovered by the live tests rather than read from request headers:
+Where the user actually is, recovered by the live tests:
 
 | Field | Type | Meaning |
 |---|---|---|
