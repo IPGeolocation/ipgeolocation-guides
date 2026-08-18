@@ -1,4 +1,4 @@
-# Developer Docs for Real-Time Proxy and VPN Detection
+# Real-Time VPN and Proxy Detection
 
 ## Overview
 
