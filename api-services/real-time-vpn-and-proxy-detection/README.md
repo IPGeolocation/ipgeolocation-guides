@@ -16,8 +16,6 @@ The script carries no API key. Requests are authorized by origin, so register yo
 2. Add your origin, for example `https://app.example.com`.
 3. Save.
 
-> **Note:** Registration covers the domain and all of its subdomains, and requests from unregistered origins are rejected.
-
 ---
 
 ## Quick start
@@ -69,9 +67,9 @@ Two fields sit at the top level of the response, outside both objects. This is t
 | Field | Type | Meaning |
 |---|---|---|
 | `public_ip` | string | The address your server sees on the request. Behind a VPN or proxy this is the exit node, not the user. |
-| `public_ip_country_code` | string | Two-letter ISO country code for that address. Same caveat: behind an anonymizer it is where the exit node is. |
+| `public_ip_country_code` | string | Two-letter ISO country code for that address. Behind a VPN or proxy, this is the exit node's country, not the user's. |
 
-### The live verdict — `live_vpn_proxy_detection`
+### The live verdict: `live_vpn_proxy_detection`
 
 Four fields, meant to be read together:
 
@@ -90,14 +88,14 @@ The mental model: `is_anonymous` says whether the connection is hiding, `confide
 
 > **Note:** `proxy_score` and `vpn_score` are independent likelihoods, not two halves of a split. Both can be high, and a 100 in one does not force a 0 in the other.
 
-### Where the visitor really is — `visitor_actual_location`
+### Where the visitor really is: `visitor_actual_location`
 
 Knowing a connection is anonymized only tells you the exit node is not the user. This object tells you where the user is instead, recovered by the live tests rather than read from request headers.
 
 | Field | Type | Meaning |
 |---|---|---|
 | `actual_ip` | string | **The visitor's real address** behind the VPN or proxy. Matches `public_ip` when nothing is hidden. |
-| `actual_country_code` | string | **The country to build rules on** — risk decisions, fraud, compliance. `public_ip_country_code` is only the country the user is presenting. |
+| `actual_country_code` | string | **The country to build rules on** for risk decisions, fraud, and compliance. `public_ip_country_code` is only the country the user is presenting. |
 | `confidence_score` | 0 to 100 | **Certainty about the recovered location.** Gate on it before acting on a country mismatch: a low value means the real address was only partially recovered and should not carry a decision alone. |
 
 ```js
@@ -109,7 +107,7 @@ real.actual_country_code !== result.public_ip_country_code;   // the anonymizer 
 
 > **Important:** Every `confidence_score` is certainty, not risk. Risk lives in `proxy_score`, `vpn_score`, and `ip_security.threat_score`.
 
-### What is already known about the IP — `ip_security`
+### What is already known about the IP: `ip_security`
 
 Present only when `includeIPSecurity` is `true`, this object adds the IP's reputation from the IP Security database as a flat object: `threat_score`, the anonymizer flags (`is_vpn`, `is_proxy`, `is_residential_proxy`, `is_relay`, `is_tor`), provider names with confidence scores and last-seen dates, the abuse flags (`is_known_attacker`, `is_spam`, `is_bot`), and the cloud-provider fields.
 
