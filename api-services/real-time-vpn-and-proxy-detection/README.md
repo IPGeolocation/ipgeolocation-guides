@@ -87,8 +87,8 @@ Where the user actually is, recovered by the live tests:
 | Field | Type | Meaning |
 |---|---|---|
 | `actual_ip` | string | **The visitor's real IP address** behind the VPN or proxy. Falls back to `public_ip` when nothing is hidden, or when the real IP cannot be detected. |
-| `actual_country_code` | string | Country of `actual_ip`. Use this for risk, fraud, and compliance rules, not `public_ip_country_code`. |
-| `confidence_score` | up to 100 | Certainty about the recovered location. Gate on it before acting on a country mismatch. |
+| `actual_country_code` | string | Two-letter ISO country code of the visitor's actual location. |
+| `confidence_score` | up to 100 | Certainty about that actual country. Gate on it before acting on a country mismatch. |
 
 ### What is already known about the IP: `ip_security`
 
