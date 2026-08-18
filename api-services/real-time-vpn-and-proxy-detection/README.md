@@ -190,7 +190,7 @@ Usually 1 to 5 seconds, because live network tests run against the connection ra
 Yes. `visitor_actual_location` returns the `actual_ip` and `actual_country_code` recovered by the live tests, with its own `confidence_score`. Use that country for fraud and compliance rules, and gate on the confidence before acting on a mismatch.
 
 **Does it detect residential proxies?**
-Yes, and that is the main reason it exists. Blocklists miss residential proxies because the IPs belong to ordinary consumer ISPs; live analysis catches the anonymization behavior itself.
+Yes, and that is the main reason it exists. Static lists miss them because the IPs come from constantly refreshed pools of ordinary consumer ISP addresses with no listing history yet; live analysis catches the anonymization behavior itself.
 
 **Is `confidence_score` a risk score?**
 No. It measures certainty about the verdict it sits next to, in either direction: `100` with `is_anonymous: false` means confidently clean. Risk lives in `proxy_score`, `vpn_score`, and `ip_security.threat_score`.
