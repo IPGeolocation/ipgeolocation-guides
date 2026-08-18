@@ -76,7 +76,7 @@ Four fields, meant to be read together:
 | Field | Type | Meaning |
 |---|---|---|
 | `is_anonymous` | boolean | **The headline answer.** `true` means the connection is anonymized through a VPN or a proxy. It does not say which; the two scores below do. |
-| `confidence_score` | 0 to 100 | **How much to trust that yes or no.** `100` with `is_anonymous: false` means confidently clean; a low value is weak evidence either way. |
+| `confidence_score` | up to 100 | **How much to trust that yes or no.** `100` with `is_anonymous: false` means confidently clean; a low value is weak evidence either way. |
 | `proxy_score` | 0 to 100 | **Looks like a proxy**, including residential and rotating proxies. |
 | `vpn_score` | 0 to 100 | **Looks like a VPN.** |
 
@@ -96,7 +96,7 @@ Knowing a connection is anonymized only tells you the exit node is not the user.
 |---|---|---|
 | `actual_ip` | string | **The visitor's real address** behind the VPN or proxy. Matches `public_ip` when nothing is hidden. |
 | `actual_country_code` | string | **The country to build rules on** for risk decisions, fraud, and compliance. `public_ip_country_code` is only the country the user is presenting. |
-| `confidence_score` | 0 to 100 | **Certainty about the recovered location.** Gate on it before acting on a country mismatch: a low value means the real address was only partially recovered and should not carry a decision alone. |
+| `confidence_score` | up to 100 | **Certainty about the recovered location.** Gate on it before acting on a country mismatch: a low value means the real address was only partially recovered and should not carry a decision alone. |
 
 ```js
 const real = result.visitor_actual_location;
