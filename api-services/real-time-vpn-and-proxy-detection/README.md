@@ -178,13 +178,13 @@ These bands apply only when `is_anonymous` is `true`. High confidence with `is_a
 ## FAQs
 
 **Do I need an API key in the frontend?**
-No. Authorization is by Request Origin: register your domain once and requests from it and its subdomains authenticate automatically. No secret ships to the browser.
+No. Authorization is by [Request Origin](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use): register your domain once and requests from it and its subdomains authenticate automatically. No secret ships to the browser.
 
 **Can I use this from a backend or a mobile app?**
-No, the script is browser-only. For backend, mobile, or bulk checks, use the [IP Security API](https://ipgeolocation.io/documentation/ip-security-api.html), which returns the same reputation data through a key-authenticated API call.
+No, the script is browser-only. For backend, mobile, or bulk checks, use the [IP Security API](https://ipgeolocation.io/documentation/ip-security-api.html), which returns only the reputation data through a key-authenticated API call.
 
 **How long does a verdict take?**
-1 to 5 seconds, because live network tests run against the connection rather than a single database lookup. Start monitoring on page load so the wait is over before the user reaches your decision point.
+Usually 1 to 5 seconds, because live network tests run against the connection rather than a single database lookup. Start monitoring on page load so the wait is over before the user reaches your decision point.
 
 **Can it tell where a VPN or proxy user actually is?**
 Yes. `visitor_actual_location` returns the `actual_ip` and `actual_country_code` recovered by the live tests, with its own `confidence_score`. Use that country for fraud and compliance rules, and gate on the confidence before acting on a mismatch.
