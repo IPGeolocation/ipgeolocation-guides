@@ -201,9 +201,6 @@ Usually not. Many are ordinary privacy-conscious or corporate users. Work the co
 **What does it cost?**
 3 credits per call, or 5 with `includeIPSecurity: true`, from your plan's normal credit pool. It is a paid plan feature; contact [our support team](https://ipgeolocation.io/contact.html) for a free trial.
 
-**Can users bypass it?**
-Client-side code can always be tampered with, which is why the result should feed a server-side decision alongside your own signals rather than being the decision.
-
 **Why did my call fail with the `Analysis` global undefined or a rejected promise?**
 The script had not loaded yet (keep the tag above your integration code, or run from its `load` event), or the calling domain is not registered as a Request Origin. Fail open for that session either way.
 
