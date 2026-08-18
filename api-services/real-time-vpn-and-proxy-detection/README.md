@@ -2,7 +2,7 @@
 
 ## Overview
 
-Detect VPNs, proxies and residential proxies live in the browser, at the moment a user acts. See what the service does and how it is priced on the [Real-Time VPN and Proxy Detection product page](https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html).
+Detect VPNs, proxies and residential proxies live in the browser, at the moment a user acts. See what the service does and try it on the [Real-Time VPN and Proxy Detection product page](https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html).
 
 > **Note:** A lightweight client-side script, much like a CAPTCHA widget. A verdict takes a few seconds, so start it early, read it at your decision point, and never hold up your initial render.
 
@@ -10,10 +10,10 @@ Detect VPNs, proxies and residential proxies live in the browser, at the moment 
 
 ## Setup
 
-The script carries no API key. Requests are authorized by origin, so register your domain as a [Request Origin](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use) before your first call.
+The script carries no API key. Requests are authorized by origin, so register your domain before your first call.
 
 1. [Sign up](https://app.ipgeolocation.io/signup) for your IPGeolocation account.
-2. Add your origin, for example `https://app.example.com`.
+2. Add your origin as a [Request Origin](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use), for example `https://app.example.com`.
 3. Save.
 
 ---
