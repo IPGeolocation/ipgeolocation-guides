@@ -80,14 +80,6 @@ Four fields, meant to be read together:
 | `proxy_score` | 0 to 100 | **Looks like a proxy**, including residential and rotating proxies. |
 | `vpn_score` | 0 to 100 | **Looks like a VPN.** |
 
-```js
-const { is_anonymous, confidence_score, proxy_score, vpn_score } = result.live_vpn_proxy_detection;
-```
-
-The mental model: `is_anonymous` says whether the connection is hiding, `confidence_score` says how much to trust that answer, and the two scores say what kind of hiding it looks like.
-
-> **Note:** `proxy_score` and `vpn_score` are independent likelihoods, not two halves of a split. Both can be high, and a 100 in one does not force a 0 in the other.
-
 ### Where the visitor really is: `visitor_actual_location`
 
 Knowing a connection is anonymized only tells you the exit node is not the user. This object tells you where the user is instead, recovered by the live tests rather than read from request headers.
@@ -98,22 +90,9 @@ Knowing a connection is anonymized only tells you the exit node is not the user.
 | `actual_country_code` | string | **The country to build rules on** for risk decisions, fraud, and compliance. `public_ip_country_code` is only the country the user is presenting. |
 | `confidence_score` | up to 100 | **Certainty about the recovered location.** Gate on it before acting on a country mismatch: a low value means the real address was only partially recovered and should not carry a decision alone. |
 
-```js
-const real = result.visitor_actual_location;
-real.actual_country_code !== result.public_ip_country_code;   // the anonymizer is crossing a border
-```
-
-**The two country codes are the signal.** A match means the user is not misrepresenting where they are, even on a VPN. A mismatch means the anonymizer is moving them across a border, which is the whole decision on geo-restricted content, regional pricing, sanctions screening, and billing-country checks.
-
-> **Important:** Every `confidence_score` is certainty, not risk. Risk lives in `proxy_score`, `vpn_score`, and `ip_security.threat_score`.
-
 ### What is already known about the IP: `ip_security`
 
-Present only when `includeIPSecurity` is `true`, this object adds the IP's reputation from the IP Security database as a flat object: `threat_score`, the anonymizer flags (`is_vpn`, `is_proxy`, `is_residential_proxy`, `is_relay`, `is_tor`), provider names with confidence scores and last-seen dates, the abuse flags (`is_known_attacker`, `is_spam`, `is_bot`), and the cloud-provider fields.
-
-These fields belong to the IP Security API, so they are documented once, there: see the [IP Security API response reference](https://ipgeolocation.io/documentation/ip-security-api.html#reference-to-ip-security-api-response) for every field's type and description.
-
-A flagged session with `includeIPSecurity: true`:
+Present only when `includeIPSecurity` is `true`. Every field is documented in the [IP Security API response reference](https://ipgeolocation.io/documentation/ip-security-api.html#reference-to-ip-security-api-response).
 
 ```json
 {
@@ -182,8 +161,6 @@ When `is_anonymous` is `true`, `confidence_score` decides how much friction the 
 | 81 and above | Confidently anonymized. | **Block or restrict.** High `proxy_score` usually means abuse: block or hold for review. High `vpn_score` deserves a hard challenge instead, since many ordinary people browse through VPNs. |
 
 These bands apply only when `is_anonymous` is `true`. High confidence with `is_anonymous: false` is a clean visitor, not a risky one.
-
-> **Important:** Treat the browser result as a signal, not the decision. Client-side code can be tampered with, so decide server-side, next to your own risk data.
 
 ---
 
