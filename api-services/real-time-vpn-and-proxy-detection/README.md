@@ -16,7 +16,7 @@ The script runs in the browser and carries no API key. Requests are authorized b
 
 > **Credits:** each call costs **3 credits** with `includeIPSecurity` set to `false`. Turning it on adds **2 credits**, for **5 credits** per call.
 
-> **Availability:** this is a paid plan feature. A free trial is available, so [contact our support team](mailto:support@ipgeolocation.io) to arrange one.
+> **Availability:** this is a paid plan feature. A free trial is available, so [contact our support team](https://ipgeolocation.io/contact.html) to arrange one.
 
 ---
 
