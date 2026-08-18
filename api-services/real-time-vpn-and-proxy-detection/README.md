@@ -136,15 +136,15 @@ Present only when `includeIPSecurity` is `true`. Every field is documented in th
 Reading it in code:
 
 ```js
-const live = result.live_vpn_proxy_detection;
-const real = result.visitor_actual_location;
-const sec  = result.ip_security;
+const liveDetection  = result.live_vpn_proxy_detection;
+const actualLocation = result.visitor_actual_location;
+const ipSecurity     = result.ip_security;
 
-live.confidence_score;                                        // 90
-real.actual_country_code;                                     // "PK"
-real.actual_country_code !== result.public_ip_country_code;   // true: presenting DE, actually in PK
-sec.vpn_provider_names;                                       // ["Browsec VPN"]
-sec.threat_score;                                             // 50
+liveDetection.confidence_score;                                        // 90
+actualLocation.actual_country_code;                                    // "PK"
+actualLocation.actual_country_code !== result.public_ip_country_code;  // true: presenting DE, actually in PK
+ipSecurity.vpn_provider_names;                                         // ["Browsec VPN"]
+ipSecurity.threat_score;                                               // 50
 ```
 
 ---
@@ -153,12 +153,12 @@ sec.threat_score;                                             // 50
 
 When `is_anonymous` is `true`, `confidence_score` decides how much friction the session deserves. Blocking everything the service flags costs real customers; ignoring the flag defeats the check. Work in bands, and tune the cutoffs against your own confirmed fraud outcomes:
 
-| `confidence_score` (with `is_anonymous: true`) | What it means | Recommended action |
+| `confidence_score` | What it means | Recommended action |
 |---|---|---|
 | Below 30 | Very weak signal. Expect false positives. | **Allow.** Log the result, add nothing to the user's path. |
 | 30 to 50 | Uncertain. Could be an unusual network, a mobile carrier, or a corporate gateway. | **Allow and monitor.** Feed it into your wider risk score; add friction only if another signal agrees. |
 | 51 to 80 | Likely anonymized. Enough for friction, not for a hard denial alone. | **Challenge.** MFA, email or SMS verification, or a CAPTCHA. Hold payouts and first orders for review. |
-| 81 and above | Confidently anonymized. | **Block or restrict.** High `proxy_score` usually means abuse: block or hold for review. High `vpn_score` deserves a hard challenge instead, since many ordinary people browse through VPNs. |
+| 81 and above | Confidently anonymized. | **Block or restrict.** High `proxy_score`: block or hold for review. High `vpn_score`: prefer a hard challenge, since many ordinary people browse through VPNs. |
 
 These bands apply only when `is_anonymous` is `true`. High confidence with `is_anonymous: false` is a clean visitor, not a risky one.
 
