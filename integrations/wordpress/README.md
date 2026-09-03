@@ -233,6 +233,9 @@ Excluded pages skip the country redirect rules. Checkout and cart pages are the 
 
 One match is enough to exclude a page. Trailing slashes are handled for you.
 
+> [!TIP]
+> On a WooCommerce site, exclude `/checkout`, `/cart` and `/my-account` before you switch on your first redirect rule. Use **Page URL Contains** for these so the endpoints underneath them, such as `/my-account/orders`, are covered by the same entry.
+
 ## Shortcodes
 
 ### Show a single value
@@ -251,6 +254,9 @@ One match is enough to exclude a page. Trailing slashes are handled for you.
 Available fields: `ip`, `city`, `state`, `country`, `country_code`, `zipcode`, `continent`, `latitude`, `longitude`, `currency`, `calling_code`, `languages`.
 
 Paid plans add: `is_proxy`, `is_tor`, `is_anonymous`, `cloud_provider`.
+
+> [!TIP]
+> If you only need to change a banner, a price or a notice, reach for a shortcode instead of a redirect. The visitor stays on one URL, search engines index one version of the page, and nothing is broken if the location lookup fails.
 
 ### Show or hide content
 
@@ -280,7 +286,7 @@ API results are cached for 24 hours per IP address in WordPress transients, and 
 
 Uncached requests and logged-in visitors are handled normally. A page already saved as a static cache file may still be served, because that happens before this plugin runs. In your caching plugin, exclude any page that must always be checked. Blocked responses are marked as not cacheable.
 
-> [!WARNING]
+> [!IMPORTANT]
 > Full page caching and location shortcodes do not mix. If a cached page contains `[ipgeo ...]` or `[ipgeo_if ...]`, every visitor is served whatever the first visitor saw. Exclude those pages in your caching plugin, or keep the location-specific part in a section your cache leaves alone.
 
 ## Troubleshooting
