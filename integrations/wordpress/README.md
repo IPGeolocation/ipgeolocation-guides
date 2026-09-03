@@ -6,6 +6,23 @@ Everything is configured from one settings screen. No code required.
 
 [Plugin on WordPress.org](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/)
 
+## At a Glance
+
+| What you want to do | Feature | API key |
+| --- | --- | --- |
+| Send visitors from one country to a different page | [Country redirect rules](#country-redirect-rules) | Yes |
+| Close the site to some countries, or open it to only a few | [Country access control](#country-access-control) | Yes |
+| Block a scraper, a spammer or a whole IP range | [IP access control](#block-visitors-by-ip-address) | No |
+| Lock your login page to your own IP addresses | [Login rule](#the-two-questions) | No |
+| Change a banner, price or notice by location | [Conditional shortcodes](#show-or-hide-content) | Yes |
+| Print the visitor's city, country or currency | [Display shortcodes](#show-a-single-value) | Yes |
+| Keep checkout and cart out of every country rule | [Page exclusions](#page-exclusions) | No |
+
+- IP rules are a local check. They cost no API credits and work before you have a key.
+- Country lookups are cached for 24 hours per IP address, so repeat visitors cost nothing.
+- Logged-in administrators and known search engine bots are never redirected.
+- New here? Do [Setup](#setup) first, then pick a recipe from [Common Use Cases](#common-use-cases).
+
 ## What's new in 1.2.0
 
 **IP access control.** Block or allow visitors by IP address, with separate rules for your website and your login page. IP rules run before any location lookup, so they use no API credits and work without an API key.
@@ -262,6 +279,9 @@ Use `logic="AND"` (the default) to require every condition, or `logic="OR"` to a
 API results are cached for 24 hours per IP address in WordPress transients, and IP rules are a local check with no lookup involved, so the impact on page load is minimal.
 
 Uncached requests and logged-in visitors are handled normally. A page already saved as a static cache file may still be served, because that happens before this plugin runs. In your caching plugin, exclude any page that must always be checked. Blocked responses are marked as not cacheable.
+
+> [!WARNING]
+> Full page caching and location shortcodes do not mix. If a cached page contains `[ipgeo ...]` or `[ipgeo_if ...]`, every visitor is served whatever the first visitor saw. Exclude those pages in your caching plugin, or keep the location-specific part in a section your cache leaves alone.
 
 ## Troubleshooting
 
