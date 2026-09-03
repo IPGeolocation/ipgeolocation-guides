@@ -1,414 +1,370 @@
-# **IPGeolocation.io – Geo Redirects & Content Control Plugin**
+# IPGeolocation.io - Geo Redirects & Content Control
 
-## Introduction
+A plugin that decides what each visitor sees based on their IP address and their location. Redirect people by country, block unwanted IP addresses, and show or hide parts of a page depending on where the visitor is.
 
-Imagine your website could automatically greet visitors in their language, show them relevant local offers, or redirect them to the perfect regional page—all based on where they're browsing from. That's exactly what the [IPGeolocation.io – Geo Redirects & Content Control Plugin](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/) does!
+Everything is configured from one settings screen. No code required.
 
-This smart WordPress plugin uses visitors' IP addresses to customize their experience on your site. Whether you're running an international store, a global blog, or a local service, this plugin helps you speak directly to each visitor in a way that feels personal and relevant to their location.
+[Plugin on WordPress.org](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/)
 
-### **Why This Matters for Your Website**
+## What's new in 1.2.0
 
-- **Higher Conversions**: People are 70% more likely to buy when they see content in their language and currency
-- **Better User Experience**: Visitors get information that's actually useful for their location
-- **Smart Content Control**: Show special offers, local events, or regional notices only to the right audience
-- **Improved Security**: Block unwanted traffic from specific regions
+**IP access control.** Block or allow visitors by IP address, with separate rules for your website and your login page. IP rules run before any location lookup, so they use no API credits and work without an API key.
 
-## **What Can You Do With This Plugin?**
+**IP spoofing fix.** Visitor IP addresses can no longer be faked using request headers. If your site sits behind a CDN or reverse proxy, open the IP section after updating and confirm the IP address shown at the top is actually yours.
 
-### **Smart Redirects (Guide Visitors to the Right Place)**
+The full [changelog](#changelog) is at the bottom of this page.
 
-- Send visitors from **France** straight to your French-language website
-- Redirect **Canadian** customers to your Canadian prices (in CAD dollars!)
-- Create special offers for visitors from specific **cities or states**
-- Show a friendly popup before redirecting: "Taking you to our UK store. OK?"
+## Requirements
 
-*Perfect for:* International businesses, regional service providers, multi-language websites
+- WordPress 5.8 or newer
+- PHP 7.4 or newer
+- An ipgeolocation.io API key for anything country-based. IP blocking works without one.
 
-### **Location-Based Content Control (Show/Hide Content)**
+## Setup
 
-- Display a "Free Shipping in the USA" banner **only to US visitors**
-- Show different contact information for **European vs Asian customers**
-- Hide certain products in countries where they're not available
-- Welcome visitors by their city name: "Welcome, visitors from London!"
+### Get an API key
 
-*Perfect for:* Global blogs, membership sites, regional service announcements
+Sign up at [ipgeolocation.io](https://ipgeolocation.io/), then copy the API key from your account dashboard.
 
-### **Geographic Access Control (Who Can See Your Site)**
+### Install the plugin
 
-- Block traffic from countries with too much spam or unwanted attention
-- Create VIP access for visitors from specific regions
-- Allow only local visitors to see special local offers
+In your WordPress dashboard go to **Plugins → Add New**, search for **IPGeolocation.io Geo Redirects & Content Control**, then click **Install Now** and **Activate**.
 
-*Perfect for:* Digital product sellers, local businesses, content creators
+![Add the plugin](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/add-plugin-1.1.0.png)
 
-### **Visitor Information Display (Personalize Their Experience)**
+### Enter your key and plan
 
-- Show visitors their own location information
-- Display currency, or language based on their location
-- Detect if someone is using a VPN or proxy connection
+Paste the key into the plugin settings and select your plan type: **Developer** (free) or **Paid**.
 
-*Perfect for:* Community sites, local directories, personalized services
+![API configuration](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/api-config-1.1.0.png)
 
-## **How to Get Started (Step-by-Step)**
-
-### **Step 1: Get Your Free API Key**
-
-The plugin needs a "key" to work—think of it like a password that lets your WordPress site talk to our location service.
-
-1. Go to [**ipgeolocation.io**](https://ipgeolocation.io/)
-2. Click **Sign up** and create your account or **Login** if you have account already
-3. **Copy your API key** from your account dashboard
-
-### **Step 2: Install & Activate the Plugin**
-
-1. In your WordPress dashboard, go to **Plugins → Add New**
-2. Search for "**IPGeolocation.io – Geo Redirects & Content Control**"
-
-![Add Plugin and Geo Redirects](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/add-plugin-1.1.0.png)
-
-1. Click "**Install Now**" then "**Activate**"
-2. Go to the plugin settings and **paste your API key** and **select the API plan type** you are on.
-
-![API Configuration](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/api-config-1.1.0.png)
-
-Imagine your website could automatically greet visitors in their language, show them relevant local offers, or redirect them to the perfect regional page—all based on where they're browsing from. That's exactly what the [IPGeolocation.io – Geo Redirects & Content Control Plugin](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/) does!
-
-> [!IMPORTANT] 
+> [!IMPORTANT]
 > Please make sure to select the correct plan type. Choosing the wrong option may cause the plugin to not work properly.
 
-## Geo Redirection Rules
+## Common Use Cases
 
-A Geo Redirect Rule allows you to redirect visitors based on their country. When a visitor’s location matches the rule, the redirect is applied according to the settings you configure.
+Each of these takes about a minute once your API key is in place.
 
-![Geo Redirection Rules](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/redirect-rules.png)
+### Send shoppers to their regional store
 
-**Country Code**
+Create one [country redirect rule](#country-redirect-rules) per market. Set **Country code** to `CA`, **Apply to** to Entire site, **Redirect URL** to `/ca`, **Redirect type** to 302, and **Redirect method** to Popup. Then exclude `/checkout` and `/cart` under [Page exclusions](#page-exclusions) so nobody is bounced mid purchase.
 
-- Enter a 2-letter ISO country code (for example: **US, GB or CA**)
-- The rule will only apply to visitors from this country
+### Stop brute force login attempts
 
-**Apply To**
+Under [question 2](#the-two-questions), choose **Only the addresses I list** and enter your office or home IP address. Password guessing bots never reach the login form, and your public pages stay open to everyone. If your IP address changes often, use **Anyone except the addresses I list** and block the offenders instead.
 
-- **Entire Site**: Applies the redirect across all pages on your website
-- **Specific Page**: Applies the redirect only when a selected page is visited
-- **URL Pattern Matching**: Applies the redirect to URLs matching a pattern (for example **/shop/*** or **/products/***) ****
+### Block a scraper or a spam source
 
-**Redirect URL**
+Under [question 1](#the-two-questions), choose **Anyone except the addresses I list** and paste the offending IP address or range, one per line. Blocked requests stop before any location lookup, so a hostile crawler costs you nothing in API credits.
 
-- The destination URL where matching visitors will be redirected
-- Supports relative (**/example**) URLs
+### Keep a staging or unfinished site private
 
-**Redirect Type**
+Under [question 1](#the-two-questions), choose **Only the addresses I list** and add your team's IP addresses. Everyone else lands on the page you nominate, or gets a 403.
 
-- **301 (Permanent)**: Use when the redirect is permanent and should be indexed by search engines
-- **302 (Temporary)**: Use for testing, campaigns, or temporary redirects
+### Restrict a product or service by country
 
-**Redirect Method**
+Use [Country access control](#country-access-control) in **Block mode**, list the country codes, and point the redirect URL at a page that explains why. This is the usual choice for licensing and regulatory restrictions, because it covers the whole site in one rule.
 
-- **Automatic**: Visitors are redirected immediately without any interaction
-- **Popup**: Visitors see a confirmation popup and choose whether to continue
+### Show a shipping notice only where it applies
 
-If **Popup** is selected, you can customize the popup appearance:
+Drop `[ipgeo_if country_code="US"]Free shipping across the US.[/ipgeo_if]` into a header or widget. No redirect and no duplicate page, so search engines still crawl one version of your content.
 
-- Popup message text
-- Text and background colors
-- Yes and No button labels
-- Button background and text colors
+## How the plugin decides
 
-A live preview is shown so you can see changes instantly.
+Each request runs through these checks in order. The first match ends the request.
 
-![Popup Appearance](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/popup-appearance.png)
+| Order | Check | Notes |
+| --- | --- | --- |
+| 1 | Exempt requests | WP-CLI, cron, installs and the recovery constant are never touched |
+| 2 | Safe list | Skips every rule, both IP and country |
+| 3 | IP rules | Local check, no API call |
+| 4 | Page exclusions | Listed pages skip the country rules |
+| 5 | Country access control | Allow or block by country |
+| 6 | Country redirect rules | Automatic or popup |
 
-**Popup behavior**
+Logged-in administrators and known search engine bots are excluded from all country rules. IP rules apply to everyone, including bots.
 
-- Clicking **Yes** redirects the visitor to the target URL
-- Clicking **No** keeps the visitor on the current page
+## Block visitors by IP address
 
-> [!NOTE] 
-> - Popup redirects are user-friendly and GDPR-friendly
-> - Automatic redirects are best for country-specific pages
+This section is a purely local check. No API key, no credits, no lookup.
 
-## Country Access Rules
+![IP access control](https://ps.w.org/ipgeolocation-geo-redirects-content-control/assets/screenshot-5.png)
 
-Country Access Control lets you **allow or block access to your site based on the visitor’s country**. This logic runs automatically on the frontend and does not affect admins, search engine bots.
+### Your IP address
 
-The system automatically skips:
+The top of the section shows the IP address your server currently sees for you, with a button that adds it to your safe list. If that IP address is not yours, your site is behind a proxy or CDN. Fix that under **Advanced settings** before writing any rules.
 
-- WordPress admin area
-- Logged-in administrators
-- Search engine bots
+### Safe list
 
-This ensures normal site operations and SEO safety.
+IP addresses listed here are never blocked, whatever the rules below say. They skip your country rules too. Add your own IP address first.
 
-The visitor’s country is detected using IP-based geolocation.
+### The two questions
 
-If the country cannot be detected, no restriction is applied.
+**1. Who can visit your website?** Covers your public pages.
 
-**Mode**
+**2. Who can reach your login page?** Covers `wp-login.php` and the WordPress dashboard. This is separate from question 1, so you can lock the login page while your site stays open to visitors.
 
-- **Block**: Selected countries are blocked
-- **Allow**: Only selected countries are allowed; all others are blocked
+Each question has the same three answers:
 
-![Country Access Control](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/country-access-control.png)
+| Answer | Result |
+| --- | --- |
+| Anyone | No restriction. This is the default. |
+| Anyone except the addresses I list | Every IP address on the list is blocked. |
+| Only the addresses I list | Every IP address not on the list is blocked. |
 
-**Countries**
+An empty list blocks nobody, in either mode. That stops a half-finished allow list from taking your site down.
 
-- A list of 2-letter ISO country codes (for example: **US**, **GB**, **CA**)
-- Country codes are case-insensitive
+Locking the login page to your office IP address is the strongest option here. Password guessing bots never reach the form, and ordinary visitors are unaffected.
 
-**Redirect URL**
+### IP address formats
 
-- The redirect URL must be relative (You may design the custom block page where the blocked users can be redirected to).
+Every IP address box accepts one entry per line, in any of these formats:
 
-**Behavior summary**
+| Format | Meaning |
+| --- | --- |
+| `203.0.113.9` | One single IP address |
+| `203.0.113.0/24` | A whole block, 203.0.113.0 up to 203.0.113.255 |
+| `192.0.2.*` | Anything starting with 192.0.2. |
+| `198.51.100.10-198.51.100.50` | Everything between those two IP addresses |
+| `2001:db8::1` | IPv6 works the same way |
+| `# our office` | A note for you, ignored by the plugin |
 
-- If **Block mode** is enabled and the visitor’s country matches the list → access is blocked
-- If **Allow mode** is enabled and the visitor’s country does NOT match the list → access is blocked
-- Allowed visitors continue browsing normally
+Lines that cannot be read are skipped and reported back to you when you save.
 
-> [!NOTE] 
-> - Runs early and only on frontend requests
-> - Uses strict country matching
-> - Safe for caching and SEO
-> - Fully automatic once configured
+### What a blocked visitor sees
 
-## Page Exclusion Rules
+Set **Send blocked people to this page** to a path on your site, for example `/access-denied`. Leave it empty and they get a plain 403 page instead.
 
-Excluded pages let you **skip geo rules on specific URLs**.
+Requests to the REST API, `admin-ajax.php` and `xmlrpc.php` always receive a 403 status rather than a redirect, so scripts get a clear answer.
 
-If a page matches an exclusion rule, country redirection rules will not run on that page.
+### Lockout protection
 
-The plugin checks the current page URL, including:
+The plugin refuses to save a login rule that would block your own IP address, and tells you what that IP address is so you can add it and save again. To save the rule anyway, tick the confirmation box.
 
-- The page path (for example **/checkout**)
-- The page URL contains (for example **/blog)**
-- URL parameters (for example **ref=google**)
+If you do get locked out, add this line to `wp-config.php`, log in, fix the rule, then remove the line:
 
-![Page Exclusion Rules](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/page-exclusion-rules.png)
-
-Each exclusion rule has a **type** and a **value**.
-
-If any rule matches, the page is excluded.
-
-**Page URL Equals**
-
-- Matches only one exact page
-- Best for excluding a single URL
-
-**Example**
-
-- Value: **/checkout**
-- Matches: **/checkout**
-- Not: **/checkout/cart**
-
-**Page URL Contains**
-
-- Matches a section or group of pages
-- Best for folders like blogs or shops
-
-**Example**
-
-- Value: **/blog**
-- Matches: **/blog** and **/blog/post-name**
-
-**Page Query Contains**
-
-- Matches URL parameters
-- Useful for tracking or campaign URLs
-
-**Example**
-
-- Value: **ref=google**
-- Matches: **/shop?ref=google**
-
-> [!NOTE] 
-> - Only one match is needed to exclude the page
-> - Trailing slashes are handled automatically
-> - Works with normal URLs and query strings
-
-## **Shortcodes & Dynamic Content Display**
-
-### **Display Visitor Location Information**
-
-Use these simple shortcodes anywhere in your posts, pages, or widgets to show location-based information:
-
-text
-
-```
-[ipgeo country]       <!-- Shows country name (e.g., United States) -->
-[ipgeo city]          <!-- Shows city name (e.g., New York) -->
-[ipgeo state]         <!-- Shows state/province (e.g., California) -->
-[ipgeo country_code]  <!-- Shows 2-letter code (e.g., US, GB, DE) -->
-[ipgeo continent]     <!-- Shows continent (e.g., North America) -->
-[ipgeo currency]      <!-- Shows local currency (e.g., USD, EUR) -->
-[ipgeo calling_code]  <!-- Shows country dialing code (e.g., +1) -->
-[ipgeo languages]     <!-- Shows primary languages (e.g., English) -->
-[ipgeo latitude]      <!-- Shows latitude coordinates -->
-[ipgeo longitude]     <!-- Shows longitude coordinates -->
+```php
+define( 'IPGEO_DISABLE_IP_ACCESS', true );
 ```
 
-**Advanced fields** (available on Advanced/Security plans)
+### Advanced settings
 
+**How your visitor's IP address is read**
+
+Automatic suits most sites. The other options are direct (no proxy), Cloudflare, and a custom proxy whose ranges you supply. Only change this if the detected IP address is wrong, and check it again after saving.
+
+Cloudflare headers are trusted only when the request genuinely came from a Cloudflare server. The plugin refreshes Cloudflare's IP address ranges once a day and falls back to a bundled copy if that request fails.
+
+**Should logged-in users be blocked?**
+
+Choose from: never block administrators (default, and your safety net), never block anyone who is logged in, or block by IP address regardless.
+
+**Also apply the login rule to**
+
+Two optional extras. Leave `admin-ajax.php` off unless you are sure, because many contact forms and shop features use it. `xmlrpc.php` is safe to turn on unless you use the WordPress mobile app or Jetpack.
+
+**If an IP address cannot be read at all, block the request**
+
+Off by default, so an unusual request is let through rather than turning a real visitor away.
+
+## Country redirect rules
+
+Send visitors from a given country to a different URL.
+
+![Country redirect rules](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/redirect-rules.png)
+
+| Field | Description |
+| --- | --- |
+| Country code | Two letter ISO code, for example `US`, `GB`, `CA`. One code per rule. |
+| Apply to | Entire site, one specific page, or a URL pattern such as `/shop/*` |
+| Redirect URL | Relative (`/uk-store`) |
+| Redirect type | 301 permanent, indexed by search engines, or 302 temporary for campaigns and testing |
+| Redirect method | Automatic or popup |
+
+### Popup confirmation
+
+A popup asks before redirecting. **Yes** sends the visitor on, **No** keeps them on the current page. You can edit the message, both button labels, and the text and background colours, with a live preview beside the fields.
+
+![Popup appearance](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/popup-appearance.png)
+
+Use a popup when a visitor might reasonably want to decline, such as a currency or storefront switch. Use automatic for country-specific pages where staying put makes no sense.
+
+## Country access control
+
+Allow or block whole countries.
+
+![Country access control](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/country-access-control.png)
+
+* **Block mode**: visitors from the listed countries are blocked
+* **Allow mode**: only visitors from the listed countries get in
+
+Country codes are two letters and case insensitive. The redirect URL must be relative, for example `/not-available`, and you can design that page however you like. Leave it empty and blocked visitors get a 403 page.
+
+This runs on front-end requests only. The admin area, logged-in administrators, search engine bots, REST and ajax requests are all skipped. If the country cannot be determined, no restriction is applied.
+
+## Page exclusions
+
+Excluded pages skip the country redirect rules. Checkout and cart pages are the usual candidates.
+
+![Page exclusion rules](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/page-exclusion-rules.png)
+
+| Type | Example value | Matches |
+| --- | --- | --- |
+| Page URL Equals | `/checkout` | `/checkout` only, not `/checkout/cart` |
+| Page URL Contains | `/blog` | `/blog` and `/blog/post-name` |
+| Page Query Contains | `ref=google` | `/shop?ref=google` |
+
+One match is enough to exclude a page. Trailing slashes are handled for you.
+
+## Shortcodes
+
+### Show a single value
+
+`[ipgeo field]` prints one piece of information about the current visitor.
+
+```bash
+[ipgeo country]       United States
+[ipgeo city]          New York
+[ipgeo state]         California
+[ipgeo country_code]  US
+[ipgeo currency]      USD
+[ipgeo calling_code]  +1
 ```
-[ipgeo is_proxy]      <!-- Shows if visitor uses proxy (true/false) -->
-[ipgeo is_tor]        <!-- Shows if visitor uses Tor browser -->
-[ipgeo is_anonymous]  <!-- Shows if connection is anonymous -->
-[ipgeo cloud_provider]<!-- Shows if from AWS, Google Cloud, etc. -->
-```
 
-### **Conditional Content Shortcodes**
+Available fields: `ip`, `city`, `state`, `country`, `country_code`, `zipcode`, `continent`, `latitude`, `longitude`, `currency`, `calling_code`, `languages`.
 
-Show or hide content based on visitor location:
+Paid plans add: `is_proxy`, `is_tor`, `is_anonymous`, `cloud_provider`.
 
-**Show content to specific visitors**
+### Show or hide content
 
-```
+`[ipgeo_if]` shows the content when the conditions match. `[ipgeo_if_not]` hides it when they match. Both accept the same attributes.
+
+```bash
 [ipgeo_if country_code="US,CA" logic="OR"]
-This content is only visible to visitors from the United States or Canada.
+Free shipping across the US and Canada.
 [/ipgeo_if]
-```
 
-**Hide content from specific visitors**
-
-```
 [ipgeo_if_not country="Germany"]
-This content is hidden from visitors in Germany.
+Hidden from visitors in Germany.
 [/ipgeo_if_not]
-```
 
-**Multiple conditions with AND logic**
-
-```
 [ipgeo_if country_code="US" state="California" logic="AND"]
-Welcome, California visitors! Check out our local deals.
+Welcome, California visitors. Check out our local deals.
 [/ipgeo_if]
 ```
 
-**Available attributes for conditional content**
+Attributes: `country`, `country_code`, `state`, `city`, `continent`, `is_proxy`, `is_tor`, `is_cloud_provider`, `is_anonymous`.
 
-- `country` (country name)
-- `country_code` (2-letter code)
-- `state` (state/province)
-- `city` (city name)
-- `continent` (continent name)
-- `is_proxy` (yes/no)
-- `is_tor` (yes/no)
-- `is_cloud_provider` (yes/no)
-- `is_anonymous` (yes/no)
+Use `logic="AND"` (the default) to require every condition, or `logic="OR"` to accept any one of them. Within a single attribute, comma separated values are always treated as "any of these".
 
-**Logic operators**
+## Caching, CDNs and performance
 
-- `logic="AND"` - ALL conditions must match (default)
-- `logic="OR"` - ANY condition can match
+API results are cached for 24 hours per IP address in WordPress transients, and IP rules are a local check with no lookup involved, so the impact on page load is minimal.
 
-### **Practical Shortcode Examples**
+Uncached requests and logged-in visitors are handled normally. A page already saved as a static cache file may still be served, because that happens before this plugin runs. In your caching plugin, exclude any page that must always be checked. Blocked responses are marked as not cacheable.
 
-**E-commerce Personalization**
+## Troubleshooting
 
-```
-[ipgeo_if country_code="US"]
-<p class="local-offer">🇺🇸 Free shipping across the USA!</p>
-[/ipgeo_if]
 
-[ipgeo_if country_code="DE"]
-<p class="local-offer">🇩🇪 Kostenloser Versand in Deutschland!</p>
-[/ipgeo_if]
-```
+### Nothing is being redirected
 
-**Local Business Targeting**
+Work through these in order:
 
-```
-[ipgeo_if city="New York"]
-<div class="nyc-banner">
-    <h3>New York City Customers!</h3>
-    <p>Same-day delivery available in NYC</p>
-    <button>Book NYC Delivery</button>
-</div>
-[/ipgeo_if]
-```
+1. You are logged in as an administrator. Admins are never redirected, so use a private window.
+2. Your API key is missing, or the selected plan type does not match your account.
+3. The page is covered by a [page exclusion rule](#page-exclusions).
 
-**Currency Display**
+### The page keeps reloading
 
-```
-<div class="price">
-    Price: [ipgeo currency] 49.99
-</div>
-```
+In 1.1.0 an empty redirect URL in Country Access Control caused this, so update to 1.2.0 first. If it continues, your redirect target is itself covered by the rule that sends people there. Point the rule at a page outside its own scope, or add the target to Page exclusions.
 
-**Welcome Message with Location**
+### Everyone is blocked after I saved an IP rule
 
-```
-<h2>Welcome, visitor from [ipgeo city]!</h2>
-<p>We're glad to have you here from [ipgeo country].</p>
+Check that the IP address shown at the top of the IP section is really yours. If it is not, your site is behind a proxy or CDN and every visitor looks like the same IP address, so one rule catches all of them. Fix the detection mode under Advanced settings. To get back in meanwhile, add `define( 'IPGEO_DISABLE_IP_ACCESS', true );` to `wp-config.php`.
 
-```
+### My contact form or checkout stopped working
+
+Turn off `admin-ajax.php` under **Also apply the login rule to**. Many forms, shop features and page builders use that file, so applying a login rule to it blocks ordinary visitors.
+
+### Search engine crawlers are being blocked
+
+Bots are excluded from country rules but not from IP rules, because any browser can claim to be a crawler. If an IP rule is catching a crawler you want, add its IP ranges to the safe list.
+
+### A shortcode prints nothing
+
+`[ipgeo ...]` returns an empty string when no location data is available: a missing key, an invalid key, or a field your plan does not include. `is_proxy`, `is_tor`, `is_anonymous` and `cloud_provider` need a paid plan.
+
+## For developers
+
+| Hook | Type | Use |
+| --- | --- | --- |
+| `ipgeo_ip_access_bypass` | filter | Skip the IP gate entirely for a request |
+| `ipgeo_ip_access_blocked` | filter | Override the block decision |
+| `ipgeo_ip_access_denied` | action | Fires before a request is denied, useful for logging |
+| `IPGEO_DISABLE_IP_ACCESS` | constant | Turns off IP rules, for lockout recovery |
 
 ## Changelog
+
+### 1.2.0
+
+- Added IP access control: block or allow visitors by IP address, with separate rules for your website and your login page
+- IP address lists accept single IP addresses, ranges such as `203.0.113.0/24`, wildcards such as `192.0.2.*`, and IPv6
+- Added a safe list of IP addresses that are never blocked by any rule
+- The settings screen now shows your own IP address and how it was detected
+- The plugin refuses to save a login rule that would lock you out, with a `wp-config.php` recovery option
+- Security: visitor IP addresses can no longer be faked using request headers
+- Fixed an empty redirect URL in Country Access Control causing an endless redirect loop
+- Fixed blocked visitors being redirected twice
+- Fixed cached location data not being reused within the same page load
+
 ### 1.1.0
+
 - Upgraded internal API from v2 to v3
-- Simplified plan types: Developer and Paid Plan only
-- Standard, Advanced, and Security plans auto-migrated to Paid Plan
-- Rename the plugin
+- Simplified plan types to Developer and Paid only, with Standard, Advanced and Security auto-migrated to Paid
+- Renamed the plugin
+
 ### 1.0.0
-- Initial public release
-- Country redirects with popup support
-- Country access allow/block rules
-- Conditional shortcodes
-- Bot detection and caching
 
-## Frequently Asked Questions
+- Initial public release with country redirects, popup support, country allow and block rules, conditional shortcodes, bot detection and caching
+
+## Frequently asked questions
 
 <details>
-<summary><strong>Does this plugin redirect logged-in administrators?</strong></summary>
-No. Administrators are automatically excluded from all redirects and access rules.
+<summary><strong>Do I need an API key to block IP addresses?</strong></summary>
+No. Blocking by IP address is a local check. Only the country features need a key.
 </details>
 
 <details>
-<summary><strong>Are bots and search engines redirected?</strong></summary>
-No. Known bots and search engine crawlers (e.g., Google, Bing, Facebook, Twitter) are excluded from redirects so your SEO indexing remains unaffected.
+<summary><strong>The plugin shows the wrong IP address for me. Why?</strong></summary>
+Your site is behind a CDN or proxy, which replaces the IP address your server sees. Open Advanced settings, choose the option that matches your setup, save, then check the IP address again.
 </details>
 
 <details>
-<summary><strong>Does the plugin cache API responses?</strong></summary>
-Yes. IPGeolocation stores geolocation data per IP in WordPress transients for <strong>24 hours</strong>, improving performance and reducing API calls.
+<summary><strong>I locked myself out of my login page. How do I get back in?</strong></summary>
+Add <code>define( 'IPGEO_DISABLE_IP_ACCESS', true );</code> to your <code>wp-config.php</code>, log in, fix the rule, then remove the line.
+</details>
+
+<details>
+<summary><strong>Are logged-in administrators affected?</strong></summary>
+They are never redirected, and by default they are never blocked by IP rules either. You can change the IP behaviour under Advanced settings.
 </details>
 
 <details>
 <summary><strong>Does the plugin work with Cloudflare?</strong></summary>
-Yes. The plugin supports the <code>CF-Connecting-IP</code> header, allowing it to detect visitor IPs even when Cloudflare is enabled.
+Yes. Choose the Cloudflare option under Advanced settings. The plugin only trusts Cloudflare's headers when the request genuinely came from a Cloudflare server, so nobody can pretend to be at a different IP address.
 </details>
 
 <details>
-<summary><strong>Will this slow down my website?</strong></summary>
-No. API calls are cached, and geolocation rules are processed efficiently so page load impact is minimal under normal conditions.
+<summary><strong>What happens if my API key is missing or wrong?</strong></summary>
+Country redirects, country access control and the shortcodes stop working, because the plugin cannot determine a visitor's location. Visitors see your default content. IP rules keep working.
 </details>
 
 <details>
-<summary><strong>What happens if the IPGeolocation API key is missing or incorrect?</strong></summary>
-Without a valid API key, the plugin’s core features (redirects, content rules, and access control) <strong>will not function</strong> because it cannot determine visitor location. Users might see default content or no redirection until the key is configured.
+<summary><strong>Can I detect VPN, proxy or Tor users?</strong></summary>
+Yes, on a paid plan. Use <code>is_proxy</code>, <code>is_tor</code>, <code>is_anonymous</code> or <code>cloud_provider</code> in either the display or the conditional shortcodes.
 </details>
 
 <details>
-<summary><strong>Can I temporarily bypass redirection for testing or users?</strong></summary>
-Yes. You can add query parameters for control:
-- <code>?geo_bypass=1</code> — bypasses redirects for 30 days  
-- <code>?geo_reset=1</code> — resets the bypass state and allows redirects again
-</details>
-
-<details>
-<summary><strong>How can I verify that redirects or content rules are working?</strong></summary>
-To test rules:
-- Use a <strong>VPN or proxy</strong> to simulate different countries.
-- Try <code>?geo_bypass=1</code> to skip redirects temporarily.
-- Use an incognito browser session to avoid cached rules.
-</details>
-
-<details>
-<summary><strong>Is there a way to detect VPN, proxy, or Tor users?</strong></summary>
-Yes — with the <strong>Advanced or Security API plan</strong>, you can detect if a visitor is using a proxy, VPN, or Tor. These details can also be used in conditional shortcodes to show or hide relevant content.
-</details>
-
-<details>
-<summary><strong>Can I show different prices, banners, or contact details based on location?</strong></summary>
-Absolutely. Use the conditional content shortcodes (e.g., <code>[ipgeo_if country_code="US"]</code>) to display localized banners, contact information, prices, or other content tailored to the visitor’s country or region.
+<summary><strong>Will geo redirects hurt my SEO?</strong></summary>
+Known search engine crawlers are excluded from country redirects and country access control, so your pages are indexed as written. Use 301 only for redirects you intend to be permanent, and prefer conditional shortcodes over redirects when you only need to change a banner or a price.
 </details>
