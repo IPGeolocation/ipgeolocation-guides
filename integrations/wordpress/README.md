@@ -41,7 +41,7 @@ The full [changelog](#changelog) is at the bottom of this page.
 
 ### Get an API key
 
-Sign up at [ipgeolocation.io](https://ipgeolocation.io/), then copy the API key from your account dashboard.
+Sign up at [ipgeolocation.io](https://app.ipgeolocation.io/sign-up), then copy the API key from your account dashboard.
 
 ### Install the plugin
 
