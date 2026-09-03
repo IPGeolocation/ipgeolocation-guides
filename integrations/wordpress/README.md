@@ -1,14 +1,14 @@
 # IPGeolocation.io - Geo Redirects & Content Control
-
+## Overview
 A plugin that decides what each visitor sees based on their IP address and their location. Redirect people by country, block unwanted IP addresses, and show or hide parts of a page depending on where the visitor is.
 
 Everything is configured from one settings screen. No code required.
 
 [Plugin on WordPress.org](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/)
 
-## At a Glance
+## At a glance
 
-| What you want to do | Feature | API key |
+| What you want to do | Feature | Requires API key |
 | --- | --- | --- |
 | Send visitors from one country to a different page | [Country redirect rules](#country-redirect-rules) | Yes |
 | Close the site to some countries, or open it to only a few | [Country access control](#country-access-control) | Yes |
@@ -58,7 +58,7 @@ Paste the key into the plugin settings and select your plan type: **Developer** 
 > [!IMPORTANT]
 > Please make sure to select the correct plan type. Choosing the wrong option may cause the plugin to not work properly.
 
-## Common Use Cases
+## Common use cases
 
 Each of these takes about a minute once your API key is in place.
 
