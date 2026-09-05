@@ -24,10 +24,8 @@ The script carries no API key. Requests are authorized by origin, so register yo
 <script src="https://static.ipgeolocation.io/web-assets/static/security/session-analysis.js"></script>
 
 <script>
-    const includeIPSecurity = false;
-
     Analysis
-        .startMonitoring(includeIPSecurity)
+        .startMonitoring()
         .get()
         .then(result => console.log(result))
         .catch(error => console.error(error instanceof Error ? error.message : String(error)));
@@ -55,6 +53,29 @@ Response for a clean connection:
 ```
 
 In plain words: this connection is not anonymized, the service is certain about it, and the visitor is where the request says they are.
+
+### Optional objects
+
+Pass an `include` string to `startMonitoring()` to attach extra data about the **public IP**. Separate several names with commas, or pass `all` for everything.
+
+| Value | Adds |
+|---|---|
+| `security` | `ip_security` |
+| `location` | `ip_location` |
+| `asn` | `ip_asn` |
+| `company` | `ip_company` |
+| `all` | All four objects |
+
+```js
+const include = "security,location";
+
+Analysis
+    .startMonitoring(include)
+    .get()
+    .then(result => console.log(result));
+```
+
+Each extra object costs credits; see [Credits](#credits).
 
 ---
 
@@ -90,9 +111,18 @@ Where the user actually is, recovered by the live tests:
 | `actual_country_code` | string | Two-letter ISO country code of the visitor's actual location. |
 | `confidence_score` | up to 100 | Certainty about that actual country. Gate on it before acting on a country mismatch. |
 
-### What is already known about the IP: `ip_security`
+### Optional objects about the public IP
 
-Present only when `includeIPSecurity` is `true`. Every field is documented in the [IP Security API response reference](https://ipgeolocation.io/documentation/ip-security-api.html#reference-to-ip-security-api-response).
+Each appears only when its name, or `all`, is in `include`. They describe the **public IP**, so behind a VPN or proxy they refer to the exit node, not the visitor.
+
+| Object | `include` value | What it tells you | Field reference |
+|---|---|---|---|
+| `ip_security` | `security` | What is already known about the IP: VPN, proxy, Tor, bot, and threat signals | [IP Security API response reference](https://ipgeolocation.io/documentation/ip-security-api.html#reference-to-ip-security-api-response) |
+| `ip_location` | `location` | Where the IP is: country, state, city, coordinates | [Location object reference](https://ipgeolocation.io/documentation/ip-location-api.html#location-json-object-reference) |
+| `ip_asn` | `asn` | Who routes the IP: AS number, organization, type | [ASN object reference](https://ipgeolocation.io/documentation/ip-location-api.html#asn-json-object-reference) |
+| `ip_company` | `company` | Who owns the IP: company name, type, domain | [Company object reference](https://ipgeolocation.io/documentation/ip-location-api.html#company-json-object-reference) |
+
+Response with `include: "all"`:
 
 ```json
 {
@@ -120,15 +150,61 @@ Present only when `includeIPSecurity` is `true`. Every field is documented in th
     "is_vpn": true,
     "vpn_provider_names": ["Browsec VPN"],
     "vpn_confidence_score": 99,
-    "vpn_last_seen": "2026-08-07",
+    "vpn_last_seen": "2026-08-27",
     "is_relay": false,
     "relay_provider_name": "",
-    "is_anonymous": false,
+    "is_anonymous": true,
     "is_known_attacker": false,
     "is_bot": false,
+    "bot_confidence_score": 0,
+    "bot_operator_name": "",
+    "bot_type": "",
+    "is_known_good_bot": false,
+    "bot_last_seen": "",
     "is_spam": false,
     "is_cloud_provider": true,
-    "cloud_provider_name": "UpCloud Ltd"
+    "cloud_provider_name": "UpCloud Ltd",
+    "is_corporate_gateway": false,
+    "corporate_gateway_type": "",
+    "corporate_gateway_provider_name": ""
+  },
+  "ip_location": {
+    "continent_code": "EU",
+    "continent_name": "Europe",
+    "country_code2": "DE",
+    "country_code3": "DEU",
+    "country_name": "Germany",
+    "country_name_official": "Federal Republic of Germany",
+    "country_capital": "Berlin",
+    "state_prov": "Hesse",
+    "state_code": "DE-HE",
+    "district": "Frankfurt",
+    "city": "Frankfurt",
+    "locality": "Frankfurt",
+    "accuracy_radius": "8.588",
+    "confidence": "medium",
+    "dma_code": "",
+    "zipcode": "60311",
+    "latitude": "50.11208",
+    "longitude": "8.68341",
+    "is_eu": true,
+    "country_flag": "https://ipgeolocation.io/static/flags/de_64.png",
+    "geoname_id": "6463469",
+    "country_emoji": "🇩🇪"
+  },
+  "ip_asn": {
+    "as_number": "AS202053",
+    "organization": "UpCloud Ltd",
+    "country": "FI",
+    "type": "BUSINESS",
+    "domain": "upcloud.com",
+    "date_allocated": "2014-04-24",
+    "rir": "RIPE"
+  },
+  "ip_company": {
+    "name": "UpCloud Cloud Servers",
+    "type": "HOSTING",
+    "domain": "upcloud.com"
   }
 }
 ```
@@ -145,6 +221,9 @@ actualLocation.actual_country_code;                                    // "PK"
 actualLocation.actual_country_code !== result.public_ip_country_code;  // true: presenting DE, actually in PK
 ipSecurity.vpn_provider_names;                                         // ["Browsec VPN"]
 ipSecurity.threat_score;                                               // 50
+result.ip_location.city;                                               // "Frankfurt": the exit node, not the visitor
+result.ip_asn.organization;                                            // "UpCloud Ltd"
+result.ip_company.type;                                                // "HOSTING"
 ```
 
 ---
@@ -166,10 +245,14 @@ These bands apply only when `is_anonymous` is `true`. High confidence with `is_a
 
 ## Credits
 
-| Configuration | Credits per call |
+| `include` | Credits per call |
 |---|---|
-| `includeIPSecurity: false` | 3 |
-| `includeIPSecurity: true` | 5 |
+| Default | 3 |
+| `security` | +2 |
+| Any or all of `location`, `asn`, `company` | +1 |
+| `all` | 6 |
+
+The three objects `location`, `asn`, and `company` share a single credit, whether you include one or all of them. For example, `security` alone costs 5, `location,asn,company` costs 4, and `security,location` costs 6.
 
 > **Note:** Calls draw from your plan's shared credit pool. For how credits are counted and consumed across APIs, see the [credits usage guide](https://ipgeolocation.io/documentation/credits-usage.html); for plan allowances, see [pricing](https://ipgeolocation.io/pricing.html).
 
@@ -209,7 +292,7 @@ Yes, and that is the main reason it exists. Static lists miss them because the I
 
 <details>
 <summary><strong>Does real-time detection run on top of the IP Security database?</strong></summary>
-No. It classifies a session with live connection-level techniques only, and does not consult the IP Security database or traditional IP intelligence to reach its verdict. <code>includeIPSecurity: true</code> simply attaches the database view next to the live one.
+No. It classifies a session with live connection-level techniques only, and does not consult the IP Security database or traditional IP intelligence to reach its verdict. Including <code>security</code> simply attaches the database view next to the live one.
 </details>
 
 <details>
@@ -244,7 +327,7 @@ Usually not. Many are ordinary privacy-conscious or corporate users. Work the co
 
 <details>
 <summary><strong>What does it cost?</strong></summary>
-3 credits per call, or 5 with <code>includeIPSecurity: true</code>, from your plan's normal credit pool. It is a paid plan feature; contact <a href="https://ipgeolocation.io/contact.html">our support team</a> for a free trial.
+3 credits per call, 5 with <code>security</code> included, and 1 more for any of <code>location</code>, <code>asn</code>, or <code>company</code>, so <code>all</code> costs 6. Credits come from your plan's normal credit pool. It is a paid plan feature; contact <a href="https://ipgeolocation.io/contact.html">our support team</a> for a free trial.
 </details>
 
 ---
