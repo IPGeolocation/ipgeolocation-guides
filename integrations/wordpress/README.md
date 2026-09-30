@@ -1,6 +1,6 @@
 # WordPress Geo Redirect Plugin: IPGeolocation.io Geo Redirects & Content Control
 
-IPGeolocation.io Geo Redirects & Content Control is a free WordPress plugin that redirects visitors by country, blocks countries and IP addresses, and shows geo-targeted content based on each visitor's IP address. Location data comes from the [IPGeolocation.io IP geolocation API](https://ipgeolocation.io/). The plugin works with page caching plugins and CDNs such as WP Rocket, LiteSpeed Cache and Cloudflare, and everything is set up from one settings screen, with no code.
+IPGeolocation.io Geo Redirects & Content Control is a free WordPress plugin that redirects visitors by country, blocks countries and IP addresses, and shows geo-targeted content based on each visitor's IP address. Location data comes from the [IPGeolocation.io IP geolocation API](https://ipgeolocation.io/ip-location-api.html). The plugin works with page caching plugins and CDNs such as WP Rocket, LiteSpeed Cache and Cloudflare, and everything is set up from one settings screen, with no code.
 
 - [Download the geo redirect plugin from WordPress.org](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/)
 - [Create a free IPGeolocation.io API key](https://app.ipgeolocation.io/sign-up)
@@ -598,105 +598,75 @@ Verified crawlers pass [country access control](#search-engine-crawlers-and-link
 
 <details>
 <summary><strong>Can I redirect WordPress visitors to another domain by country?</strong></summary>
-
 Yes. Since version 1.3.0 a redirect URL can be a full address on another site, such as `https://gr.example.com/`, as well as a path on your own site. See [redirect rule settings](#redirect-rule-settings).
-
 </details>
 
 <details>
 <summary><strong>How often is the same visitor redirected?</strong></summary>
-
 You choose: every visit, once per browser session, once per hour or once per day, for the whole site and for each rule. See [how often visitors are redirected](#how-often-visitors-are-redirected).
-
 </details>
 
 <details>
 <summary><strong>Does the plugin work with WP Rocket, LiteSpeed Cache and other caching plugins?</strong></summary>
-
 Yes. Redirects, popups, conditional content and blocking all work on cached pages, and the plugin clears the cache of supported cache plugins when you save its settings. See [how cached page support works](#how-cached-page-support-works).
-
 </details>
 
 <details>
 <summary><strong>Why does ?ipgeo_from=1 appear in the address after a redirect?</strong></summary>
-
 It stops two sites that both run this plugin from sending a visitor back and forth, and the plugin on the receiving site removes it from the address bar. If the other site does not run the plugin, you can switch it off. See [redirect loop protection between your sites](#redirect-loop-protection-between-your-sites).
-
 </details>
 
 <details>
 <summary><strong>How can visitors choose to stay on my site?</strong></summary>
-
 Link to your site with `?geo_bypass=1`, for example from a "Visit our international store" link, or let them answer "No" to a popup. Either way they stay for 30 days. See [letting visitors choose to stay](#let-visitors-choose-to-stay-on-your-site).
-
 </details>
 
 <details>
 <summary><strong>Can one redirect rule cover several countries?</strong></summary>
-
 Yes. Enter the country codes separated by commas, for example `GR, CY`.
-
 </details>
 
 <details>
 <summary><strong>How do I test country redirects with a VPN?</strong></summary>
-
 Log out, use a private browser window, and open a new one each time you change location, or add `?geo_reset=1` to the address. The [Test a visitor tool](#test-a-visitor-from-any-country) shows the result for any country without a VPN.
-
 </details>
 
 <details>
 <summary><strong>Do I need an API key to block IP addresses?</strong></summary>
-
 No. Blocking by IP address is a local check. Only the country features need a key.
-
 </details>
 
 <details>
 <summary><strong>The plugin shows the wrong IP address for me. Why?</strong></summary>
-
 Your site is behind a CDN or proxy, which replaces the IP address your server sees. Open [advanced settings](#advanced-settings), choose the option that matches your setup, save, then check the IP address again.
-
 </details>
 
 <details>
 <summary><strong>I locked myself out of my login page. How do I get back in?</strong></summary>
-
 Add `define( 'IPGEO_DISABLE_IP_ACCESS', true );` to your `wp-config.php`, log in, fix the rule, then remove the line.
-
 </details>
 
 <details>
 <summary><strong>Are logged-in users affected?</strong></summary>
-
 Logged-in users are never redirected, and administrators are never blocked by country. By default administrators are not blocked by IP rules either, which you can change under [advanced settings](#advanced-settings).
-
 </details>
 
 <details>
 <summary><strong>Does the plugin work with Cloudflare?</strong></summary>
-
 Yes. Choose the Cloudflare option under [advanced settings](#advanced-settings), so visitor IP addresses are read correctly. The plugin only trusts Cloudflare's headers when the request genuinely came from a Cloudflare server, and its cached page support works with Cloudflare's page cache.
-
 </details>
 
 <details>
 <summary><strong>What happens if my API key is missing or wrong?</strong></summary>
-
 Country redirects, country access control and the shortcodes stop working, because the plugin cannot determine a visitor's location, so visitors see your default content. The [API status](#check-the-api-status) on the settings page shows the problem. IP rules keep working.
-
 </details>
 
 <details>
 <summary><strong>Can I detect VPN, proxy or Tor users?</strong></summary>
-
 Yes, on a paid plan. Use `is_proxy`, `is_tor`, `is_anonymous`, `is_cloud_provider` or `cloud_provider` in the display or the conditional shortcodes.
-
 </details>
 
 <details>
 <summary><strong>Will geo redirects hurt my SEO?</strong></summary>
-
 Not when set up well. Search engine crawlers are never redirected, so every country version can be indexed. Use 302 redirects, let visitors choose their version, and add hreflang tags. See [geo redirects and SEO](#geo-redirects-and-seo).
-
 </details>
