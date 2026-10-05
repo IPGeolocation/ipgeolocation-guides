@@ -88,7 +88,7 @@ Create a [country redirect rule](#country-redirect-rules) with **Country code** 
 
 ### Send shoppers to a regional page on the same site
 
-Set **Country code** to `CA`, **Apply to** to Entire site and **Redirect URL** to a path such as `/ca/`. The destination page itself is never redirected, so there is no loop, and WooCommerce cart, checkout and account pages are [never redirected](#pages-that-are-never-redirected), so nobody is bounced mid purchase.
+Set **Country code** to `CA`, **Apply to** to Entire site and **Redirect URL** to a path such as `/ca/`. The destination page itself is never redirected, so there is no loop, and WooCommerce cart, checkout and account pages are [never redirected](#pages-that-are-never-redirected), so nobody is bounced mid-purchase.
 
 ### Ask visitors before redirecting them
 
@@ -140,7 +140,7 @@ Send visitors from one or more countries to another page on your site, or to ano
 
 | Field | Description |
 | --- | --- |
-| Country code | One or more two letter ISO codes separated by commas, for example `US` or `GR, CY` |
+| Country code | One or more two-letter ISO codes separated by commas, for example `US` or `GR, CY` |
 | Apply to | Entire site, one specific page, or a URL pattern such as `/shop/*`, which also covers `/shop` itself |
 | Redirect URL | A path on your site (`/uk-store`) or a full address on another site (`https://uk.example.com/`) |
 | Redirect type | 302 temporary, recommended for country redirects, or 301 permanent |
@@ -220,7 +220,7 @@ Block visitors from some countries, or allow visitors from only a few, across yo
 - **Block mode**: visitors from the listed countries are blocked
 - **Allow mode**: only visitors from the listed countries get in
 
-Country codes are two letters and case insensitive. Blocked visitors see a 403 page, or you can send them to a page on your site, for example `/not-available`, or to a full address on another site.
+Country codes are two-letters and case-insensitive. Blocked visitors see a 403 page, or you can send them to a page on your site, for example `/not-available`, or to a full address on another site.
 
 Country access control runs on front end pages only. The admin area, the REST API and AJAX requests are skipped, and administrators are never blocked. If a visitor's country cannot be determined, for example during an API outage, the visitor is let in rather than your site going offline.
 
@@ -260,7 +260,7 @@ Each question has the same three answers:
 | Anyone except the addresses I list | Every IP address on the list is blocked. |
 | Only the addresses I list | Every IP address not on the list is blocked. |
 
-An empty list blocks nobody, in either mode. That stops a half finished allow list from taking your site down.
+An empty list blocks nobody, in either mode. That stops a half-finished allow list from taking your site down.
 
 Locking the login page to your office IP address is the strongest option here. Password guessing bots never reach the form, and ordinary visitors are unaffected.
 

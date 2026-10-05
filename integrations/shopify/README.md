@@ -238,7 +238,7 @@ Yes, the Connect Stores feature allows you to link up to three separate Shopify 
 
 <details>
 <summary><strong>How accurate is the country detection?</strong></summary>
-We use industry standard IPgeolocation databases, which are typically accurate to the country level for 99% of visitors.
+We use industry-standard IP geolocation databases, which are typically accurate to the country level for 99% of visitors.
 </details>
 
 <details>
