@@ -1,7 +1,7 @@
 # IPGeolocation Shopify Integration Guide
 ## Overview
 
-**IPGeolocation** is a free, powerful Shopify app by [**IPGeolocation.io**](https://ipgeolocation.io) that provides a seamless international shopping experience for your customers. Whether you manage multiple markets within one Shopify store or operate separate stores, It automatically detects your visitors' locations and guides them to the right storefront, in their preferred language and with the correct experience.
+**IPGeolocation** is a free, powerful Shopify app by [**IPGeolocation.io**](https://ipgeolocation.io) that sends each visitor to the store, language and currency for their country. Whether you manage multiple markets within one Shopify store or operate separate stores, It automatically detects your visitors' locations and guides them to the right storefront, in their preferred language and with the correct experience.
 
 ### Who Is This App For?
 Our app is ideal for Shopify merchants who:
@@ -19,7 +19,7 @@ Whether you're a small business testing new regions or an established brand with
 
 *   **Automatic Country Detection:** Identifies where your visitors are browsing from and directs them to the most relevant store or market.
 *   **Smart Popup with Consent:** A customizable popup asks visitors if they'd like to switch to their local store, respecting their choice and remembering it for future visits.
-*   **Multi-Store Connection:** Link up to three separate Shopify stores for free, allowing visitors to move seamlessly between them without realizing they've switched domains.
+*   **Multi-Store Connection:** Link up to three separate Shopify stores for free, so visitors are redirected to the store that serves their country and keep browsing without noticing the domain change.
 *   **Unlimited Custom Translations:** Create fully translated popup text in any language. Choose between language-only translations or country-specific translations for precision.
 *   **Manual Market Selector:** Give customers control with a selector that lets them manually switch regions or languages anytime while browsing.
 *   **Advanced Redirect Rules:** Control exactly when and where the popup appears based on visitor type, country, and URL patterns.
@@ -45,7 +45,7 @@ This guide will walk you through installing IPGeolocation shopify app and comple
 ### Initial Setup Checklist
 When you first open the app, a progress bar at the top of your dashboard will track three essential tasks:
 
-1.  **Connect Stores:** If you operate multiple Shopify stores, connect them so visitors can switch seamlessly.
+1.  **Connect Stores:** If you operate multiple Shopify stores, connect them so visitors are redirected between them.
     *   If you only use one store with Shopify Markets, you can skip this step.
 2.  **Configure Rules:** Set up rules to control when and where the popup appears.
 3.  **Add Translations:** Create custom popup text in different languages.
@@ -233,7 +233,7 @@ Yes, IPGeolocation is fully compatible with Shopify Markets. If you manage multi
 
 <details>
 <summary><strong>Can I use IPGeolocation with separate Shopify stores?</strong></summary>
-Yes, the Connect Stores feature allows you to link up to three separate Shopify stores together. Visitors can switch between connected stores seamlessly.
+Yes, the Connect Stores feature allows you to link up to three separate Shopify stores together. Visitors are redirected to the connected store that serves their country.
 </details>
 
 <details>
