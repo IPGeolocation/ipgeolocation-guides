@@ -142,7 +142,7 @@ This transform adds geographic and network context that Maltego doesn't provide 
 Company attribution helps you understand who actually controls an IP address.
 
 **Returned Data:**
-- **Company name and type** – Company name with classification (ISP, hosting, business, etc, when available)
+- **Company name and type** – Company name with classification (ISP, hosting, business, etc., when available)
 - **Domain** – Associated domain when available
 
 ![IP to Company Intel](https://static.ipgeolocation.io/web-assets/images/integrations/maltego/ip-to-company-intel.png)

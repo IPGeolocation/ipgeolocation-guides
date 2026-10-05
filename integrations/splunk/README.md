@@ -144,11 +144,11 @@ Finally, click **Submit**.
 
 Select _Use MMDB_ option in the Lookup Method to use your database subscription on ipgeolocation.io with Splunk.
 
-You have the following choices to setup the app for ipgeolocation.io databases:
+You have the following choices to set up the app for ipgeolocation.io databases:
 
 #### Download MMDB on each Search Head (Used for Search Head Cluster Only)
 
-If you've a search head cluster deployed:
+If you have a search head cluster deployed:
 
 - select "**No**" if you want to download MMDB from ipgeolocation.io on only one Search Head and sync on other search heads.
 - select "**Yes**" (default one) to let each Search Head download it's MMDB copy from ipgeolocation.io.

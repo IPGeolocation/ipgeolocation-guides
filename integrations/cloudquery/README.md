@@ -155,7 +155,7 @@ Key columns:
 | Column | Type | Description |
 |---|---|---|
 | `ip` | text | The IP that was looked up |
-| `continent_code` | text | Two letter continent code |
+| `continent_code` | text | Two-letters continent code |
 | `country_code2` | text | ISO alpha-2 country code |
 | `country_code3` | text | ISO alpha-3 country code |
 | `country_name` | text | Country name |
@@ -189,11 +189,11 @@ Key columns:
 | `timezone_name` | text | IANA timezone name |
 | `timezone_offset` | double | UTC offset in seconds |
 | `timezone_is_dst` | boolean | DST currently in effect |
-| `hostname` | text | Reverse DNS name. Paid, opt in |
-| `locality` | text | Locality or neighbourhood. Paid, opt in |
-| `accuracy_radius` | text | Accuracy radius in kilometres. Paid, opt in |
-| `confidence` | text | `low`, `medium` or `high`. Paid, opt in |
-| `dma_code` | text | Designated Market Area code, US only. Paid, opt in |
+| `hostname` | text | Reverse DNS name. Paid, opt-in |
+| `locality` | text | Locality or neighbourhood. Paid, opt-in |
+| `accuracy_radius` | text | Accuracy radius in kilometres. Paid, opt-in |
+| `confidence` | text | `low`, `medium` or `high`. Paid, opt-in |
+| `dma_code` | text | Designated Market Area code, US only. Paid, opt-in |
 
 With `include_security: true` the table also carries every security column listed below, unprefixed. With `include_abuse: true` it carries every abuse column with an `abuse_` prefix.
 
@@ -298,11 +298,11 @@ Autonomous System details, looked up by IP address, by AS number, or both. Requi
 | `rir` | text | Regional Internet Registry |
 | `num_of_ipv4_routes` | text | Count of announced IPv4 prefixes |
 | `num_of_ipv6_routes` | text | Count of announced IPv6 prefixes |
-| `peers` | text | Peer AS numbers. Opt in |
-| `upstreams` | text | Upstream AS numbers. Opt in |
-| `downstreams` | text | Downstream AS numbers. Opt in |
-| `routes` | text | Announced CIDR prefixes. Opt in |
-| `whois_response` | text | Raw WHOIS record. Opt in |
+| `peers` | text | Peer AS numbers. opt-in |
+| `upstreams` | text | Upstream AS numbers. opt-in |
+| `downstreams` | text | Downstream AS numbers. opt-in |
+| `routes` | text | Announced CIDR prefixes. opt-in |
+| `whois_response` | text | Raw WHOIS record. opt-in |
 
 The last five columns stay NULL unless you name them in `asn_include`. That is deliberate: a tier 1 network can announce tens of thousands of prefixes and peer with thousands of other networks, and pulling all of it on every sync makes the table slow to write and awkward to query.
 
@@ -602,7 +602,7 @@ The free Developer plan allows 1,000 requests per day. Paid plans start at 150,0
 0 3 * * * cd /opt/ipgeo && IPGEOLOCATION_API_KEY=xxx /usr/local/bin/cloudquery sync ipgeo.yml >> sync.log 2>&1
 ```
 
-The plugin binary has to be serving when the sync runs. Under systemd, a long running unit for `cq-source-ipgeolocation serve` plus a timer for the sync keeps the two concerns separate.
+The plugin binary has to be serving when the sync runs. Under systemd, a long-running unit for `cq-source-ipgeolocation serve` plus a timer for the sync keeps the two concerns separate.
 
 Size the interval against your credits. Geolocation data for a given IP changes slowly, so daily is enough for most uses. Threat signals move faster, and hourly is reasonable for a small list of IPs you actively monitor.
 
@@ -612,7 +612,7 @@ Size the interval against your credits. Geolocation data for a given IP changes 
 
 ### The sync succeeds but a table is empty
 
-Failed lookups are logged as warnings and skipped so one bad address cannot abort a run. An empty table usually means every lookup failed the same way. Re run with `--log-level debug` and look for `failed to fetch` lines, which name the IP and the error.
+Failed lookups are logged as warnings and skipped so one bad address cannot abort a run. An empty table usually means every lookup failed the same way. Re-run with `--log-level debug` and look for `failed to fetch` lines, which name the IP and the error.
 
 The usual causes: a paid table on a free key, an `ips` list made up entirely of private ranges, or `user_agents` left empty, which skips the user agent table silently.
 
@@ -725,7 +725,7 @@ NULL means the module was never requested, while false means the API checked and
 
 <details>
 <summary><strong>Why is the ASN table missing peers and routes?</strong></summary>
-Those modules are opt in through `asn_include`. The default keeps rows compact, because large transit networks return peer and route lists in the thousands. Add only the modules you query, or `"*"` for all of them.
+Those modules are opt-in through `asn_include`. The default keeps rows compact, because large transit networks return peer and route lists in the thousands. Add only the modules you query, or `"*"` for all of them.
 </details>
 
 <details>
