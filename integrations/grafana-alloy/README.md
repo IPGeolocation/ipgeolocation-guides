@@ -498,7 +498,7 @@ New database releases arrive daily or weekly, depending on your plan. Alloy open
 
 ### Option 1: Restart Alloy
 
-Replace the file atomically (download it to a temporary name in the same directory, then rename it over the old one), then restart Alloy: `systemctl restart alloy`, `docker restart <container>`, or `kubectl rollout restart daemonset/<name>`. With a persistent `--storage.path`, Alloy resumes reading where it stopped.
+Unpack and check the release as the script under Option 2 does, move each MMDB file from the archive over the old one, then restart Alloy: `systemctl restart alloy`, `docker restart <container>`, or `kubectl rollout restart daemonset/<name>`. With a persistent `--storage.path`, Alloy resumes reading where it stopped.
 
 ### Option 2: Switch files without a restart
 
@@ -529,33 +529,44 @@ loki.process "ipgeo" {
 
 The pointer file holds only the name of the current file, not its full path, so the same pointer file works on the host and inside a container.
 
-This script installs a new release. It validates the download with the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio), updates the pointer file with an atomic rename, and deletes old copies. Schedule it with cron to match your release cycle:
+Releases are delivered as ZIP archives holding the MMDB file of each database in your plan, a `README.md` and a `checksum.txt` of SHA-256 hashes. The file names inside never change, so this script renames each database to a dated name as it installs it. It confirms the hashes and validates every database with the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio) first, then updates one pointer file per database with an atomic rename, and finally deletes old copies. Set `DOWNLOAD_URL` to the MMDB download link from your IPGeolocation.io account; the script also needs `curl`, `unzip` and `sha256sum`. Run it once before you start Alloy, so the dated files and pointer files exist, then schedule it with cron to match your release cycle:
 
 ```sh
 #!/bin/sh
-# Install a new IPGeolocation.io database for Grafana Alloy without a restart.
+# Install a new IPGeolocation.io database release for Grafana Alloy without a restart.
 set -eu
 
 DB_DIR=/usr/local/share/ipgeolocation
-NAME=db-ip-security
-NEW_FILE="$NAME-$(date +%Y%m%d%H%M%S).mmdb"
+DOWNLOAD_URL="<MMDB download link from your IPGeolocation.io account>"
+STAMP=$(date +%Y%m%d%H%M%S)
 
-# 1. Download the new file under a new, dated name.
-#    Replace this line with the download step for your plan.
-curl -fsSL -o "$DB_DIR/$NEW_FILE" "$DOWNLOAD_URL"
+# 1. Unpack the release in a temporary folder beside the live databases.
+WORK=$(mktemp -d "$DB_DIR/.release.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT
+curl -fsSL -o "$WORK/release.zip" "$DOWNLOAD_URL"
+# -DD stamps the unpacked files with the current time, not the archive's.
+unzip -q -DD "$WORK/release.zip" -d "$WORK"
+rm "$WORK/release.zip"
 
-# 2. Check the file. A damaged download stops the script here.
-mmdbio verify --db "$DB_DIR/$NEW_FILE" || { rm -f "$DB_DIR/$NEW_FILE"; exit 1; }
+# 2. Stop if any file fails its checksum or any database is damaged.
+(cd "$WORK" && sha256sum --quiet -c checksum.txt)
+for db in "$WORK"/*.mmdb; do
+    mmdbio verify --db "$db"
+done
 
-# 3. Point Alloy at the new file. The rename is atomic.
-printf '%s\n' "$NEW_FILE" > "$DB_DIR/.$NAME.current.new"
-mv "$DB_DIR/.$NAME.current.new" "$DB_DIR/$NAME.current"
+# 3. Give each database a dated name and point Alloy at it.
+for db in "$WORK"/*.mmdb; do
+    name=$(basename "$db" .mmdb)
+    mv "$db" "$DB_DIR/$name-$STAMP.mmdb"
+    printf '%s\n' "$name-$STAMP.mmdb" > "$DB_DIR/.$name.current.new"
+    mv "$DB_DIR/.$name.current.new" "$DB_DIR/$name.current"
 
-# 4. Delete older copies, keeping the new file and the one before it.
-ls -1t "$DB_DIR/$NAME"-*.mmdb | tail -n +3 | xargs -r rm -f
+    # 4. Delete older copies of this database, keeping the new one and the one before it.
+    ls -1t "$DB_DIR/$name"-[0-9]*.mmdb | tail -n +3 | xargs -r rm -f
+done
 ```
 
-If the check fails, the script stops, the pointer file stays as it was, and Alloy keeps using the old file.
+A combined plan gets one dated file and one pointer file per database, such as one for the security data and one for the city data; give each its own `local.file` block in the configuration. If a check fails, the script stops before touching any pointer file, and Alloy keeps using the files it has.
 
 With Docker, mount the whole databases folder, as the quick start does, so new files and pointer changes are visible inside the container.
 

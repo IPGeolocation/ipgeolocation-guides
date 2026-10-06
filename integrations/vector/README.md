@@ -435,37 +435,46 @@ A failed assertion prints the expected and actual values and exits with a non-ze
 
 ## Keeping the databases up to date
 
-IPGeolocation.io publishes new databases daily or weekly, depending on your plan. Vector keeps each table in memory, so a new file takes effect when Vector reloads:
+IPGeolocation.io publishes new databases daily or weekly, depending on your plan. Vector keeps each table in memory, so a new file takes effect when Vector reloads. Downloads come as ZIP archives that contain the MMDB files of your plan together with a `checksum.txt` of SHA-256 hashes, so an update has three parts:
 
-1. Download the new file to a temporary name in the same directory, check it, and rename it over the old one. The rename is atomic.
-2. Send Vector a `SIGHUP`: `kill -HUP <pid>`, or `docker kill --signal HUP <container>` in Docker. Vector reloads the configuration and the database files without stopping.
+1. Unpack the archive next to the live files, and confirm both the hashes and the databases themselves.
+2. Rename each new MMDB file over the old one. The rename is atomic.
+3. Send Vector a `SIGHUP`: `kill -HUP <pid>`, or `docker kill --signal HUP <container>` in Docker. Vector reloads the configuration and the enrichment tables without stopping.
 
-This script does both. It checks the download with the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio), so a damaged file never replaces a good one:
+This script covers all three. Put the MMDB download link from your IPGeolocation.io account in `DOWNLOAD_URL`. It relies on `curl`, `unzip`, `sha256sum` and the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio), and a release that fails any check never replaces a good file:
 
 ```sh
 #!/bin/sh
-# Replace one IPGeolocation.io database and reload Vector.
+# Install a new IPGeolocation.io database release and reload Vector.
 set -eu
 
 DB_DIR=/usr/local/share/ipgeolocation
-DB_NAME=db-ip-security.mmdb
-TMP="$DB_DIR/.$DB_NAME.new"
+DOWNLOAD_URL="<MMDB download link from your IPGeolocation.io account>"
 
-# 1. Download the new file next to the old one.
-#    Replace this line with the download step for your plan.
-curl -fsSL -o "$TMP" "$DOWNLOAD_URL"
+# 1. Unpack the release in a temporary folder beside the live databases.
+WORK=$(mktemp -d "$DB_DIR/.release.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT
+curl -fsSL -o "$WORK/release.zip" "$DOWNLOAD_URL"
+# -DD stamps the unpacked files with the current time, not the archive's.
+unzip -q -DD "$WORK/release.zip" -d "$WORK"
+rm "$WORK/release.zip"
 
-# 2. Stop here if the file is damaged.
-mmdbio verify --db "$TMP" || { rm -f "$TMP"; exit 1; }
+# 2. Stop on a bad hash or a damaged database.
+(cd "$WORK" && sha256sum --quiet -c checksum.txt)
+for db in "$WORK"/*.mmdb; do
+    mmdbio verify --db "$db"
+done
 
-# 3. Swap it in with an atomic rename.
-mv "$TMP" "$DB_DIR/$DB_NAME"
+# 3. Swap each database in with an atomic rename.
+for db in "$WORK"/*.mmdb; do
+    mv "$db" "$DB_DIR/"
+done
 
 # 4. Reload Vector.
 kill -HUP "$(pidof vector)"
 ```
 
-Schedule it with cron after each release. In Docker, mount the directory that holds the databases, as in the quick start, so the container sees the renamed file.
+Because every release uses the same file names, the `path` of each enrichment table stays valid. The `-DD` option matters here: on a reload, Vector rereads a table only when its file is newer than the copy it loaded, and a release unpacked with the archive's original timestamps can look older than the file it replaces. Schedule the script with cron after each release. In Docker, mount the directory that holds the databases, as in the quick start, so the container sees the renamed files.
 
 ---
 

@@ -296,7 +296,7 @@ CustomLog ${APACHE_LOG_DIR}/access-ipgeo.log ipgeo
 
 A request from the VPN address above is logged as:
 
-```text
+```bash
 37.120.202.92 [06/Oct/2026:13:11:05 +0500] "GET / HTTP/1.1" 200 country=US city="Secaucus" vpn=true threat=50 asn=9009
 ```
 
@@ -391,32 +391,49 @@ Place it in the server or virtual host configuration. A visitor from Frankfurt w
 
 IPGeolocation.io issues new database releases daily or weekly, depending on your plan. Apache opens each file when it reads its configuration, so a replaced file is used only after a graceful restart. `apachectl graceful` lets current requests finish while new workers pick up the new files.
 
-Replace the file with an atomic rename, then restart gracefully. This script does both, and checks the download with the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio) and the configuration with `apachectl configtest` before restarting:
+Each release arrives as a ZIP archive. It holds the MMDB file of the database, or several files for a combined plan, along with a `README.md` and a `checksum.txt` with the SHA-256 hash of every file. Installing a release safely takes four steps:
+
+1. Download and unpack the archive in a temporary folder on the same disk as the live databases.
+2. Check every file against `checksum.txt`, and check each database with the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio). A failed check stops the update and leaves the live files untouched.
+3. Move each new MMDB file over the old one. A rename within one disk is atomic, so Apache never reads a half-written file.
+4. Run `apachectl configtest`, then `apachectl graceful`.
+
+This script performs all four. Set `DOWNLOAD_URL` to the MMDB download link from your IPGeolocation.io account; it needs `curl`, `unzip`, `sha256sum` and `mmdbio`:
 
 ```sh
 #!/bin/sh
-# Install a new IPGeolocation.io database and restart Apache gracefully.
+# Install a new IPGeolocation.io database release and restart Apache gracefully.
 set -eu
 
 DB_DIR=/usr/local/share/ipgeolocation
-DB_NAME=db-ip-security.mmdb
-TMP="$DB_DIR/.$DB_NAME.new"
+DOWNLOAD_URL="<MMDB download link from your IPGeolocation.io account>"
 
-# 1. Download the new release next to the current file.
-#    Replace this line with the download step for your plan.
-curl -fsSL -o "$TMP" "$DOWNLOAD_URL"
+# 1. Download and unpack the release next to the live databases.
+WORK=$(mktemp -d "$DB_DIR/.release.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT
+curl -fsSL -o "$WORK/release.zip" "$DOWNLOAD_URL"
+# -DD stamps the unpacked files with the current time, not the archive's.
+unzip -q -DD "$WORK/release.zip" -d "$WORK"
+rm "$WORK/release.zip"
 
-# 2. Refuse a damaged download.
-mmdbio verify --db "$TMP" || { rm -f "$TMP"; exit 1; }
+# 2. Check the files against the release checksums, then check each database.
+(cd "$WORK" && sha256sum --quiet -c checksum.txt)
+for db in "$WORK"/*.mmdb; do
+    mmdbio verify --db "$db"
+done
 
-# 3. Swap it in. The rename is atomic.
-mv "$TMP" "$DB_DIR/$DB_NAME"
+# 3. Swap the databases in. Each rename is atomic.
+for db in "$WORK"/*.mmdb; do
+    mv "$db" "$DB_DIR/"
+done
 
 # 4. Restart gracefully, but only if the configuration still loads.
 apachectl configtest && apachectl graceful
 ```
 
-Run it as root from cron once per release.
+The archive keeps the same file names from release to release, so the paths in `MaxMindDBFile` never change. For a combined plan, the script installs every MMDB file in the archive in one run.
+
+Run it as root from cron, on the same schedule as your plan's releases. If any check fails, the script exits with an error, deletes the temporary folder and leaves Apache serving the previous release.
 
 ---
 

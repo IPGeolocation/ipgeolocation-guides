@@ -447,32 +447,40 @@ service:
 
 Fluent Bit then reopens its files when it receives `SIGHUP` (`kill -HUP <pid>`, or `docker kill --signal HUP <container>` in Docker).
 
-This script replaces one database safely. It checks the new file with the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio) before using it, swaps it in with an atomic rename, and reloads Fluent Bit. Run it from cron after each release:
+This script installs a release safely. A release arrives as a ZIP archive with the MMDB file of each database in your plan, a `README.md`, and a `checksum.txt` that lists a SHA-256 hash for every file. The script unpacks the archive beside the live files, refuses it if a hash or a database check fails, moves the new MMDB files into place and sends Fluent Bit a `SIGHUP`. Set `DOWNLOAD_URL` to the MMDB download link in your IPGeolocation.io account. Besides `curl`, the script needs `unzip`, `sha256sum` and the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio):
 
 ```sh
 #!/bin/sh
-# Replace one IPGeolocation.io database and reload Fluent Bit.
+# Install a new IPGeolocation.io database release and reload Fluent Bit.
 set -eu
 
 DB_DIR=/usr/local/share/ipgeolocation
-DB_NAME=db-ip-security.mmdb
-TMP="$DB_DIR/.$DB_NAME.new"
+DOWNLOAD_URL="<MMDB download link from your IPGeolocation.io account>"
 
-# 1. Download the new file to a temporary name in the same directory.
-#    Replace this line with the download step for your plan.
-curl -fsSL -o "$TMP" "$DOWNLOAD_URL"
+# 1. Unpack the release in a temporary folder beside the live databases.
+WORK=$(mktemp -d "$DB_DIR/.release.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT
+curl -fsSL -o "$WORK/release.zip" "$DOWNLOAD_URL"
+# -DD stamps the unpacked files with the current time, not the archive's.
+unzip -q -DD "$WORK/release.zip" -d "$WORK"
+rm "$WORK/release.zip"
 
-# 2. Check the file. A damaged download stops the script here.
-mmdbio verify --db "$TMP" || { rm -f "$TMP"; exit 1; }
+# 2. Refuse the release if any file fails its checksum or any database is damaged.
+(cd "$WORK" && sha256sum --quiet -c checksum.txt)
+for db in "$WORK"/*.mmdb; do
+    mmdbio verify --db "$db"
+done
 
-# 3. Swap it in. The rename is atomic.
-mv "$TMP" "$DB_DIR/$DB_NAME"
+# 3. Move the new databases over the old ones. Each rename is atomic.
+for db in "$WORK"/*.mmdb; do
+    mv "$db" "$DB_DIR/"
+done
 
 # 4. Make Fluent Bit reopen its files (requires hot_reload: on).
 kill -HUP "$(pidof fluent-bit)"
 ```
 
-If the check fails, the script stops, and Fluent Bit keeps using the old file.
+The file names inside the archive stay the same from release to release, so the `database` paths in your configuration never change. After a failed check, the script exits with an error and removes its temporary folder, and Fluent Bit carries on with the files it already has. Run it from cron on your plan's release schedule.
 
 In Docker, mount the directory that holds the databases, as in the quick start, not the individual files. A file mounted on its own keeps pointing at the old copy after the rename.
 

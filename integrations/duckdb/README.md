@@ -328,7 +328,7 @@ With the quick start files, it prints `37.120.202.92 US`, `5.45.96.188 DE` and s
 
 Depending on your plan, IPGeolocation.io publishes new releases every day or every week. DuckDB needs no reload: in testing, the next query after a file was replaced already returned the new data, even in the same session.
 
-Replace files with an atomic rename, so a query never reads a half-written file. This script also refuses a damaged download, using the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio):
+A release is a ZIP archive. Inside are the MMDB files of your plan, a `README.md` and a `checksum.txt` with one SHA-256 hash per file. To install one, unpack it beside the current files, confirm the hashes and the databases, and rename the new files over the old ones, so a query never reads a half-written file. The script below does exactly that with `curl`, `unzip`, `sha256sum` and the [mmdbio command-line tool](https://ipgeolocation.io/cli/mmdbio). Fill in `DOWNLOAD_URL` with the MMDB download link from your IPGeolocation.io account:
 
 ```sh
 #!/bin/sh
@@ -336,19 +336,29 @@ Replace files with an atomic rename, so a query never reads a half-written file.
 set -eu
 
 DB_DIR=/data/ipgeolocation
-DB_NAME=db-ip-security.mmdb
-TMP="$DB_DIR/.$DB_NAME.new"
+DOWNLOAD_URL="<MMDB download link from your IPGeolocation.io account>"
 
-# 1. Fetch the release next to the current file.
-#    Replace this line with the download step for your plan.
-curl -fsSL -o "$TMP" "$DOWNLOAD_URL"
+# 1. Unpack the release in a temporary folder beside the live databases.
+WORK=$(mktemp -d "$DB_DIR/.release.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT
+curl -fsSL -o "$WORK/release.zip" "$DOWNLOAD_URL"
+# -DD stamps the unpacked files with the current time, not the archive's.
+unzip -q -DD "$WORK/release.zip" -d "$WORK"
+rm "$WORK/release.zip"
 
-# 2. Keep the old file if the new one is damaged.
-mmdbio verify --db "$TMP" || { rm -f "$TMP"; exit 1; }
+# 2. Keep the current files if a hash or a database check fails.
+(cd "$WORK" && sha256sum --quiet -c checksum.txt)
+for db in "$WORK"/*.mmdb; do
+    mmdbio verify --db "$db"
+done
 
-# 3. Swap it in. The next query reads the new release.
-mv "$TMP" "$DB_DIR/$DB_NAME"
+# 3. Swap the databases in. The next query reads the new release.
+for db in "$WORK"/*.mmdb; do
+    mv "$db" "$DB_DIR/"
+done
 ```
+
+The archive keeps the same file names in every release, so the paths in your queries and macros stay the same.
 
 Enriched tables and Parquet files keep the values from the release they were built with. Rebuild them when you need current data.
 
