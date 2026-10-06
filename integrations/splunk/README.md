@@ -61,7 +61,7 @@ Single Indexer Single Search Head and Single Forwarder (Heavy or Universal) and 
     
     **$SPLUNK_HOME/etc/deployment-apps/**
     
-3. Add following to **serverclass.conf**
+3. Add the following to **serverclass.conf**
     
     ```
     [serverClass:<SEARCHHEAD_SERVERCLASS>:app:< ipgeolocation_app >]
@@ -69,7 +69,7 @@ Single Indexer Single Search Head and Single Forwarder (Heavy or Universal) and 
     restartSplunkd=true
     ```
     
-4. **Open CLI** and deploy the apps using following command: **./splunk reload deploy-server**
+4. **Open CLI** and deploy the apps using the following command: **./splunk reload deploy-server**
 
 ### Distributed Architecture
 
@@ -77,7 +77,7 @@ Multiple non-clustered Indexers, Multiple non-clustered Search Heads, Forwarder 
 
 1. **Unzip ipgeolocation_app.tar.gz**
 2. **Copy** the unzipped directory **ipgeolocation_app** to deployment server in the following location **$SPLUNK_HOME/etc/deployment-apps/**
-3. Add following to **serverclass.conf**
+3. Add the following to **serverclass.conf**
 
     ```
     [serverClass:<SEARCHHEAD_SERVERCLASS>:app:< ipgeolocation_app >]
@@ -85,7 +85,7 @@ Multiple non-clustered Indexers, Multiple non-clustered Search Heads, Forwarder 
     restartSplunkd=true
     ```
 
-4. **Open CLI** and deploy the apps using following command: **./splunk reload deploy-server**
+4. **Open CLI** and deploy the apps using the following command: **./splunk reload deploy-server**
 
 ### Distributed Architecture
 
@@ -93,7 +93,7 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
 
 1. **Unzip ipgeolocation_app.tar.gz**
 2. **Copy** **ipgeolocation_app** to Deployer server in the following location **$SPLUNK_HOME/etc/shcluster/apps/**
-3. **Open CLI** on Deployer and deploy the app on Search Head Cluster using following command
+3. **Open CLI** on Deployer and deploy the app on Search Head Cluster using the following command
     
     ```
     ./splunk apply shcluster-bundle -target <URI>:<management_port> -auth <username>:<password>
