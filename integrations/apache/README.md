@@ -497,7 +497,7 @@ Yes. IPv6 addresses are looked up the same way as IPv4 addresses, and the databa
 
 <details>
 <summary><strong>Which IPGeolocation.io databases can Apache use?</strong></summary>
-All of the IP databases, in their MMDB edition, including combined files. "A variable for each database" above has a sample path for every one.
+All of the IP databases, in their MMDB edition, including combined files. [A variable for each database](#a-variable-for-each-database) above has a sample path for every one.
 </details>
 
 <details>
