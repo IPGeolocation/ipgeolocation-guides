@@ -116,7 +116,7 @@ Below is a structured reference of all modules in this integration.
 Retrieves full geolocation data of a single IPv4/IPv6.
 
 - **Input:** IP Address
-- **Outputs:** country_name, city, latitude, longitude and [many more](https://ipgeolocation.io/ip-location-api.html#2-location-json-object-reference)
+- **Outputs:** country_name, city, latitude, longitude and [many more](https://ipgeolocation.io/documentation/ip-location-api.html#location-json-object-reference)
 
 **Get Bulk IP Geolocation**
 
@@ -134,7 +134,7 @@ Retrieves geolocation for up to 50,000 IPs per request.
 Security insights such as proxy, VPN, TOR, threat score, cloud and proxy providers.
 
 - **Input:** IP Address
-- **Outputs:** security.is_proxy, security.is_vpn, security.threat_score, security.is_cloud_provider and [more](https://ipgeolocation.io/ip-security-api.html#2-security-json-object-reference)
+- **Outputs:** security.is_proxy, security.is_vpn, security.threat_score, security.is_cloud_provider and [more](https://ipgeolocation.io/documentation/ip-security-api.html#security-json-object-reference)
 
 **Bulk IP Security Lookup**
 
@@ -152,7 +152,7 @@ Security assessment for multiple IPs.
 Provides a simple way to retrieve accurate information about an Autonomous System Number (ASN) and its associated IPv4 and IPv6 address ranges.
 
 - **Input:** IP or ASN number
-- **Outputs:** asn.as_number, asn.organization and [more](https://ipgeolocation.io/asn-api.html#reference-to-asn-api-response)
+- **Outputs:** asn.as_number, asn.organization and [more](https://ipgeolocation.io/documentation/asn-api.html#reference-to-asn-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/asn.png)
 
@@ -161,13 +161,13 @@ Provides a simple way to retrieve accurate information about an Autonomous Syste
 Includes details such as the role, handle, organization name, kind (e.g., group or individual), and postal address. This information helps identify the entity responsible for handling abuse reports.
 
 - **Input:** IP Address
-- **Outputs:** abuse.emails, abuse.handle and [more](https://ipgeolocation.io/ip-abuse-contact-api.html#reference-to-abuse-contact-api-response)
+- **Outputs:** abuse.emails, abuse.handle and [more](https://ipgeolocation.io/documentation/ip-abuse-contact-api.html#reference-to-abuse-contact-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/abuse.png)
 
 ### **Time Services**
 
-Free **Timezone API** and **Time conversion API** provides date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from timezone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
+The free **Time Zone API** and **Time Conversion API** provide date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from timezone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
 
 **Get Timezone Info**
 
@@ -180,7 +180,7 @@ It can be consumed with the following input variations:
 - For any IATA code
 - For any ICAO code
 - For any UN/LO Code
-- **Outputs:** time_zone.name, time_zone.current_time, time_zone.date_time_wti and [more](https://ipgeolocation.io/timezone-api.html#reference-to-time-zone-api-response)
+- **Outputs:** time_zone.name, time_zone.current_time, time_zone.date_time_wti and [more](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/timezone.png)
 
@@ -195,7 +195,7 @@ Converts a time from one of following options
 - Convert Time using ICAO codes
 - Convert Time using UN/LOCODEs
 
-**Output:** Converted [date/time](https://ipgeolocation.io/timezone-api.html#reference-to-time-conversion-api-response)
+**Output:** Converted [date/time](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-conversion-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/time-conversion.png)
 
@@ -205,7 +205,7 @@ Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimu
 
 **Get Astronomy Details**
 
-- **Outputs:** astronomy.sunrise, astronomy.sunset, astronomy.moon_phase and [many more.](https://ipgeolocation.io/astronomy-api.html#reference-to-astronomy-api-response)
+- **Outputs:** astronomy.sunrise, astronomy.sunset, astronomy.moon_phase and [many more.](https://ipgeolocation.io/documentation/astronomy-api.html#reference-to-astronomy-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/astronomy.png)
 
@@ -222,7 +222,7 @@ Provides detailed client system information, allowing for the detection of bots,
 **Parse User Agent String**
 
 - **Input:** User agent string
-- **Outputs:** provides name, device and operating sysem [information](https://ipgeolocation.io/user-agent-api.html#reference-to-user-agent-api-response).
+- **Outputs:** provides name, device and operating sysem [information](https://ipgeolocation.io/documentation/user-agent-api.html#reference-to-user-agent-api-response).
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/user-agent.png)
 

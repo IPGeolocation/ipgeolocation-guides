@@ -55,7 +55,7 @@ To instantiate the AstronomyAPI, you can use the following configuration options
 - `saveToSessionStorage (optional: boolean)`: Caches successful responses in session storage for the current browser tab. Cache entries are specific to the lookup parameters.
 
 > [!TIP]
-> For detailed documentation for the Astronomy API, please visit [https://ipgeolocation.io/astronomy-api.html#documentation-overview](https://ipgeolocation.io/astronomy-api.html#documentation-overview).
+> For detailed documentation for the Astronomy API, please visit [https://ipgeolocation.io/documentation/astronomy-api.html#overview](https://ipgeolocation.io/documentation/astronomy-api.html#overview).
 
 Use `getAstronomy()` for a single-date lookup. Use `getAstronomyTimeSeries()` with `dateStart` and `dateEnd` for a date range.
 
