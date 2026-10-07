@@ -6,7 +6,7 @@ Vector can look up any IP address in an IPGeolocation.io database while events a
 
 The examples in this guide combine three databases: the [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) for country, region, city, coordinates and time zone, the [IP Security Database](https://ipgeolocation.io/ip-security-database.html) for VPN, proxy and Tor flags and a threat score, and the [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) for the [autonomous system number (ASN)](https://ipgeolocation.io/guides/what-is-an-asn) and its owner.
 
-Every other IPGeolocation.io IP database works the same way: the IP to Country, IP to City and IP to ISP databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), plus combined databases that pack several of them into one file.
+Every other IPGeolocation.io IP database works the same way: the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), plus combined databases that pack several of them into one file.
 
 The files sit next to Vector, so enrichment adds no network round trip and no per-event cost, and the IP addresses in your events stay inside your infrastructure. For help choosing, see [when to use an IP database instead of an API](https://ipgeolocation.io/guides/ip-geolocation-api-vs-database-guide).
 
@@ -105,7 +105,7 @@ Flags are strings, scores are integers, and provider names are lists. In VRL, yo
 | Component | Details |
 | --- | --- |
 | Vector | 0.58.0 (tested), with the `mmdb` enrichment table type. Check with `vector list`. |
-| IPGeolocation.io databases | One or more IP databases in MMDB format, downloaded from your [IPGeolocation.io account](https://app.ipgeolocation.io). To pick a plan, see [IP database pricing](https://ipgeolocation.io/db-pricing.html). |
+| IPGeolocation.io databases | One or more IP databases in MMDB format, downloaded from your [IPGeolocation.io account](https://app.ipgeolocation.io). To pick a database, see [IP database pricing](https://ipgeolocation.io/db-pricing.html). |
 | Your events | A field that holds the client IP address. The quick start uses `remote_addr`. |
 
 ---
@@ -244,14 +244,14 @@ To go to production, replace the `stdin` source with your real source, such as `
 
 | Setting | Value |
 | --- | --- |
-| `type` | `mmdb`. The `geoip` type does not accept IPGeolocation.io files. |
+| `type` | `mmdb`. |
 | `path` | Path to the MMDB file. In Docker, the path inside the container. |
 
 The table name, such as `ipgeo_security`, is the name you pass to `get_enrichment_table_record`.
 
 ### The lookup call
 
-```text
+```bash
 record, err = get_enrichment_table_record("<table name>", {"ip": <field with the IP>})
 ```
 
@@ -261,7 +261,7 @@ record, err = get_enrichment_table_record("<table name>", {"ip": <field with the
 | `err` contains `No rows found` | The address is not in the file, for example a private address. |
 | `err` contains `Invalid address: invalid IP address syntax` | The field is missing, empty, or not a single IP address. |
 
-Always use the two-value form and check `err`, as in the quick start. Vector rejects a configuration that ignores the error.
+Always use the two-value form and check `err`, as in the [quick start](#quick-start). Vector rejects a configuration that ignores the error.
 
 ### Field paths in each database
 
@@ -351,11 +351,11 @@ sinks:
       codec: json
 ```
 
-Because the quick start already turned the flags into booleans, the condition compares with `true`, not `"true"`. To route on a single signal, use `.security.is_tor == true` or `.security.is_vpn == true`.
+Because the [quick start](#quick-start) already turned the flags into booleans, the condition compares with `true`, not `"true"`. To route on a single signal, use `.security.is_tor == true` or `.security.is_vpn == true`.
 
 ### Enrich an Nginx access log
 
-VRL parses the standard Nginx log format itself, so no regular expression is needed. `parse_nginx_log` puts the client address in `.client`. Keep the `enrichment_tables` section from the quick start, and change the source and transform:
+VRL parses the standard Nginx log format itself, so no regular expression is needed. `parse_nginx_log` puts the client address in `.client`. Keep the `enrichment_tables` section from the [quick start](#quick-start), and change the source and transform:
 
 ```yaml
 sources:
@@ -480,9 +480,9 @@ Because every release uses the same file names, the `path` of each enrichment ta
 
 ## Production notes
 
-- **Memory.** Vector keeps each database file in memory. Budget RAM for at least the combined size of the files you load. In testing, three files totaling 245 MB added about 246 MB to Vector's memory use.
+- **Memory.** Vector keeps each database file in memory. Budget RAM for at least the combined size of the files you load.
 - **Only what you need.** Load only the databases your pipeline reads, and copy only the fields your dashboards and alerts use.
-- **The right address.** Look up the visitor's address, not your proxy's. See the `X-Forwarded-For` recipe above.
+- **The right address.** Look up the visitor's address, not your proxy's. See the [`X-Forwarded-For`](#use-the-visitors-address-from-x-forwarded-for) recipe above.
 - **Kubernetes.** Mount the databases from a volume at the same path in every Vector pod. After an update, send `SIGHUP` to each pod or restart the workload.
 - **Tests in CI.** Run `vector test` on every configuration change.
 
@@ -492,7 +492,7 @@ Because every release uses the same file names, the `path` of each enrichment ta
 
 **Events have no `geo`, `security` or `network` fields.** The lookup returned an error and the `if err == null` block was skipped. Store the error on the event to see it, for example `.lookup_error = err` in an `else` branch:
 
-- `No rows found`: the address is not in that database. Check it with mmdbio:
+- `No rows found`: the address is not in that database. Check it with [mmdbio](https://ipgeolocation.io/cli/mmdbio):
 
   ```sh
   mmdbio read --db /usr/local/share/ipgeolocation/db-ip-location.mmdb --ip 37.120.202.92
@@ -516,12 +516,12 @@ Because every release uses the same file names, the `path` of each enrichment ta
 
 <details>
 <summary><strong>Which enrichment table type should I use?</strong></summary>
-<code>mmdb</code>. It returns the full record and works with every IPGeolocation.io IP database. The <code>geoip</code> type rejects these files.
+`mmdb`. It returns the full record and works with every IPGeolocation.io IP database. The `geoip` type rejects these files.
 </details>
 
 <details>
 <summary><strong>Can Vector use more than one IPGeolocation.io database at once?</strong></summary>
-Yes. Declare one enrichment table per file and call each one from the same <code>remap</code> transform, as the quick start does with three databases.
+Yes. Declare one enrichment table per file and call each one from the same `remap` transform, as the [quick start](#quick-start) does with three databases.
 </details>
 
 <details>
@@ -536,12 +536,12 @@ Yes. Each database covers both IPv4 and IPv6 addresses, and the lookup accepts e
 
 <details>
 <summary><strong>Can I store the security flags as booleans?</strong></summary>
-Yes. Compare each flag with <code>"true"</code>, as in the quick start, or convert all of them at once with <code>map_values</code>, as shown under "Keeping the whole record".
+Yes. Compare each flag with `"true"`, as in the [quick start](#quick-start), or convert all of them at once with `map_values`, as shown under "Keeping the whole record".
 </details>
 
 <details>
 <summary><strong>How do I load a new database without downtime?</strong></summary>
-Rename the new file over the old one and send Vector a <code>SIGHUP</code>. Vector reloads the tables without stopping.
+Rename the new file over the old one and send Vector a `SIGHUP`. Vector reloads the tables without stopping.
 </details>
 
 ---

@@ -6,7 +6,7 @@ Grafana Alloy can attach IPGeolocation.io data to log lines before they reach Gr
 
 This guide pairs three databases. The [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) supplies country, region, city, coordinates and time zone. The [IP Security Database](https://ipgeolocation.io/ip-security-database.html) supplies anonymity signals such as VPN, proxy and Tor flags, plus a threat score. The [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) supplies the [AS number](https://ipgeolocation.io/guides/what-is-an-asn) and the organization that runs the network.
 
-Alloy is not limited to those three. `stage.geoip` reads every IPGeolocation.io IP database: the IP to Country, IP to City and IP to ISP databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), as well as combined databases that merge several of them into one file.
+Alloy is not limited to those three. `stage.geoip` reads every IPGeolocation.io IP database: the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), as well as combined databases that merge several of them into one file.
 
 Because the databases are files on the Alloy host, enriching a line needs no network call and adds no usage charge, and client addresses stay in your environment. [Comparing an IP geolocation API with a database](https://ipgeolocation.io/guides/ip-geolocation-api-vs-database-guide) explains when each one fits.
 
@@ -84,7 +84,7 @@ Records in an MMDB file are nested objects. To reach a single value, list the ke
 }
 ```
 
-Following `location`, then `country`, then `code2` gives `"US"`. Following `location`, `city`, `name` and `en` gives `"Secaucus"`. Alloy treats each path as a JMESPath expression, which also allows list indexes and functions, as the "Lists" section below shows.
+Following `location`, then `country`, then `code2` gives `"US"`. Following `location`, `city`, `name` and `en` gives `"Secaucus"`. Alloy treats each path as a JMESPath expression, which also allows list indexes and functions.
 
 ---
 
@@ -95,7 +95,7 @@ Following `location`, then `country`, then `code2` gives `"US"`. Following `loca
 | Grafana Alloy | v1.20.1 (tested). `stage.geoip` is built in. |
 | Grafana Loki | 3.x (tested with 3.7.8). Structured metadata needs the TSDB index with schema v13, and is on by default. |
 | IPGeolocation.io databases | The MMDB edition of each database you plan to read. Get the files from your [IPGeolocation.io account](https://app.ipgeolocation.io); plans and prices are on the [IP database pricing page](https://ipgeolocation.io/db-pricing.html). |
-| Your logs | Log lines that carry the client IP address. The quick start uses JSON lines with a `remote_addr` field. |
+| Your logs | Log lines that carry the client IP address. The [quick start](#quick-start) uses JSON lines with a `remote_addr` field. |
 
 ---
 
@@ -244,7 +244,7 @@ And this is its structured metadata, formatted for readability:
 
 `37.120.202.92` is a commercial VPN endpoint in a New Jersey data center, which is why `is_vpn` and `is_anonymous` read `"true"`. Your values may differ as the data is updated. For the full picture of that network, see [AS9009's routes, peers and WHOIS records](https://ipgeolocation.io/browse/asn/AS9009).
 
-Once this works, point `local.file_match` at your real logs and replace `loki.echo` with `loki.write`, as shown in "Sending the data to Loki" below.
+Once this works, point `local.file_match` at your real logs and replace `loki.echo` with `loki.write`, as shown in [Sending the data to Loki](#sending-the-data-to-loki) below.
 
 ---
 
@@ -290,7 +290,7 @@ ISP data differs from ASN data in two ways. In the IP to ISP Database, `asn` hol
 
 ### Extra security signals
 
-Beyond the five flags in the quick start, the IP Security Database can feed a second set of signals. Add this block after the first security stage, and list the new names in `stage.structured_metadata`:
+Beyond the five flags in the [quick start](#quick-start), the IP Security Database can feed a second set of signals. Add this block after the first security stage, and list the new names in `stage.structured_metadata`:
 
 ```alloy
   stage.geoip {
@@ -568,7 +568,7 @@ done
 
 A combined plan gets one dated file and one pointer file per database, such as one for the security data and one for the city data; give each its own `local.file` block in the configuration. If a check fails, the script stops before touching any pointer file, and Alloy keeps using the files it has.
 
-With Docker, mount the whole databases folder, as the quick start does, so new files and pointer changes are visible inside the container.
+With Docker, mount the whole databases folder, as the [quick start](#quick-start) does, so new files and pointer changes are visible inside the container.
 
 ---
 
@@ -580,7 +580,7 @@ With Docker, mount the whole databases folder, as the quick start does, so new f
 - A path is misspelled, or points at a group or a list instead of a single value. For example, `location.country.name` needs a language at the end: `location.country.name.en`. Alloy skips such lookups without an error.
 - The `source` value is empty because the IP was not extracted. Check the `stage.json` or `stage.regex` expression. Alloy only reports this at debug level, as `failed to convert source value to string`.
 
-**Values for some lines but not others.** The database has no entry for the missing addresses. The mmdbio tool prints the record a database holds for any address:
+**Values for some lines but not others.** The database has no entry for the missing addresses. The [mmdbio tool](https://ipgeolocation.io/cli/mmdbio) prints the record a database holds for any address:
 
 ```sh
 mmdbio read --db /usr/local/share/ipgeolocation/db-ip-location.mmdb --ip 37.120.202.92
@@ -610,12 +610,12 @@ No. Every lookup happens on your own machine, and nothing is sent to IPGeolocati
 
 <details>
 <summary><strong>Which IPGeolocation.io databases can Alloy read?</strong></summary>
-Every IP database in its MMDB edition, combined databases included. "A lookup for each database" above gives a sample entry for each one.
+Every IP database in its MMDB edition, combined databases included. [A lookup for each database](#a-lookup-for-each-database) above gives a sample entry for each one.
 </details>
 
 <details>
 <summary><strong>Are IPv6 addresses supported?</strong></summary>
-Yes. The databases cover IPv6 as well as IPv4, and <code>stage.geoip</code> accepts addresses of either version.
+Yes. The databases cover IPv6 as well as IPv4, and `stage.geoip` accepts addresses of either version.
 </details>
 
 <details>
@@ -625,7 +625,7 @@ Make only low-cardinality values, such as the country code, into labels. Put cit
 
 <details>
 <summary><strong>Does Alloy pick up a new database file automatically?</strong></summary>
-Not by itself, and not with a configuration reload. Restart Alloy, or use a pointer file so the <code>db</code> path changes, as described in "Keeping the databases up to date".
+Not by itself, and not with a configuration reload. Restart Alloy, or use a pointer file so the `db` path changes, as described in [Keeping the databases up to date](#keeping-the-databases-up-to-date).
 </details>
 
 <details>

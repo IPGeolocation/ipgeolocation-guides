@@ -4,7 +4,7 @@
 
 DuckDB can join IP intelligence onto your data with nothing but SQL. A community extension adds two functions that read IPGeolocation.io MMDB files: one looks up a single address per row, the other turns a whole database into a table. Point them at a CSV export, a folder of Parquet logs or a table you already have, and you get country, city, VPN and Tor flags, threat scores and network owners alongside your own columns.
 
-The examples combine three IPGeolocation.io databases. The [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) places each address in a country, region and city, with coordinates and a time zone. The [IP Security Database](https://ipgeolocation.io/ip-security-database.html) flags VPNs, proxies and Tor and rates the risk of each address. The [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) identifies the network, by its [Autonomous System Number](https://ipgeolocation.io/guides/what-is-an-asn) and owner.
+The examples combine three IPGeolocation.io databases. The [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) places each address in a country, region and city, with coordinates and a time zone. The [IP Security Database](https://ipgeolocation.io/ip-security-database.html) flags VPNs, proxies and Tor and provides a threat score of each address. The [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) identifies the network, by its [Autonomous System Number](https://ipgeolocation.io/guides/what-is-an-asn) and owner.
 
 Nothing in the extension is specific to those three. You can query the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html) in exactly the same way, along with combined databases.
 
@@ -60,7 +60,7 @@ DuckDB's `->>` operator reads a value out of that JSON as text. `mmdb_record(...
 | --- | --- |
 | DuckDB | 1.5.6 (tested), as the CLI or any client that can install community extensions. Python was tested too. |
 | `maxmind` extension | v0.10.0 (tested), installed with `INSTALL maxmind FROM community`. |
-| IPGeolocation.io databases | The MMDB edition of each database you want to query, downloaded from your [IPGeolocation.io account](https://app.ipgeolocation.io). Plans are listed on the [IP database pricing page](https://ipgeolocation.io/db-pricing.html). |
+| IPGeolocation.io databases | The MMDB edition of each database you want to query, downloaded from your [IPGeolocation.io account](https://app.ipgeolocation.io). Database plans are listed on the [IP database pricing page](https://ipgeolocation.io/db-pricing.html). |
 
 ---
 
@@ -137,7 +137,7 @@ ORDER BY threat_score DESC NULLS LAST;
 
 Both failed sign-ins came from anonymizing networks: a Tor exit in a Nuremberg data center and a VPN exit hosted by M247. The IPv6 address works like any other, and `203.0.113.10`, a documentation address, has no record, so its columns are `NULL`. Values change as the databases are updated. The [ASN browser entry for AS9009](https://ipgeolocation.io/browse/asn/AS9009) shows more about the VPN's network.
 
-This direct form is fine for small files. For large ones, use the pattern in "Enrich a large log file" below.
+This direct form is fine for small files. For large ones, use the pattern in "[Enrich a large log file](#enrich-a-large-log-file)" below.
 
 ---
 
@@ -380,7 +380,7 @@ mmdbio read --db databases/db-ip-location.mmdb --ip 37.120.202.92
 
 **`Invalid Input Error: FileNotFound`.** The path to the database is wrong. Relative paths start from the folder DuckDB runs in.
 
-**DuckDB exits with `Segmentation fault`.** This happened in testing when `mmdb_record` ran on every row of a large file read directly with `read_csv` or `read_parquet`. Look up distinct addresses into a table first, as in "Enrich a large log file".
+**DuckDB exits with `Segmentation fault`.** This happened in testing when `mmdb_record` ran on every row of a large file read directly with `read_csv` or `read_parquet`. Look up distinct addresses into a table first, as in "[Enrich a large log file](#enrich-a-large-log-file)".
 
 **Enriched results show old values.** They were built from an earlier release. Rerun the enrichment after you install a new file.
 
@@ -400,7 +400,7 @@ No. Lookups read the local MMDB files. The only network access is the one-time e
 
 <details>
 <summary><strong>Which IPGeolocation.io databases can I query?</strong></summary>
-All IP databases in their MMDB edition, and combined databases too. "An expression for each database" above has a starting point for each.
+All IP databases in their MMDB edition, and combined databases too. [An expression for each database](#an-expression-for-each-database) above has a starting point for each.
 </details>
 
 <details>
@@ -410,7 +410,7 @@ Yes. The quick start includes one, and the databases cover IPv6 alongside IPv4.
 
 <details>
 <summary><strong>Can I list every network with a given property?</strong></summary>
-Yes. <code>read_mmdb</code> turns a database into a table, so a <code>WHERE</code> clause can find, for example, every Tor exit network.
+Yes. `read_mmdb` turns a database into a table, so a `WHERE` clause can find, for example, every Tor exit network.
 </details>
 
 <details>

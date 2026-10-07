@@ -208,7 +208,7 @@ Fluent Bit prints one JSON line per record. Here it is formatted for readability
 
 The test address is a VPN exit, so `is_vpn` is `"true"`. Values depend on your database release, and the `date` key comes from the `stdout` output. To see the network behind the address, with its routes, peers and WHOIS data, open [AS9009 (M247 Europe SRL) in the IPGeolocation.io ASN browser](https://ipgeolocation.io/browse/asn/AS9009).
 
-Once this works, replace the `dummy` input and `stdout` output with your real input and output. The access log example further down shows a typical setup.
+Once this works, replace the `dummy` input and `stdout` output with your real input and output. The [access log](#enriching-a-web-server-access-log) example further down shows a typical setup.
 
 ---
 
@@ -344,7 +344,7 @@ pipeline:
 
 For this log line:
 
-```text
+```bash
 37.120.202.92 - - [06/Oct/2026:10:15:32 +0000] "POST /login HTTP/1.1" 401 512 "-" "Mozilla/5.0"
 ```
 
@@ -375,7 +375,7 @@ If your server sits behind a load balancer or CDN, the first field in the log is
 
 Enrichment becomes more useful when you act on it. This example sends records from anonymizing networks to their own destination, such as your SIEM, and leaves the rest of the traffic on its normal path. Add the `rewrite_tag` filter after the security filter:
 
-```yaml
+```bash
   filters:
     # ... the geoip2 filters from the quick start ...
 
@@ -490,7 +490,7 @@ In Docker, mount the directory that holds the databases, as in the quick start, 
 
 **No new keys appear.** The record's tag does not match the filter's `match` setting, so the filter skips it. Check the tag your input sets.
 
-**Every key is `null`.** The address is not in that database, or the record has no `lookup_key` field. To see what a database holds for an address, use mmdbio:
+**Every key is `null`.** The address is not in that database, or the record has no `lookup_key` field. To see what a database holds for an address, use [mmdbio](https://ipgeolocation.io/cli/mmdbio):
 
 ```sh
 mmdbio read --db /usr/local/share/ipgeolocation/db-ip-location.mmdb --ip 37.120.202.92
@@ -522,7 +522,7 @@ No. Every lookup happens on your own machine, and nothing is sent over the netwo
 
 <details>
 <summary><strong>Which IPGeolocation.io databases work with Fluent Bit?</strong></summary>
-All IP databases in MMDB format, including combined databases. The "Paths in each database" table above lists the paths to use with each one.
+All IP databases in MMDB format, including combined databases. The [Paths in each database](#paths-in-each-database) table above lists the paths to use with each one.
 </details>
 
 <details>
@@ -537,7 +537,7 @@ Daily or weekly, depending on your plan. Fluent Bit picks up a new file after a 
 
 <details>
 <summary><strong>Can I use more than one database in the same pipeline?</strong></summary>
-Yes. Add one <code>geoip2</code> filter per database file, as in the quick start, or use a combined database and read every value with one filter.
+Yes. Add one `geoip2` filter per database file, as in the quick start, or use a combined database and read every value with one filter.
 </details>
 
 ---
