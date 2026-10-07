@@ -165,7 +165,7 @@ Includes details such as the role, handle, organization name, kind (e.g., group 
 
 ### **Time Services**
 
-Free **Timezone API** and **Time conversion API** provides date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from timezone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
+The free **Time Zone API** and **Time Conversion API** provide date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from timezone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
 
 **Get Timezone Info**
 
