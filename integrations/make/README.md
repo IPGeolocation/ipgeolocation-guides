@@ -141,7 +141,7 @@ Security insights such as proxy, VPN, TOR, threat score, cloud and proxy provide
 Security assessment for multiple IPs.
 
 - **Input:** Array of IPs
-- **Outputs:** Collection of [security data](https://ipgeolocation.io/ip-security-api.html#2-security-json-object-reference)
+- **Outputs:** Collection of [security data](https://ipgeolocation.io/documentation/ip-security-api.html#security-json-object-reference)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/ip-security.png)
 
