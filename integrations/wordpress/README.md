@@ -160,7 +160,7 @@ Above the redirect rules, choose how often the same visitor is redirected:
 | --- | --- |
 | Every visit (recommended) | Visitors are sent to their local site each time they open yours. This is what most stores want |
 | Once per browser session | After a redirect, the visitor can come back and stay until they close the browser |
-| Once per hour | After a redirect, the visitor is left alone for an hour. This was the only behaviour before version 1.4.0 |
+| Once per hour | After a redirect, the visitor is left alone for an hour. This was the only behavior before version 1.4.0 |
 | Once per day | After a redirect, the visitor is left alone for a day |
 
 Each rule can override the site-wide choice with its own **How often** setting, for example every visit for your local store and once per day for a promotion page. Rules do not affect each other: a visitor sent on by a once per day rule is still redirected by an every visit rule elsewhere on your site.
@@ -169,7 +169,7 @@ New installs start with every visit. Sites that update from an earlier version k
 
 ### Popup confirmation
 
-A popup asks before redirecting. You can edit the message, both button labels, and the text and background colours, with a live preview beside the fields. Use `{{country}}` in the message to insert the visitor's country code.
+A popup asks before redirecting. You can edit the message, both button labels, and the text and background colors, with a live preview beside the fields. Use `{{country}}` in the message to insert the visitor's country code.
 
 ![Appearance settings for the country redirect popup](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/popup-appearance.png)
 
@@ -407,7 +407,7 @@ Sites that already had blocking rules when they updated to version 1.3.0 keep th
 
 ### Clear the page cache when settings change
 
-When you save the settings, the plugin clears the cache of the supported cache plugins, so pages cached before the change do not keep the old behaviour. Clear any CDN cache yourself.
+When you save the settings, the plugin clears the cache of the supported cache plugins, so pages cached before the change do not keep the old behavior. Clear any CDN cache yourself.
 
 ### Script optimization plugins
 
@@ -481,7 +481,7 @@ Work through these in order, or use [Test a visitor](#test-a-visitor-from-any-co
 
 ### Visitors are redirected only once
 
-Before version 1.4.0, the plugin always left a redirected visitor alone for an hour, and sites that update keep that behaviour. Set [how often visitors are redirected](#how-often-visitors-are-redirected) to every visit.
+Before version 1.4.0, the plugin always left a redirected visitor alone for an hour, and sites that update keep that behavior. Set [how often visitors are redirected](#how-often-visitors-are-redirected) to every visit.
 
 ### A marker appears in the address after a redirect
 
@@ -564,7 +564,7 @@ Verified crawlers pass [country access control](#search-engine-crawlers-and-link
 - Fixed: `?geo_reset=1` did not undo an earlier redirect
 - Fixed: form submissions, feeds and robots.txt were redirected. Checkout, cart and account pages are now never redirected
 - Fixed: subdirectory installs matched rules against the wrong path
-- Fixed: the popup "Yes" button text colour was lost on save
+- Fixed: the popup "Yes" button text color was lost on save
 - Fixed: the admin screen could keep running an outdated script after an update
 - New: one rule can target several countries, for example `GR, CY`
 - New: `/products/*` also matches `/products` itself

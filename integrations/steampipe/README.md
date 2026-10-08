@@ -255,7 +255,7 @@ Returns the abuse contact information for an IP address. This is the contact det
 | route | text | CIDR block covering the IP |
 | country | text | ISO alpha-2 country of registrant |
 | name | text | Abuse contact or IRT name |
-| organization | text | Responsible organisation |
+| organization | text | Responsible organization |
 | kind | text | Contact kind (e.g. "group") |
 | address | text | Postal address |
 | emails | jsonb | Array of abuse email addresses |
@@ -292,10 +292,10 @@ Returns Autonomous System Number (ASN) details for an IP address, including rout
 | asn | text | ASN used for lookup (when queried by ASN) |
 | as_number | text | AS number e.g. "AS15169" |
 | asn_name | text | Short registered ASN name |
-| organization | text | Organisation owning the ASN |
+| organization | text | Organization owning the ASN |
 | country | text | ISO alpha-2 country of registration |
 | type | text | ASN type: ISP, HOSTING, EDUCATION, GOVERNMENT, BUSINESS |
-| domain | text | Organisation's primary domain |
+| domain | text | Organization's primary domain |
 | date_allocated | text | Allocation date (YYYY-MM-DD) |
 | allocation_status | text | e.g. "assigned" |
 | rir | text | Regional Internet Registry (ARIN, RIPE, APNIC, LACNIC, AFRINIC) |

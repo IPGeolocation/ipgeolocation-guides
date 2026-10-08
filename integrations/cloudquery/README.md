@@ -190,8 +190,8 @@ Key columns:
 | `timezone_offset` | double | UTC offset in seconds |
 | `timezone_is_dst` | boolean | DST currently in effect |
 | `hostname` | text | Reverse DNS name. Paid, opt-in |
-| `locality` | text | Locality or neighbourhood. Paid, opt-in |
-| `accuracy_radius` | text | Accuracy radius in kilometres. Paid, opt-in |
+| `locality` | text | Locality or neighborhood. Paid, opt-in |
+| `accuracy_radius` | text | Accuracy radius in kilometers. Paid, opt-in |
 | `confidence` | text | `low`, `medium` or `high`. Paid, opt-in |
 | `dma_code` | text | Designated Market Area code, US only. Paid, opt-in |
 
@@ -215,7 +215,7 @@ Threat intelligence for each IP in `ips`. Requires a paid plan and costs 2 credi
 |---|---|---|
 | `ip` | text | The IP that was looked up |
 | `threat_score` | integer | Composite risk score from 0 to 100 |
-| `is_anonymous` | boolean | Any anonymisation detected |
+| `is_anonymous` | boolean | Any anonymization detected |
 | `is_vpn` | boolean | Known VPN exit node |
 | `vpn_provider_names` | text | VPN operators, comma separated |
 | `vpn_confidence_score` | integer | VPN detection confidence |
@@ -360,7 +360,7 @@ SELECT ip, country_name, state_prov, city, latitude, longitude, timezone_name
 FROM ipgeolocation_ip_geolocation;
 ```
 
-### Which IPs are hiding behind anonymisation?
+### Which IPs are hiding behind anonymization?
 
 ```sql
 SELECT ip, is_vpn, is_proxy, is_tor, is_relay, vpn_provider_names, threat_score
@@ -659,7 +659,7 @@ Run the tests:
 go test ./... -v
 ```
 
-The suite runs against a stub HTTP server, so it needs no API key, works offline and spends no credits. It covers spec validation, retry and rate limiting behaviour, response flattening for all five tables, and a check that every documented API field reaches a column.
+The suite runs against a stub HTTP server, so it needs no API key, works offline and spends no credits. It covers spec validation, retry and rate limiting behavior, response flattening for all five tables, and a check that every documented API field reaches a column.
 
 The repository also ships eight example configs under `example/`, covering the free plan, security focused syncs, ASN topology, user agent parsing, edge cases such as IPv6 and bogons, a PostgreSQL destination, and caller IP auto detection.
 
@@ -690,7 +690,7 @@ No. The free Developer plan allows 1,000 requests per day and covers the `ipgeol
 
 <details>
 <summary><strong>How is this different from the Steampipe plugin?</strong></summary>
-Steampipe queries the API live, so every `SELECT` makes API calls and the results are always current but never stored. CloudQuery syncs data into a database you own, so queries are free and fast afterwards but reflect the last sync. Use Steampipe for ad hoc investigation, CloudQuery for enrichment tables other systems join against.
+Steampipe queries the API live, so every `SELECT` makes API calls and the results are always current but never stored. CloudQuery syncs data into a database you own, so queries are free and fast afterward but reflect the last sync. Use Steampipe for ad hoc investigation, CloudQuery for enrichment tables other systems join against.
 </details>
 
 <details>
