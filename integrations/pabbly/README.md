@@ -374,7 +374,7 @@ If the problem continues, contact IPGeolocation.io support at [support@ipgeoloca
 - [IP Abuse Contact API](https://ipgeolocation.io/documentation/ip-abuse-contact-api.html)
 - [Time Zone API](https://ipgeolocation.io/documentation/timezone-api.html)
 - [Astronomy API](https://ipgeolocation.io/documentation/astronomy-api.html)
-- [User-Agent API](https://ipgeolocation.io/documentation/user-agent-api.html)
+- [User Agent API](https://ipgeolocation.io/documentation/user-agent-api.html)
 - [API documentation overview and authentication](https://ipgeolocation.io/documentation.html)
 - [Manage your API keys in the dashboard](https://app.ipgeolocation.io/dashboard)
 - [All integrations](https://ipgeolocation.io/integrations.html)

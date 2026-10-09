@@ -97,14 +97,14 @@ Navigate to the **Rules** page to control logic. This determines *who* sees the 
 *   **Show to Specific Countries Only:** Good for testing new markets before a global rollout.
 *   **Hide from Specific Countries:** Use this to exclude your home market where redirects aren't necessary.
 
-![redirect rules page popup behaviour screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/redirect-rules_popup-behavior.png)
+![redirect rules page popup behavior screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/redirect-rules_popup-behavior.png)
 
 ### First-Time Visitor Behavior
 *   **Always Show Popup:** Ensures maximum visibility. Every new visitor gets a choice.
 *   **Show Only on Wrong Storefront:** The popup only appears if the visitor is in a region that *doesn't* match the current store.
     *   *Best Practice:* Use "Show Only on Wrong Storefront" to reduce friction. If a French customer lands on the French store, they shouldn't be bothered by a popup.
 
-![redirect rules page frist visit screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/redirect-rules_first-visit.png)
+![redirect rules page first visit screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/redirect-rules_first-visit.png)
 
 ### Returning Visitor Behavior
 *   **Always Redirect to Saved Preference:** Automatically redirects returning users to their previously chosen store.

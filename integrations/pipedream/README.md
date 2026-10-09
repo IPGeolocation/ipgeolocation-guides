@@ -476,7 +476,7 @@ Every action's JSON response is accessible in downstream steps via `steps.<actio
 
 ## API Limits & Best Practices
 
-- **Free plan** provides 1,000 lookups per day. Each successful API call consumes 1 credit.
+- **Free plan** provides 1,000 lookups per day.
 - **Bulk actions** are capped at 50,000 entries per request.  
 - **Astronomy time series** date ranges are capped at 90 days per request.
 - **Bulk actions** are capped at 50,000 entries per request. Pipedream will throw a validation error before the request is sent if this limit is exceeded.

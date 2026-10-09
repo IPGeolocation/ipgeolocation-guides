@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-The [**viaSocket + IPGeolocation**](https://viasocket.com/integrations/ipgeolocation) **integration** allows you to use the full power of IPGeolocation.io APIs directly inside your viaSocket workflows \- **without writing any code**.You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
+The [**viaSocket + IPGeolocation**](https://viasocket.com/integrations/ipgeolocation) **integration** allows you to use the full power of IPGeolocation.io APIs directly inside your viaSocket workflows \- **without writing any code**. You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
 
 With this integration, you can automate retrieval of valuable IP intelligence data such as:
 
@@ -32,7 +32,7 @@ The integration includes **12 actions**, grouped into 6 main categories:
 
 ## **API Key & Connection Setup**
 
-To connect IPGeolocation with viaSocket,you need a valid API Key. Follow these steps carefully:
+To connect IPGeolocation with viaSocket, you need a valid API Key. Follow these steps carefully:
 
 ### **Create or log in to your IPGeolocation.io account**
 

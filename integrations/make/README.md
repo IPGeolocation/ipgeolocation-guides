@@ -222,7 +222,7 @@ Provides detailed client system information, allowing for the detection of bots,
 **Parse User Agent String**
 
 - **Input:** User agent string
-- **Outputs:** provides name, device and operating sysem [information](https://ipgeolocation.io/documentation/user-agent-api.html#reference-to-user-agent-api-response).
+- **Outputs:** provides name, device and operating system [information](https://ipgeolocation.io/documentation/user-agent-api.html#reference-to-user-agent-api-response).
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/user-agent.png)
 

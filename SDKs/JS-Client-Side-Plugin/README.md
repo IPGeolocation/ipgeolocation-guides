@@ -142,7 +142,7 @@ This plugin allows developers to integrate and utilize IP geolocation data withi
 | `saveToSessionStorage` | boolean | If enabled, stores the security response in `sessionStorage` to avoid repeated API calls during the same browser session, improving performance and reducing API usage. |
 
 > [!NOTE]
-> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only the `security` object. It does not support geolocation, timezone, user-agent, or other fields. Each successful security lookup costs **2 API credits**.For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
+> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only the `security` object. It does not support geolocation, timezone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
 
 ---
 
