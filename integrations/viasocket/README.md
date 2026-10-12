@@ -159,7 +159,7 @@ It can be consumed with the following input variations:
 * For any UN/LO Code  
 * Outputs: time\_zone.name, time\_zone.current\_time, time\_zone.date\_time\_wti and [more](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response)
 
-![Timezone API](https://static.ipgeolocation.io/web-assets/images/integrations/viasocket/timezone.png)
+![Time Zone API](https://static.ipgeolocation.io/web-assets/images/integrations/viasocket/timezone.png)
 
 **Time Conversion**
 

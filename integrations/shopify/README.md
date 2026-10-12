@@ -84,7 +84,7 @@ The IPGeolocation shopify app dashboard is your command center for monitoring vi
 The app automatically syncs markets configured in your Shopify settings (Settings > Markets).
 *   **Manual Sync:** If a market is missing (e.g., you just added, deleted or updated a market in Shopify), click the **Sync** button on the dashboard to refresh the list immediately.
 
-![Homepaeg markets view screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/homepage_markets-view.png)
+![Homepage markets view screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/homepage_markets-view.png)
 
 ---
 
@@ -154,7 +154,7 @@ If you have separate Shopify stores (e.g., `my-brand.com` and `my-brand.co.uk`),
 ### How It Works
 1.  **Generate ID:** Go to **Connect Stores** on the dashboard. Copy your **Connection ID**.
 
-![Connet-Store page create group screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/connect-store_create.png)
+![Connect Store page create group screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/connect-store_create.png)
 
 2.  **Share ID:** Send this ID to the admin of the *other* store.
 3.  **Connect:** The other admin enters your ID into their "Connect a Store" field.
@@ -164,7 +164,7 @@ If you have separate Shopify stores (e.g., `my-brand.com` and `my-brand.co.uk`),
 
 These stores are linked together. You can disconnect a store at any time to return it to its own independent setup. Each store shows its assigned markets and your role within the group.
 
-![Connet-Store page create group screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/connect-store_stores-view.png)
+![Connect-Store page create group screenshot](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/connect-store_stores-view.png)
 
 > [!IMPORTANT] 
 > - `Limit`: You can connect up to **3 stores** for free.
