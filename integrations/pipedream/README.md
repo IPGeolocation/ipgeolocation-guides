@@ -260,7 +260,7 @@ Looks up timezone data for a location specified by IP address, coordinates, time
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/get-timezone.png)
 
 > [!NOTE]
-> For more information, see [Timezone API Documentation](https://ipgeolocation.io/documentation/timezone-api.html). 
+> For more information, see [Time Zone API Documentation](https://ipgeolocation.io/documentation/timezone-api.html). 
 
 **Example use case:** Detect a user's local timezone from their IP on sign-up and pre-fill it in their account preferences.
 

@@ -169,7 +169,7 @@ Key columns:
 | `longitude` | text | Longitude |
 | `is_eu` | boolean | True for EU member states |
 | `geoname_id` | text | GeoNames identifier |
-| `calling_code` | text | International dialling prefix |
+| `calling_code` | text | International dialing prefix |
 | `tld` | text | Country code top level domain |
 | `languages` | text | Official languages, comma separated |
 | `currency_code` | text | ISO 4217 currency code |
