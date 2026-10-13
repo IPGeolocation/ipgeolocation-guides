@@ -1,4 +1,4 @@
-# IP Geolocation API JavaScript Client Side Plugin
+# IP Geolocation API JavaScript Client-Side Plugin
 
 ## Overview
 This document provides a comprehensive guide for setting up and using the IP Geolocation API client-side JavaScript plugin. It includes detailed descriptions of configuration options, example usage, and error handling. The plugin lets you use two APIs: the [IP Geolocation API](https://ipgeolocation.io/documentation/ip-location-api.html) and the [IP Security API](https://ipgeolocation.io/documentation/ip-security-api.html), so you can add geolocation and IP threat detection features to your website or app.
@@ -9,14 +9,14 @@ Along with location data, the plugin also includes security lookup capability if
 
 The plugin further offers extra features like timezone details, currency information, and device data parsed from the User-Agent string. These details can help you customize content, set correct time zones, or display prices in the user's local currency.
 
-## Client Side Plugin Purpose
+## Client-Side Plugin Purpose
 
-With our **Free plan**, you get basic location details like country, state, city, ZIP code, currency, basic ASN, and timezone. **Paid plans** give progressively more information which includes network details (ASN type, domain, RIR, company), user-agent parsing, hostname resolution, security threat detection, abuse contact data, geo accuracy fields, and DMA codes.
+With our **Free plan**, you get basic location details like country, state, city, ZIP code, currency, basic ASN, and timezone. Paid plans include the same features and add network details (ASN type, domain, RIR, company), user-agent parsing, hostname resolution, security threat detection, abuse contact data, geo accuracy fields, and DMA codes.
 
 > [!IMPORTANT]
 > For a side-by-side comparison of features in each plan, please see the table on our [Pricing page](https://ipgeolocation.io/pricing.html).
 
-This plugin allows developers to integrate and utilize IP geolocation data within their web projects. Developers can use this plugin for various purposes, such as:
+This plugin lets developers integrate and use IP geolocation data in their web projects. Developers can use this plugin for various purposes, such as:
 
 1. **Geographic Redirection:** Redirect visitors to region-specific site versions to enhance user experience and compliance with local regulations.
 2. **Analytics Enhancement:** Use geolocation data to analyze web traffic and user behavior, enhancing site and content strategies.
@@ -88,7 +88,7 @@ This plugin allows developers to integrate and utilize IP geolocation data withi
 ### IPGeolocationAPI: Authentication & Input
 | Option      | Type   | Description                                                                                  |
 |-------------|--------|----------------------------------------------------------------------------------------------|
-| `apiKey`    | string | Your API key. Required unless request origin is whitelisted (available only on paid plans).  |
+| `apiKey`    | string | Your API key. Required unless the request origin is whitelisted (available only on paid plans).  |
 | `ipAddress` | string | IPv4, IPv6, or domain name to query. If omitted, the plugin auto-detects the user's IP.      |
 
 ### IPGeolocationAPI: Basic Response Customization
@@ -127,7 +127,7 @@ This plugin allows developers to integrate and utilize IP geolocation data withi
 ### IPSecurityAPI: Authentication & Input
 | Option      | Type   | Description                                                                                 |
 |-------------|--------|---------------------------------------------------------------------------------------------|
-| `apiKey`    | string | Your API key. Required unless request origin is whitelisted (available only on paid plans). |
+| `apiKey`    | string | Your API key. Required unless the request origin is whitelisted (available only on paid plans). |
 | `ipAddress` | string | IPv4 or IPv6 address to query. If omitted, the plugin auto-detects the user's IP.           |
 
 ### IPSecurityAPI: Response Customization
