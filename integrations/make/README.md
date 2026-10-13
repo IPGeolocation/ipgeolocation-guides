@@ -131,7 +131,7 @@ Retrieves geolocation for up to 50,000 IPs per request.
 
 **IP Security Lookup**
 
-Security insights such as proxy, VPN, TOR, threat score, cloud and proxy providers.
+Security insights such as proxy, VPN, Tor, threat score, cloud and proxy providers.
 
 - **Input:** IP Address
 - **Outputs:** security.is_proxy, security.is_vpn, security.threat_score, security.is_cloud_provider and [more](https://ipgeolocation.io/documentation/ip-security-api.html#security-json-object-reference)
