@@ -43,7 +43,7 @@ Nested API responses are flattened into columns, so `security.vpn_provider_names
 
 - [CloudQuery CLI](https://docs.cloudquery.io/docs/quickstart) v5 or later
 - [Go](https://go.dev/dl/) 1.22.7 or later, to build the plugin binary
-- An IPGeolocation.io API key. The free Developer plan allows 1,000 requests per day and covers the geolocation table. Get one from [signing up here](https://app.ipgeolocation.io/signup), no card required.
+- An IPGeolocation.io API key. The free Developer plan allows 1,000 credits per day and covers the geolocation table. Get one from [signing up here](https://app.ipgeolocation.io/signup), no card required.
 - A destination you can write to. SQLite needs nothing beyond a file path, which makes it the easiest way to try this out.
 
 The security, abuse, ASN and user agent endpoints require a paid plan. See the [pricing page](https://ipgeolocation.io/pricing.html) for current limits.
@@ -590,7 +590,7 @@ Two ways to spend more than you meant to:
 - Syncing `ipgeolocation_ip_security` while also setting `include_security: true`. That fetches the same data twice and bills for both. Pick the wide geolocation table or the dedicated security table, not both.
 - Setting `tables: ["*"]` on a free plan. Every paid table returns 401 for every IP, and while those failures cost no credits, the sync looks successful and the tables come back empty.
 
-The free Developer plan allows 1,000 requests per day. Paid plans start at 150,000 requests per month. Current figures are on the [pricing page](https://ipgeolocation.io/pricing.html).
+The free Developer plan allows 1,000 credits per day. Paid plans start at 150,000 credits per month. Current figures are on the [pricing page](https://ipgeolocation.io/pricing.html).
 
 ---
 
@@ -685,7 +685,7 @@ The repository also ships eight example configs under `example/`, covering the f
 
 <details>
 <summary><strong>Do I need a paid plan to use this plugin?</strong></summary>
-No. The free Developer plan allows 1,000 requests per day and covers the `ipgeolocation_ip_geolocation` table with its base fields, which is enough for development and small syncs. The security, abuse, ASN and user agent tables need a paid plan, as do the optional modules such as `include_security` and `include_abuse`.
+No. The free Developer plan allows 1,000 credits per day and covers the `ipgeolocation_ip_geolocation` table with its base fields, which is enough for development and small syncs. The security, abuse, ASN and user agent tables need a paid plan, as do the optional modules such as `include_security` and `include_abuse`.
 </details>
 
 <details>
