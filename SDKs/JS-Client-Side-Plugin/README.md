@@ -112,7 +112,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 | `includeAll`                  | boolean | Include all optional modules in a single request (`include=*`).      |  ✖   |  ✔   |
 
 > [!NOTE]
-> No `include` options are available on the Free plan. Timezone data (`time_zone` object) is included by default in the response on paid plans without requiring a separate include option.
+> No `include` options are available on the Free plan. Time-zone data (`time_zone` object) is included by default in the response on Free and Paid plans without requiring a separate include option.
 
 > [!NOTE]
 > Only one of `includeHostname`, `includeLiveHostname`, or `includeHostnameFallbackLive` should be set to `true` at a time. If multiple are passed, the API applies precedence: `liveHostname` → `hostname` → `hostnameFallbackLive`.
