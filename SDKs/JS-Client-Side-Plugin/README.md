@@ -88,7 +88,7 @@ This plugin allows developers to integrate and utilize IP geolocation data withi
 ### IPGeolocationAPI: Authentication & Input
 | Option      | Type   | Description                                                                                  |
 |-------------|--------|----------------------------------------------------------------------------------------------|
-| `apiKey`    | string | Your API key. Required unless request origin is whitelisted (available only on paid plans).  |
+| `apiKey`    | string | Your API key. Required unless the request origin is whitelisted (available only on paid plans).  |
 | `ipAddress` | string | IPv4, IPv6, or domain name to query. If omitted, the plugin auto-detects the user's IP.      |
 
 ### IPGeolocationAPI: Basic Response Customization
@@ -112,7 +112,7 @@ This plugin allows developers to integrate and utilize IP geolocation data withi
 | `includeAll`                  | boolean | Include all optional modules in a single request (`include=*`).      |  ✖   |  ✔   |
 
 > [!NOTE]
-> No `include` options are available on the Free plan. Timezone data (`time_zone` object) is included by default in the response on paid plans without requiring a separate include option.
+> No `include` options are available on the Free plan. Time-zone data (`time_zone` object) is included by default in the response on Free and Paid plans without requiring a separate include option.
 
 > [!NOTE]
 > Only one of `includeHostname`, `includeLiveHostname`, or `includeHostnameFallbackLive` should be set to `true` at a time. If multiple are passed, the API applies precedence: `liveHostname` → `hostname` → `hostnameFallbackLive`.
