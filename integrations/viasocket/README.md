@@ -7,7 +7,7 @@ The [**viaSocket + IPGeolocation**](https://viasocket.com/integrations/ipgeoloca
 With this integration, you can automate retrieval of valuable IP intelligence data such as:
 
 * Geolocation details (country, city, coordinates)  
-* Security & threat intelligence (VPN, proxy, TOR detection)  
+* Security & threat intelligence (VPN, proxy, Tor detection)  
 * Network ownership and ASN details  
 * Timezone and time conversion data  
 * Astronomy data (sunrise, sunset, moon phase)  
@@ -108,7 +108,7 @@ Retrieves geolocation for up to 50,000 IPs per request.
 
 **IP Security Lookup**
 
-Security insights such as proxy, VPN, TOR, Relay, threat score, cloud and proxy providers.
+Security insights such as proxy, VPN, Tor, Relay, threat score, cloud and proxy providers.
 
 * Input: IP Address  
 * Outputs: security.is\_proxy, security.is\_vpn, security.is\_relay, security.is\_tor, security.threat\_score, security.is\_cloud\_provider and [more](https://ipgeolocation.io/documentation/ip-security-api.html#security-json-object-reference)
