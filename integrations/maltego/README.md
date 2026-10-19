@@ -227,9 +227,9 @@ This is the most common issue and has a few distinct causes.
 
 **Plan restriction** — Four transforms (IP to Threat Profile, IP to ASN, IP to Abuse Contact, IP to Company Intel ) are unavailable on the Developer (free) plan. When called, they fail silently — no error is shown and no entities are added to the graph. Check the [plan comparison table](#transforms-availability-across-our-plans) and verify your subscription in the [dashboard](https://app.ipgeolocation.io/dashboard).
 
-**Invalid or missing API key** — If your API key is not configured correctly in Maltego's transform settings, all transforms will return empty results with 401 status code, you can see in the output window of the transform.
+**Invalid or missing API key** — If your API key is not configured correctly in Maltego's transform settings, all transforms will return empty results with 401 status code; you can see this in the output window of the transform.
 
-**Rate limit exceeded** — Developer plan keys are subject to strict rate limits. If you've hit the limit, transforms will return no data until the quota resets. Upgrade to a paid plan or wait for the reset window. See [Pricing](https://ipgeolocation.io/pricing.html) for quota details.
+**Daily credit quota exhausted** — Developer (free) plan keys include 1,000 credits per day. There are no per-second or per-minute rate limits; once the day's credits are used up, transforms return no data until the daily quota resets. Wait for the reset or move to a paid plan. See [Pricing](https://ipgeolocation.io/pricing.html) for quota details.
 
 **Private or reserved IP** — Transforms will return no results for private IP ranges (`10.x.x.x`, `192.168.x.x`, `172.16.x.x`) and other reserved addresses. These are not routable on the public internet and cannot be enriched.
 
@@ -257,7 +257,7 @@ If you see an explicit error (red icon or transform failure notification), check
 | `Connection refused` | Maltego cannot reach the transform server | Check your network and firewall. The transform server at `ptds.maltego.com` must be reachable on port 443. |
 | `Authentication failed` | API key rejected | Verify the key in Transform Settings. Ensure there are no leading/trailing spaces. |
 | `Transform not found` | Installation incomplete | Re-run the seed URL installation and confirm all five transforms appear under Internal Hub Items. |
-| `Rate limit exceeded` | Plan restriction | Upgrade to a paid plan or wait for the reset window. See [Pricing](https://ipgeolocation.io/pricing.html) for quota details. |
+| `Rate limit exceeded` | Daily credit quota exhausted | Wait for the daily quota to reset or upgrade to a paid plan. See [Pricing](https://ipgeolocation.io/pricing.html) for quota details. |
 
 ---
 
@@ -281,7 +281,7 @@ No. All five transforms are registered against IPv4 entities only. IPv6 support 
 
 <details>
 <summary><strong>Can I run transforms in bulk across multiple IPs?</strong></summary>
-Yes. Select multiple IPv4 entities in your graph, right-click, and run the transform — Maltego will execute it against each selected entity. Be mindful of your plan's rate limits when running bulk enrichment; hitting the quota mid-run will cause remaining transforms to return empty results silently.
+Yes. Select multiple IPv4 entities in your graph, right-click, and run the transform — Maltego will execute it against each selected entity. Be mindful of your plan's credit quota when running bulk enrichment; using up the quota mid-run will cause remaining transforms to return empty results silently.
 </details>
 
 <details>
