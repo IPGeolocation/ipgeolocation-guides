@@ -4,7 +4,7 @@
 
 DuckDB can join IP intelligence onto your data with nothing but SQL. A community extension adds two functions that read IPGeolocation.io MMDB files: one looks up a single address per row, the other turns a whole database into a table. Point them at a CSV export, a folder of Parquet logs or a table you already have, and you get country, city, VPN and Tor flags, threat scores and network owners alongside your own columns.
 
-The examples combine three IPGeolocation.io databases. The [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) places each address in a country, region and city, with coordinates and a time zone. The [IP Security Database](https://ipgeolocation.io/ip-security-database.html) flags VPNs, proxies and Tor and provides a threat score of each address. The [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) identifies the network, by its [Autonomous System Number](https://ipgeolocation.io/guides/what-is-an-asn) and owner.
+The examples combine three IPGeolocation.io databases. The [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) places each address in a country, region and city, with coordinates and a time zone. The [IP Security Database](https://ipgeolocation.io/ip-security-database.html) flags VPNs, proxies and Tor and provides a threat score of each address. The [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) identifies the network by its [Autonomous System Number](https://ipgeolocation.io/guides/what-is-an-asn) and owner.
 
 Nothing in the extension is specific to those three. You can query the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html) in exactly the same way, along with combined databases.
 
@@ -20,23 +20,23 @@ DuckDB runs inside your process, and the databases are local files, so analysis 
 | Function | Kind | Use it to |
 | --- | --- | --- |
 | `mmdb_record(file, ip, key)` | Scalar | Add data for the address in each row of your own table or file. |
-| `read_mmdb(file)` | Table | Read the database itself, one row per network, to filter, count or export it. |
+| `read_mmdb(file)` | Table | Read the database itself, one row per network, to filter, count, or export it. |
 
 ## Questions you can answer
 
 - **Where do our sign-in attempts come from?** Group a login log by country and network owner.
-- **How much of our traffic is anonymized?** Count requests from VPN, proxy and Tor addresses, per day or per endpoint.
+- **How much of our traffic is anonymized?** Count requests from VPN, proxy, and Tor addresses, per day or per endpoint.
 - **Which hosting networks hit our API?** Join firewall or API logs with network owners to find automated sources.
 - **Which Tor exit networks fall inside a given range?** Scan the IP Security Database for one subnet or for all of them.
-- **Can this dataset be shared enriched?** Write the enriched result to Parquet for a data warehouse or a notebook.
+- **Can I export the enriched results?** Write the enriched result to Parquet for a data warehouse or a notebook.
 
 ---
 
 ## About DuckDB and the extension
 
-[DuckDB](https://duckdb.org/) is an in-process analytical database. It reads CSV, Parquet and JSON files directly, runs in a command-line shell or inside Python, R, Java and other languages, and needs no server.
+[DuckDB](https://duckdb.org/) is an in-process analytical database. It reads CSV, Parquet and JSON files directly, runs in a command-line shell or inside Python, R, Java, and other languages, and needs no server.
 
-The IPGeolocation.io lookups come from the open source community extension named `maxmind`. Of its functions, `mmdb_record` and `read_mmdb` are generic MMDB readers, and they are the ones to use with IPGeolocation.io files. DuckDB downloads the extension from its community repository the first time you install it, and every session loads it with `LOAD`.
+The IPGeolocation.io lookups come from the open-source community extension named `maxmind`. Of its functions, `mmdb_record` and `read_mmdb` are generic MMDB readers, and they are the ones to use with IPGeolocation.io files. DuckDB downloads the extension from its community repository the first time you install it, and every session loads it with `LOAD`.
 
 ---
 
