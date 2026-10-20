@@ -3,11 +3,11 @@
 ## Overview
 This document provides a comprehensive guide for setting up and using the IP Geolocation API client-side JavaScript plugin. It includes detailed descriptions of configuration options, example usage, and error handling. The plugin lets you use two APIs: the [IP Geolocation API](https://ipgeolocation.io/documentation/ip-location-api.html) and the [IP Security API](https://ipgeolocation.io/documentation/ip-security-api.html), so you can add geolocation and IP threat detection features to your website or app.
 
-This plugin helps you get accurate geolocation details for any IPv4 or IPv6 address. It provides important information such as country, state, city, ZIP code, latitude, longitude, accuracy radius, confidence level, DMA code, connection type, ISP/company information, and ASN data. These details are useful for showing location-based content or understanding where your users are coming from. You can also get abuse contact information, which is helpful for reporting suspicious or malicious activity.
+This plugin provides accurate geolocation details for any IPv4 or IPv6 address. It provides important information such as country, state, city, ZIP code, latitude, longitude, accuracy radius, confidence level, DMA code, connection type, ISP/company information, and ASN data. These details help you show location-based content or understand where your users are coming from. You can also get abuse contact information, which helps you report suspicious or malicious activity.
 
 Along with location data, the plugin also includes security lookup capability if you have a paid plan subscription. It can detect VPNs, proxy usage, residential proxies, Tor connections, relay networks, anonymous activity, known attackers, bots, spam sources, and cloud hosting providers, and also provides a threat score to assess risk.
 
-The plugin further offers extra features like timezone details, currency information, and device data parsed from the User-Agent string. These details can help you customize content, set correct time zones, or display prices in the user's local currency.
+The plugin further offers extra features like timezone details, currency information, and device data parsed from the User-Agent string. These details help you customize content, set the correct time zone, or display prices in the user's local currency.
 
 ## Client-Side Plugin Purpose
 
@@ -260,7 +260,7 @@ Sample Response:
     "offset": -8,
     "offset_with_dst": -7,
     "current_time": "2026-03-27 10:00:00.000-0700",
-    "current_time_unix": 1743087600.000,
+    "current_time_unix": 1774630800.000,
     "current_tz_abbreviation": "PDT",
     "current_tz_full_name": "Pacific Daylight Time",
     "standard_tz_abbreviation": "PST",
@@ -419,7 +419,7 @@ Sample Response:
     "offset": -8,
     "offset_with_dst": -7,
     "current_time": "2026-03-27 10:00:00.000-0700",
-    "current_time_unix": 1743087600.000,
+    "current_time_unix": 1774630800.000,
     "current_tz_abbreviation": "PDT",
     "current_tz_full_name": "Pacific Daylight Time",
     "standard_tz_abbreviation": "PST",
