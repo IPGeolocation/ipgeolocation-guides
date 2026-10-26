@@ -116,7 +116,7 @@ A few parameters appear across several actions:
 
 - **Fields**: return only the fields you name, using dot notation for nested fields (for example `location.city` or `time_zone.name`) or full object names (for example `location` or `currency`). Fields can only select data the action and your plan already return; it does not add modules. Available on all plans, including the free plan.
 - **Excludes**: remove specific fields or whole objects you do not need. Available on all plans.
-- **Include**: add optional data modules to the response that are not returned by default. This parameter is available on paid plans only. This parameter is available only in `Get IP Geolocation`, `Find Bulk IP Geolocation` and `Lookup ASN` actions.
+- **Include** (paid plans only): adds optional data modules that are not returned by default. Available in Get IP Geolocation, Find Bulk IP Geolocation, and Lookup ASN.
 - **Language**: return location text in a supported language. This parameter is available on paid plans only.
 
 **Action availability by plan**
@@ -146,12 +146,12 @@ For more information about IPGeolocation.io plans, see the [IPGeolocation.io pri
 
 Retrieves geolocation, country metadata and currency related information for a single IPv4 or IPv6 address. Paid plans also support resolving domain names and returning additional enrichment data such as network, company, security, abuse, hostname, user agent, and advanced ASN information.
 
-- Required input: An IP address on any plan, or a domain name on a paid plan., for example `8.8.8.8`, or `example.com`.
+- Required input: an IP address on any plan, or a domain name on a paid plan, for example `8.8.8.8` or `example.com`.
 - Optional inputs:
   - **Include** (paid only): add one or more optional modules. Accepted values are `geo_accuracy`, `dma_code`, `user_agent`, `security`, `abuse`, and the hostname options `hostname`, `liveHostname`, and `hostnameFallbackLive`. Use `*` to add every module at once.
   - **Fields**: return only the objects or fields you name.
   - **Excludes**: remove objects or fields you do not need.
-  - **Language** (paid only): return location text in English (en), German (de), Russian (ru), Japanese (ja), French (fr), Chinese Simplified (cn), Spanish (es), Czech (cs), Italian (it), Korean (ko), Persian (fa), Portuguese (pt). The default is English.
+  - **Language** (paid only): return location text in a supported language, such as German (`de`), Japanese (`ja`), or Spanish (`es`). English is the default.
 - Output: the `location`, `country_metadata`, `currency`, `asn`, and `time_zone` objects, plus additional objects on paid plans as described below. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
 
 **What Get IP Geolocation returns by plan:**
@@ -348,7 +348,7 @@ You can extend this workflow by adding **Find IP Security** after the geolocatio
 | Paid feature on a free plan | A paid action, such as IP Security, ASN, Abuse Contact, User Agent, or any bulk action, was run with a free plan key. The response indicates the feature is available to paid subscriptions only. | Upgrade on the [pricing page](https://ipgeolocation.io/pricing.html) or switch the action to one available on your plan. |
 | Missing required fields | A required field, such as IP Address or User Agent, is empty. | Fill in the required field for the action, or map a value from an earlier step, then run the test again. |
 | Include or Language throw an error on a free plan | The Include and Language parameters are paid features. | Use a paid plan key, or rely on the Fields and Excludes parameters, which work on all plans. |
-| Daily usage limit reached | The free plan includes 1000 requests per day. | Wait for the daily reset or upgrade your plan for a higher limit. See the [pricing page](https://ipgeolocation.io/pricing.html). |
+| Daily usage limit reached | The free plan includes 1,000 API credits per day. | Wait for the daily reset or upgrade your plan for a higher limit. See the [pricing page](https://ipgeolocation.io/pricing.html). |
 
 If the problem continues, contact IPGeolocation.io support at [support@ipgeolocation.io](mailto:support@ipgeolocation.io).
 
@@ -363,6 +363,22 @@ If the problem continues, contact IPGeolocation.io support at [support@ipgeoloca
 - **Handle API failures.** Add a filter or conditional step so the workflow behaves predictably when an action returns an error or an empty result.
 - **Validate IP addresses.** Confirm the incoming value is a valid IPv4 or IPv6 address before sending it to an action to avoid unnecessary failed requests.
 - **Match the action to your plan.** Confirm your key has the required plan permissions before using paid actions such as IP Security, ASN, Abuse Contact, User Agent, and bulk lookups.
+
+---
+
+## FAQ
+
+### Is the IPGeolocation.io integration free on Pabbly Connect?
+
+Yes, both sides have a free tier. Pabbly Connect lets you add IPGeolocation.io on its free plan, and the IPGeolocation.io Developer plan gives 1,000 API credits per day with no credit card. A free key runs 5 of the 12 actions: Get IP Geolocation, Lookup Timezone Information, Time Conversion, Lookup Astronomy, and Lookup Astronomy Timeseries.
+
+### Does IPGeolocation.io have triggers in Pabbly Connect?
+
+No. IPGeolocation.io is an action-only app in Pabbly Connect, with 12 action events and 0 trigger events. Start the workflow with another app's trigger, such as Catch Webhook in Webhook by Pabbly or New or Updated Spreadsheet Row in Google Sheets, then add an IPGeolocation.io action to enrich the data it receives.
+
+### How do I run bulk IP geolocation in Pabbly Connect?
+
+On a paid plan, send the whole list to Find Bulk IP Geolocation in one step, up to 50,000 IPs or domains, then add Iterator (Pabbly) with the Process Arrays event to handle each result. The lookup counts as 1 Pabbly task. On the free plan, run Get IP Geolocation once per IP instead.
 
 ---
 
