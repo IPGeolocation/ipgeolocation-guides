@@ -594,8 +594,6 @@ To refresh all enabled databases in one go:
 | refreshmmdb
 ```
 
-> **Screenshot placeholder:** _Add a screenshot of the Saved Searches list filtered to "MMDB" showing the update schedules and enabled/disabled toggles._
-
 ---
 
 ## Troubleshooting
