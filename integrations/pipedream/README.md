@@ -477,7 +477,6 @@ Every action's JSON response is accessible in downstream steps via `steps.<actio
 ## API Limits & Best Practices
 
 - **Free Developer plan** includes 1,000 credits per day.
-- **Bulk actions** are capped at 50,000 entries per request.  
 - **Astronomy time series** date ranges are capped at 90 days per request.
 - **Bulk actions** are capped at 50,000 entries per request. Pipedream will throw a validation error before the request is sent if this limit is exceeded.
 - Only paid plan subscriptions can receive responses in languages other than English. On the free plan, responses are in English only. If a language other than English is specified in the `Language` parameter while using an API key on the free plan, the request will result in a `401 (Unauthorized)` response.
