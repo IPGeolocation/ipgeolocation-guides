@@ -81,11 +81,11 @@ To use IPGeolocation.io with **Make**, you need a valid **API Key**. Follow thes
 
 ## Actions Availability across our Plans
 
-We offer **two API plans**: **Developer (Free)**, and **Paid**.
+We offer a **free Developer plan** and **paid plans**.
 
 The availability of actions depends on the plan you are subscribed to. The following table provides a detailed overview of which actions are included in each plan, helping you quickly identify the plan that suits your needs.
 
-| **Action** | **Developer** | **Paid** |
+| **Action** | **Free** | **Paid** |
 |--------|----------|---------|
 | Get IP Geolocation | ✔ | ✔ |
 | Get Bulk IP Geolocation | ✖ | ✔ |

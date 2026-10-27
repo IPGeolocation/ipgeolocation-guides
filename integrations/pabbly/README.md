@@ -121,9 +121,9 @@ A few parameters appear across several actions:
 
 **Action availability by plan**
 
-IPGeolocation.io offers a free (Developer) plan and paid plans. The table below shows which actions each plan can run.
+IPGeolocation.io offers a free Developer plan and paid plans. The table below shows which actions each plan can run.
 
-| Action | Developer (Free) | Paid |
+| Action | Free | Paid |
 | --- | --- | --- |
 | Get IP Geolocation | Yes | Yes |
 | Find Bulk IP Geolocation | No | Yes |
@@ -156,7 +156,7 @@ Retrieves geolocation, country metadata and currency related information for a s
 
 **What Get IP Geolocation returns by plan:**
 
-| Response content | Developer (Free) | Paid |
+| Response content | Free | Paid |
 | --- | --- | --- |
 | `ip` | Yes | Yes |
 | `location` core fields (country, state, city, zip code, latitude, longitude, flag, and more) | Yes | Yes |
