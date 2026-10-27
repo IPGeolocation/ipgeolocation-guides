@@ -90,9 +90,9 @@ You need a valid IPGeolocation.io API key to use this connector. Follow these st
 
 ## Action Availability by Plan
 
-IPGeolocation.io offers two API plans: **Developer (Free)** and **Paid**. Your API key determines which actions you can use in Workato.
+IPGeolocation.io offers a **free Developer plan** and **paid plans**. Your API key determines which actions you can use in Workato.
 
-| Action                          | Developer (Free) | Paid |
+| Action                          | Free             | Paid |
 | ------------------------------- | ---------------- | ---- |
 | **Get IP Geolocation**          | ✔                | ✔    |
 | **Get Bulk IP Geolocation**     |   ✖              | ✔    |
@@ -358,7 +358,7 @@ If Workato shows an invalid credentials error when you save the connection, the 
 
 ### Paid action requested with a free API key
 
-If a recipe step fails on an action such as Get IP Security, Get Bulk IP Geolocation, or Parse User Agent, and your key is on the Developer (Free) plan, you will see an error stating the action requires a paid plan.
+If a recipe step fails on an action such as Get IP Security, Get Bulk IP Geolocation, or Parse User Agent, and your key is on the free plan, you will see an error stating the action requires a paid plan.
 
 ![IPGeolocation.io paid action requested by a free API key error in Workato](https://static.ipgeolocation.io/web-assets/images/integrations/workato/if-paid-action-by-free-api-key.png)
 
@@ -414,7 +414,7 @@ Use **Get IP Geolocation** to identify the customer's location, then use **Find 
 
 <details>
 <summary><strong>Is there a free way to try the IPGeolocation.io Workato integration?</strong></summary>
-Yes. IPGeolocation.io offers a <strong>Developer (Free)</strong> API key that works with <strong>Get IP Geolocation</strong>, <strong>Find Timezone Information</strong>, <strong>Convert Timezone</strong>, <strong>Lookup Astronomy Data</strong>, and <strong>Lookup Astronomy Timeseries</strong> in Workato. No credit card is required to start.
+Yes. IPGeolocation.io's free <strong>Developer</strong> plan gives you an API key that works with <strong>Get IP Geolocation</strong>, <strong>Find Timezone Information</strong>, <strong>Convert Timezone</strong>, <strong>Lookup Astronomy Data</strong>, and <strong>Lookup Astronomy Timeseries</strong> in Workato. No credit card is required to start.
 </details>
 
 <details>
@@ -434,7 +434,7 @@ Yes. <strong>Get Bulk IP Geolocation</strong> and <strong>Get Bulk IP Security</
 
 <details>
 <summary><strong>Why is my Workato connection to IPGeolocation.io failing?</strong></summary>
-Check that your <strong>API key is correct and active</strong>. Also check that the action you are using is available on your API plan. Actions that require the <strong>Paid</strong> plan will not work with a <strong>Developer (Free)</strong> API key. See [Troubleshooting Connection Errors](#troubleshooting-connection-errors)</a> for more information.
+Check that your <strong>API key is correct and active</strong>. Also check that the action you are using is available on your API plan. Actions that require a <strong>paid</strong> plan will not work with an API key on the <strong>free</strong> plan. See [Troubleshooting Connection Errors](#troubleshooting-connection-errors) for more information.
 </details>
 
 <details>

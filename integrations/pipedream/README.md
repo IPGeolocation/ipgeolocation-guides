@@ -43,11 +43,11 @@ Select any of the actions listed below, configure the required fields, and deplo
 
 ## Actions Availability across our Plans
 
-We offer **two API plans**: **Developer**, **Paid**.
+We offer a **free Developer plan** and **paid plans**.
 
 The availability of actions depends on the plan you are subscribed to. The following table provides a detailed overview of which actions are included in each plan, helping you quickly identify the plan that suits your needs.
 
-| **Action** | **Developer (Free)** | **Paid** |
+| **Action** | **Free** | **Paid** |
 | --- | --- | --- |
 | **Get IP Geolocation** | ✔ | ✔ |
 | **Get Bulk IP Geolocation** | ✖ | ✔ |
@@ -476,11 +476,10 @@ Every action's JSON response is accessible in downstream steps via `steps.<actio
 
 ## API Limits & Best Practices
 
-- **Free plan** provides 1,000 lookups per day.
-- **Bulk actions** are capped at 50,000 entries per request.  
+- **Free Developer plan** includes 1,000 credits per day.
 - **Astronomy time series** date ranges are capped at 90 days per request.
 - **Bulk actions** are capped at 50,000 entries per request. Pipedream will throw a validation error before the request is sent if this limit is exceeded.
-- Only paid plan subscriptions can receive responses in languages other than English. Free/Developer plan subscriptions return responses in English only. If a language other than English is specified in the `Language` parameter while using a Free/Developer plan API key, the request will result in a `401 (Unauthorized)` response.
+- Only paid plan subscriptions can receive responses in languages other than English. On the free plan, responses are in English only. If a language other than English is specified in the `Language` parameter while using an API key on the free plan, the request will result in a `401 (Unauthorized)` response.
 - When using coordinate-based lookups (Get Timezone, Get Astronomy), always provide **both** Latitude and Longitude together.
 - For Convert Timezone, use the **same selector type** for source and destination (e.g., both as timezone names or both as coordinates) to avoid validation errors.
 - For best performance and lower latency, use the **Fields** parameter to request only the data fields your workflow actually needs.

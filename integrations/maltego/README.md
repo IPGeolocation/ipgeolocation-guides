@@ -83,9 +83,9 @@ Run the transform with the API key and watch the results appear in the Maltego g
 
 ## Transforms Availability across our Plans
 
-We offer **two API plans**: **Developer**, **Paid**. The transform availability depends on the plan you are subscribed to, as shown in the following table.
+We offer a **free Developer plan** and **paid plans**. The transform availability depends on the plan you are subscribed to, as shown in the following table.
 
-| **Transform** | **Developer (Free)** | **Paid** |
+| **Transform** | **Free** | **Paid** |
 |---|---|---|
 | **IP to Threat Profile** | ✖ | ✔ |
 | **Enrich IPv4 Address** | ✔ | ✔ |
@@ -225,11 +225,11 @@ These workflows show how to chain transforms together for real investigative sce
 
 This is the most common issue and has a few distinct causes.
 
-**Plan restriction** — Four transforms (IP to Threat Profile, IP to ASN, IP to Abuse Contact, IP to Company Intel ) are unavailable on the Developer (free) plan. When called, they fail silently — no error is shown and no entities are added to the graph. Check the [plan comparison table](#transforms-availability-across-our-plans) and verify your subscription in the [dashboard](https://app.ipgeolocation.io/dashboard).
+**Plan restriction** — Four transforms (IP to Threat Profile, IP to ASN, IP to Abuse Contact, IP to Company Intel ) are unavailable on the free plan. When called, they fail silently — no error is shown and no entities are added to the graph. Check the [plan comparison table](#transforms-availability-across-our-plans) and verify your subscription in the [dashboard](https://app.ipgeolocation.io/dashboard).
 
 **Invalid or missing API key** — If your API key is not configured correctly in Maltego's transform settings, all transforms will return empty results with 401 status code; you can see this in the output window of the transform.
 
-**Daily credit quota exhausted** — Developer (free) plan keys include 1,000 credits per day. There are no per-second or per-minute rate limits; once the day's credits are used up, transforms return no data until the daily quota resets. Wait for the reset or move to a paid plan. See [Pricing](https://ipgeolocation.io/pricing.html) for quota details.
+**Daily credit quota exhausted** — The free Developer plan includes 1,000 credits per day. There are no per-second or per-minute rate limits; once the day's credits are used up, transforms return no data until the daily quota resets. Wait for the reset or move to a paid plan. See [Pricing](https://ipgeolocation.io/pricing.html) for quota details.
 
 **Private or reserved IP** — Transforms will return no results for private IP ranges (`10.x.x.x`, `192.168.x.x`, `172.16.x.x`) and other reserved addresses. These are not routable on the public internet and cannot be enriched.
 

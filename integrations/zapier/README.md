@@ -80,11 +80,11 @@ To use IPGeolocation.io with **Zapier**, you need a valid **API Key**. Follow th
 
 ## Actions Availability across our Plans
 
-We offer **two API plans**: **Developer**, **Paid**.
+We offer a **free Developer plan** and **paid plans**.
 
 The availability of actions depends on the plan you are subscribed to. The following table provides a detailed overview of which actions are included in each plan, helping you quickly identify the plan that suits your needs.
 
-| **Action** | **Developer (Free)** | **Paid** |
+| **Action** | **Free** | **Paid** |
 | --- | --- | --- |
 | **Find Geolocation Information** | ✔ | ✔ |
 | **Find Bulk IP Geolocation** | ✖ | ✔ |
