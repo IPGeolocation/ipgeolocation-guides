@@ -42,7 +42,7 @@ Before installing the app, make sure you have the following:
 
 ## Installation
 
-There are multiple ways of deploying apps to Splunk environment and in this document, we’ll be referring installation via CLI (Command Line Interface).
+There are multiple ways of deploying apps to Splunk environment and in this document, we’ll cover installation through the CLI (Command Line Interface).
 
 ### Single Stand Alone Splunk Installation (CLI)
 
@@ -117,7 +117,7 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
 
 ## Configuration
 
-1. After installation and restart, login to the Splunk web.
+1. After installation and restart, log in to Splunk Web.
 2. Go to 'Manage' under Apps in the left bar.
 2. It will list out all the installed applications and the options to configure these apps.
 3. Look for 'ipgeolocation.io' and click on the 'Set up' link to configure the app.
@@ -151,7 +151,7 @@ You have the following choices to set up the app for ipgeolocation.io databases:
 If you have a search head cluster deployed:
 
 - select "**No**" if you want to download MMDB from ipgeolocation.io on only one Search Head and sync on other search heads.
-- select "**Yes**" (default one) to let each Search Head download it's MMDB copy from ipgeolocation.io.
+- select "**Yes**" (default one) to let each Search Head download its MMDB copy from ipgeolocation.io.
 
 Syncing will be a bit slow as compared to separate download as it has to copy MMDBs to all search heads.
 
@@ -213,7 +213,7 @@ All the proxy related fields are optional as explained above.
 
 ## Usage
 
-Here are the detailed information on using these commands:
+Here is detailed information on using these commands:
 
 
 ### `ipgeolocation` Command
