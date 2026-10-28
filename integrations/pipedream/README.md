@@ -148,7 +148,7 @@ Returns threat intelligence for a single IP: VPN/proxy/Tor detection, bot flags,
 **Example use case:** Block or flag a login attempt if the IP has a high threat score or is detected as a known proxy.
 
 ```javascript
-const security = steps.get_ip_security.$return_value;
+const security = steps.get_ip_security.$return_value.security;
 if (security.threat_score > 70 || security.is_proxy) {
   // trigger alert or deny action
 }
@@ -231,7 +231,7 @@ Retrieves the abuse contact information registered for an IP address, including 
 **Example use case:** Automatically compose and send an abuse report email when your WAF detects a repeated attacker IP.
 
 ```javascript
-const abuse = steps.get_abuse_contact.$return_value;
+const abuse = steps.get_abuse_contact.$return_value.abuse;
 // abuse.emails[0] → abuse contact email
 // abuse.name      → responsible organization
 ```
@@ -436,8 +436,8 @@ Every action's JSON response is accessible in downstream steps via `steps.<actio
 | ASN number | `steps.get_asn.$return_value.asn.as_number` |
 | ASN org | `steps.get_asn.$return_value.asn.organization` |
 | Abuse email | `steps.get_abuse_contact.$return_value.abuse.emails[0]` |
-| Sunrise | `steps.get_astronomy.$return_value.sunrise` |
-| Moon phase | `steps.get_astronomy.$return_value.moon_phase` |
+| Sunrise | `steps.get_astronomy.$return_value.astronomy.sunrise` |
+| Moon phase | `steps.get_astronomy.$return_value.astronomy.moon_phase` |
 | Converted time | `steps.convert_timezone.$return_value.converted_time` |
 | Hour difference | `steps.convert_timezone.$return_value.diff_hour` |
 | Browser name | `steps.parse_user_agent.$return_value.name` |
