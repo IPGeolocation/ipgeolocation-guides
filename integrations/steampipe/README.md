@@ -552,7 +552,20 @@ where
   and country_code2 not in ('RU', 'KP', 'IR', 'SY', 'CU');
 ```
 
-If the query returns no rows, the IP is from a restricted country. You can adapt this into a larger compliance report by joining against a table of access logs.
+A matching row identifies an allowed result. No rows does not by itself prove a restricted country: distinguish a successful lookup with a disallowed country from an unavailable or invalid lookup, then apply your fallback policy. To see which case you have, return the check as a column instead of filtering on it:
+
+```sql
+select
+  ip,
+  country_code2,
+  country_code2 in ('RU', 'KP', 'IR', 'SY', 'CU') as restricted
+from
+  ipgeolocation_ip
+where
+  ip = '78.40.124.1';
+```
+
+`restricted` is `true` for a disallowed country and `false` for an allowed one. No row, or an empty `country_code2`, means the lookup did not return a country. You can adapt this into a larger compliance report by joining against a table of access logs.
 
 ---
 

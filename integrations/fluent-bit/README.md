@@ -8,7 +8,7 @@ Enrich your Fluent Bit logs with IP geolocation, VPN and proxy detection, and ne
 - VPN, proxy and Tor flags and a threat score from the [IP Security Database](https://ipgeolocation.io/ip-security-database.html)
 - The [autonomous system number (ASN)](https://ipgeolocation.io/guides/what-is-an-asn) and its organization from the [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html)
 
-All IPGeolocation.io IP databases are supported, not only these three. That includes the IP to Country, IP to City and IP to ISP databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), and combined databases that hold several of these in one file.
+All IPGeolocation.io IP databases are supported, not only these three. That includes the IP to Country, IP to City and IP to ISP databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html) (MMDB on request), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), and combined databases that hold several of these in one file.
 
 The lookups run against files on your own machine. There are no API calls and no plugin to install. To decide whether a database or an API suits your workload, see [IP geolocation API vs database](https://ipgeolocation.io/guides/ip-geolocation-api-vs-database-guide).
 
@@ -20,7 +20,7 @@ The lookups run against files on your own machine. There are no API calls and no
 ## Why use IPGeolocation.io databases with Fluent Bit
 
 - **Location and security in one pass.** Country and city sit next to VPN, proxy, residential proxy, Tor, relay and bot flags and a threat score in the same record.
-- **Every IP database works.** Geolocation, security, ASN, company, ISP, abuse contact, WHOIS, hosting and residential proxy data all come in MMDB format and use the same filter.
+- **Every IP database works.** Geolocation, security, ASN, company, ISP, abuse contact, hosting and residential proxy data all come in MMDB format and use the same filter. IP WHOIS works too once you request it in MMDB format; its standard download is NDJSON.
 - **IPv4 and IPv6.** Each file covers both address families.
 - **Names in 12 languages.** City, region and country names are stored in English, Czech, German, Spanish, Persian, French, Italian, Japanese, Korean, Portuguese, Russian and Chinese.
 - **Fresh data without downtime.** Databases are updated daily or weekly, depending on your plan, and Fluent Bit can load a new file without a restart.
@@ -237,6 +237,9 @@ For example, `country_code remote_addr %{location.country.code2}` reads the IP f
 ### Paths in each database
 
 Every IPGeolocation.io IP database works with the filter. Each one stores its values under its own paths, and location data uses the same paths in every database that includes it.
+
+> [!NOTE]
+> IP WHOIS row: the standard IP WHOIS download is Gzip-compressed NDJSON. To use the MMDB lookup shown here, request the IP WHOIS MMDB format from support first.
 
 | Database | Paths |
 | --- | --- |

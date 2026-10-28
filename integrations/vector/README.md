@@ -6,7 +6,7 @@ Vector can look up any IP address in an IPGeolocation.io database while events a
 
 The examples in this guide combine three databases: the [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) for country, region, city, coordinates and time zone, the [IP Security Database](https://ipgeolocation.io/ip-security-database.html) for VPN, proxy and Tor flags and a threat score, and the [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) for the [autonomous system number (ASN)](https://ipgeolocation.io/guides/what-is-an-asn) and its owner.
 
-Every other IPGeolocation.io IP database works the same way: the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), plus combined databases that pack several of them into one file.
+Every other IPGeolocation.io IP database works the same way: the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html) (MMDB on request), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), plus combined databases that pack several of them into one file.
 
 The files sit next to Vector, so enrichment adds no network round trip and no per-event cost, and the IP addresses in your events stay inside your infrastructure. For help choosing, see [when to use an IP database instead of an API](https://ipgeolocation.io/guides/ip-geolocation-api-vs-database-guide).
 
@@ -266,6 +266,9 @@ Always use the two-value form and check `err`, as in the [quick start](#quick-st
 ### Field paths in each database
 
 Every IPGeolocation.io IP database can be an enrichment table. With the record stored in `rec`, these are typical paths:
+
+> [!NOTE]
+> IP WHOIS row: the standard IP WHOIS download is Gzip-compressed NDJSON. To use the MMDB lookup shown here, request the IP WHOIS MMDB format from support first.
 
 | Database | Example VRL path |
 | --- | --- |

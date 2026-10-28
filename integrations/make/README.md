@@ -314,8 +314,8 @@ Some of the most common use cases are provided as following.
 
 - Step 1: Geolocation: Get currency + country.
 - Step 2: Timezone Info: Get exact timezone.
-- Step 3: Time Conversion: Convert 10 AM UTC to local.
-- Step 4: Email tool: Send at converted time.
+- Step 3: Time Conversion: Convert 10:00 on the intended send date from the recipient's IANA time zone to the scheduler's time zone (UTC in this example).
+- Step 4: Email tool: Schedule the message for that converted time.
 
 ---
 

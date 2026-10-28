@@ -6,7 +6,7 @@ DuckDB can join IP intelligence onto your data with nothing but SQL. A community
 
 The examples combine three IPGeolocation.io databases. The [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) places each address in a country, region and city, with coordinates and a time zone. The [IP Security Database](https://ipgeolocation.io/ip-security-database.html) flags VPNs, proxies and Tor and provides a threat score of each address. The [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) identifies the network by its [Autonomous System Number](https://ipgeolocation.io/guides/what-is-an-asn) and owner.
 
-Nothing in the extension is specific to those three. You can query the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html) in exactly the same way, along with combined databases.
+Nothing in the extension is specific to those three. You can query the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html) (MMDB on request), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html) in exactly the same way, along with combined databases.
 
 DuckDB runs inside your process, and the databases are local files, so analysis needs no API key, no rate limit and no network access once the extension is installed. For when a hosted API is the better fit, see [choosing between an IP geolocation API and a database](https://ipgeolocation.io/guides/ip-geolocation-api-vs-database-guide).
 
@@ -176,6 +176,9 @@ Names are stored in several languages. Change `en` in a path to `cs`, `de`, `es`
 ### An expression for each database
 
 Here `f` is the database file and `ip` the address column:
+
+> [!NOTE]
+> IP WHOIS row: the standard IP WHOIS download is Gzip-compressed NDJSON. To use the MMDB lookup shown here, request the IP WHOIS MMDB format from support first.
 
 | Database | Sample expression |
 | --- | --- |

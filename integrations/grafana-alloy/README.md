@@ -6,7 +6,7 @@ Grafana Alloy can attach IPGeolocation.io data to log lines before they reach Gr
 
 This guide pairs three databases. The [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) supplies country, region, city, coordinates and time zone. The [IP Security Database](https://ipgeolocation.io/ip-security-database.html) supplies anonymity signals such as VPN, proxy and Tor flags, plus a threat score. The [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) supplies the [AS number](https://ipgeolocation.io/guides/what-is-an-asn) and the organization that runs the network.
 
-Alloy is not limited to those three. `stage.geoip` reads every IPGeolocation.io IP database: the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), as well as combined databases that merge several of them into one file.
+Alloy is not limited to those three. `stage.geoip` reads every IPGeolocation.io IP database: the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html) (MMDB on request), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), as well as combined databases that merge several of them into one file.
 
 Because the databases are files on the Alloy host, enriching a line needs no network call and adds no usage charge, and client addresses stay in your environment. [Comparing an IP geolocation API with a database](https://ipgeolocation.io/guides/ip-geolocation-api-vs-database-guide) explains when each one fits.
 
@@ -20,7 +20,7 @@ Because the databases are files on the Alloy host, enriching a line needs no net
 - **Queries by country, VPN use or network.** Select streams with a country label, then narrow them with `| is_vpn="true"` or `| asn="9009"` on structured metadata.
 - **A small index.** Only the country code becomes a label. Everything else travels as structured metadata, so the number of Loki streams barely grows.
 - **Panels and alerts straight from LogQL.** Metric queries such as requests per country feed Grafana dashboards and alert rules with no extra processing.
-- **Room to grow.** Location, security, ASN, company, ISP, abuse contact, WHOIS, hosting and residential proxy files all plug into the same stage.
+- **Room to grow.** Location, security, ASN, company, ISP, abuse contact, hosting and residential proxy files all plug into the same stage, and so does IP WHOIS once you request it in MMDB format.
 - **Both IP versions, twelve languages.** Lookups accept IPv4 and IPv6 addresses. Place names are stored in Chinese, Czech, English, French, German, Italian, Japanese, Korean, Persian, Portuguese, Russian and Spanish.
 - **Updates while Alloy keeps running.** A small pointer file lets Alloy move to a new database release without a restart.
 - **Nothing leaves your network.** Addresses are matched on the Alloy host, with no API calls and no per-lookup fees.
@@ -272,6 +272,9 @@ For example, `"country_code" = "location.country.code2"` looks up `location.coun
 ### A lookup for each database
 
 Any IPGeolocation.io IP database can sit behind a `stage.geoip` block. Here is one sample `custom_lookups` entry per database:
+
+> [!NOTE]
+> IP WHOIS row: the standard IP WHOIS download is Gzip-compressed NDJSON. To use the MMDB lookup shown here, request the IP WHOIS MMDB format from support first.
 
 | Database | Sample entry |
 | --- | --- |

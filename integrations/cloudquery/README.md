@@ -187,7 +187,8 @@ Key columns:
 | `company_name` | text | Company operating the IP |
 | `company_domain` | text | Company domain |
 | `timezone_name` | text | IANA timezone name |
-| `timezone_offset` | double | UTC offset in seconds |
+| `timezone_offset` | double | UTC offset in hours; fractional values are possible |
+| `timezone_offset_with_dst` | double | UTC offset in hours including DST; fractional values are possible |
 | `timezone_is_dst` | boolean | DST currently in effect |
 | `hostname` | text | Reverse DNS name. Paid, opt-in |
 | `locality` | text | Locality or neighborhood. Paid, opt-in |
@@ -505,7 +506,6 @@ spec:
       - "185.220.101.1"
       - "2.56.188.34"
       - "45.142.212.100"
-    include_security: true
     rate_limit: 5
 ```
 
