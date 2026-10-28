@@ -14,7 +14,7 @@ Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period
    - [Get Astronomical Information for Location Coordinates](#get-astronomical-information-for-location-coordinates)
    - [Get Astronomical Information for an IP Address](#get-astronomical-information-for-an-ip-address)
    - [Get Astronomical Information for a Specific Date](#get-astronomical-information-for-a-specific-date)
-   - [Get Astronomical Event Times in a Specific Time Zone](#get-astronomical-event-times-in-a-specific-time-zone)
+   - [Return Astronomical Event Times in a Specific Time Zone](#return-astronomical-event-times-in-a-specific-time-zone)
    - [Get Astronomical Information for a Date Range](#get-astronomical-information-for-a-date-range)
 7. [Error Handling](#error-handling)
 
@@ -33,7 +33,7 @@ Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period
 ## Installation
 To access this service, add the following JavaScript call (usually within `head` block of your pages).
 ```html
-<script language="JavaScript" src="https://static.ipgeolocation.io/astronomy-api-plugin.v3.0.0.js" type="text/javascript"></script>
+<script language="JavaScript" src="https://static.ipgeolocation.io/astronomy-api-plugin.v3.0.1.js" type="text/javascript"></script>
 ```
 
 > [!NOTE]
@@ -52,7 +52,7 @@ To instantiate the AstronomyAPI, you can use the following configuration options
 - `dateStart (optional: string)`: Start date for a time-series lookup in YYYY-MM-DD format.
 - `dateEnd (optional: string)`: End date for a time-series lookup in YYYY-MM-DD format. The maximum time-series range is 90 days.
 - `lang (optional: string)`: Language of the response. Default is en. Supported languages include: ru, de, ja, fr, cn, es, cs, it, fa, ko, pt, ar.
-- `saveToSessionStorage (optional: boolean)`: Caches successful responses in session storage for the current browser tab. Cache entries are specific to the lookup parameters.
+- `saveToSessionStorage (optional: boolean)`: Caches successful responses in session storage for the current browser tab. Cache entries are specific to the lookup parameters. Error responses, including network failures, are never cached.
 
 > [!TIP]
 > For detailed documentation for the Astronomy API, please visit [https://ipgeolocation.io/documentation/astronomy-api.html#overview](https://ipgeolocation.io/documentation/astronomy-api.html#overview).
@@ -70,8 +70,9 @@ Use `getAstronomy()` for a single-date lookup. Use `getAstronomyTimeSeries()` wi
         });
 
         const resp = await astronomyAPI.getAstronomy();
+        const ok = resp != null && !("error_status" in resp);
 
-        if (!resp.error_status) {
+        if (ok) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
@@ -143,11 +144,11 @@ Sample Response:
   }
 }
 ```
-If there is some error while fetching the response from the API, following response will be returned, so handle it accordingly:
+If there is some error while fetching the response from the API, the following response will be returned, so handle it accordingly. `error_status` is the HTTP status code returned by the API, or `0` for network and response-parsing failures:
 ```json
 {
-  "error_status": "error_status_code",
-  "error_message": "error_message"
+  "error_status": 400,
+  "error_message": "Description of the error"
 }
 ```
 
@@ -162,8 +163,9 @@ If there is some error while fetching the response from the API, following respo
         });
 
         const resp = await astronomyAPI.getAstronomy();
+        const ok = resp != null && !("error_status" in resp);
 
-        if (!resp.error_status) {
+        if (ok) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
@@ -245,8 +247,9 @@ Sample Response:
         });
 
         const resp = await astronomyAPI.getAstronomy();
+        const ok = resp != null && !("error_status" in resp);
 
-        if (!resp.error_status) {
+        if (ok) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
@@ -339,7 +342,9 @@ Sample Response:
         });
 
         const resp = await astronomyAPI.getAstronomy();
-        if (!resp.error_status) {
+        const ok = resp != null && !("error_status" in resp);
+
+        if (ok) {
             console.log(resp);
         } else {
             console.log("Something went wrong while fetching data", resp);
@@ -426,8 +431,9 @@ The API performs the astronomical calculation for the resolved location and conv
         });
 
         const resp = await astronomyAPI.getAstronomy();
+        const ok = resp != null && !("error_status" in resp);
 
-        if (!resp.error_status) {
+        if (ok) {
             console.log(resp.astronomy.time_zone);
             console.log(resp.astronomy.sunrise);
         } else {
@@ -472,8 +478,9 @@ Use `getAstronomyTimeSeries()` to retrieve daily Sun and Moon events for up to 9
         });
 
         const resp = await astronomyAPI.getAstronomyTimeSeries();
+        const ok = resp != null && !("error_status" in resp);
 
-        if (!resp.error_status) {
+        if (ok) {
             resp.astronomy.forEach((day) => {
                 console.log(day.date, day.sunrise, day.sunset);
             });
@@ -540,7 +547,15 @@ Sample Response (excerpt):
 ```
 
 ## Error Handling
-Inspect the error_status field in the response to detect any errors. A missing error_status field typically indicates a successful request, while its presence signals an issue. HTTP errors return the API status code. Network and response parsing failures return `error_status: 0`. For example, if you are trying to fetch data using invalid coordinates, you will get the following error response:
+Inspect the `error_status` field in the response to detect any errors. A missing `error_status` field indicates a successful request, while its presence signals an issue. HTTP errors return the API status code. Network and response-parsing failures return `error_status: 0`.
+
+Because `0` is falsy, do not test for success with `!resp.error_status`, as a network failure would pass that check. Check whether the `error_status` property exists instead:
+
+```js
+const ok = resp != null && !("error_status" in resp);
+```
+
+For example, if you are trying to fetch data using invalid coordinates, you will get the following error response:
 
 ```html
 <script>
@@ -553,10 +568,12 @@ Inspect the error_status field in the response to detect any errors. A missing e
         });
 
         const resp = await astronomyAPI.getAstronomy();
+        const ok = resp != null && !("error_status" in resp);
 
-        if (!resp.error_status) {
+        if (ok) {
             console.log(resp);
         } else {
+            // Handles API errors and network failures (error_status: 0).
             console.log("Something went wrong while fetching data", resp);
         }
     })();
@@ -569,4 +586,3 @@ Sample Response:
   "error_status": 400
 }
 ```
-
