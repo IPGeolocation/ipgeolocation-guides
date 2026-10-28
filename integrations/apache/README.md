@@ -6,7 +6,7 @@ With the open source `mod_maxminddb` module, Apache HTTP Server looks up the cli
 
 This guide works with three databases. The [IP Geolocation Database](https://ipgeolocation.io/ip-geolocation-database.html) answers where a visitor is: country, region, city, coordinates and time zone. The [IP Security Database](https://ipgeolocation.io/ip-security-database.html) answers whether the connection hides behind a VPN, a proxy or Tor, and how risky it is overall. The [IP to ASN Database](https://ipgeolocation.io/ip-asn-database.html) names the [autonomous system](https://ipgeolocation.io/guides/what-is-an-asn) that announces the address and the organization behind it.
 
-Apache can read any IPGeolocation.io IP database in MMDB format the same way. Besides the three above, that covers the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), and combined databases that hold several datasets in a single file.
+Apache can read any IPGeolocation.io IP database in MMDB format the same way. Besides the three above, that covers the IP to Country, IP to City and IP to ASN databases, the [IP to Company Database](https://ipgeolocation.io/ip-company-database.html), [IP Abuse Contact Database](https://ipgeolocation.io/ip-abuse-contact-database.html), [IP WHOIS Database](https://ipgeolocation.io/ip-whois-database.html) (MMDB on request), [IP to Hosting Database](https://ipgeolocation.io/ip-hosting-database.html) and [Residential Proxy Database](https://ipgeolocation.io/residential-proxy-database.html), and combined databases that hold several datasets in a single file.
 
 Every lookup reads a file on the web server itself, so it costs no API call and no network time, and visitor addresses are never sent anywhere. If you are still weighing the options, read [IP geolocation API vs database](https://ipgeolocation.io/guides/ip-geolocation-api-vs-database-guide).
 
@@ -232,6 +232,9 @@ Delete the `Header set X-IPGeo-*` lines when you are done, so visitors do not se
 ### A variable for each database
 
 Every IPGeolocation.io IP database can be opened with `MaxMindDBFile`. This table shows one sample path per database, using the name in the first part of the path as the `MaxMindDBFile` name:
+
+> [!NOTE]
+> IP WHOIS row: the standard IP WHOIS download is Gzip-compressed NDJSON. To use the MMDB lookup shown here, request the IP WHOIS MMDB format from support first.
 
 | Database | Sample `MaxMindDBEnv` path |
 | --- | --- |

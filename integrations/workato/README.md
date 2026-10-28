@@ -439,7 +439,7 @@ Check that your <strong>API key is correct and active</strong>. Also check that 
 
 <details>
 <summary><strong>Does the Workato integration support timezone conversion?</strong></summary>
-Yes. <strong>Find Timezone Information</strong> retrieves timezone data, including the current time and offset, for supported locations. <strong>Convert Timezone</strong> converts a specific date and time between supported time zones using inputs such as time zone names, coordinates, IP addresses, and location codes.
+Yes. <strong>Find Timezone Information</strong> retrieves timezone data, including the current time and offset, for supported locations. <strong>Convert Timezone</strong> converts a specific date and time using time zone names, locations, coordinates, IATA codes, ICAO codes, or UN/LOCODEs. To convert using an IP address, first look up that IP's IANA time zone with <strong>Find Timezone Information</strong>, then pass the returned zone to <strong>Convert Timezone</strong>. The conversion action itself does not accept an IP-address parameter.
 </details>
 
 ---
