@@ -163,6 +163,8 @@ Select `Yes` against `Replicate MMDB on Indexers` to enable replication on MMDB 
 
 Following ipgeolocation.io databases are supported in the ipgeolocation.io App for Splunk:
 
+> IP WHOIS row: the standard IP WHOIS download is Gzip-compressed NDJSON. To use it in this app, request the IP WHOIS MMDB format from support first.
+
 | Database Tier | Name |
 | ------------- | ---- |
 | Standard | IP to Country |
@@ -534,6 +536,8 @@ The following databases are available for MMDB mode. Each database requires a se
 | `db_std_ip_city_isp` | City + ISP combined | `db-ip-city-isp.mmdb` |
 
 ### Advanced Databases
+
+> `db_advanced_ip_whois`: the standard IP WHOIS download is Gzip-compressed NDJSON. To use it in this app, request the IP WHOIS MMDB format from support first.
 
 | Database ID | Content | MMDB File |
 |---|---|---|
