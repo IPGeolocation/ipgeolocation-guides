@@ -580,6 +580,8 @@ This means every Monday at 01:01 AM. To change the refresh schedule for a specif
 3. Edit the cron schedule to your preferred value (e.g., `0 3 * * *` for daily at 3 AM).
 4. **Enable** the saved search (it is disabled by default).
 
+![Saved searches filtered to the IPGeolocation.io app, with one MMDB update search enabled and scheduled](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/saved_searches_mmdb.png)
+
 To trigger a manual refresh of a single database immediately:
 
 ```spl
