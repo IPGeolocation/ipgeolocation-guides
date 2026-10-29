@@ -1,8 +1,8 @@
-# Real-Time VPN and Proxy Detection
+# Real-Time Proxy & VPN Detection
 
 ## Overview
 
-Detect VPNs, proxies and residential proxies live in the browser, at the moment a user acts. See what the service does and try it on the [Real-Time VPN and Proxy Detection product page](https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html).
+Detect VPNs, proxies and residential proxies live in the browser, at the moment a user acts. See what the service does and try it on the [Real-Time Proxy & VPN Detection product page](https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html).
 
 > **Note:** A lightweight client-side script, much like a CAPTCHA widget. A verdict takes a few seconds, so start it early, read it at your decision point, and never hold up your initial render.
 
