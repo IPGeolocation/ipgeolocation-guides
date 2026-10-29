@@ -25,6 +25,14 @@ IPGeolocation.io Geo Redirects & Content Control is a free WordPress plugin that
 - Logged-in users and search engine crawlers are never redirected, so [geo redirects stay safe for SEO](#geo-redirects-and-seo).
 - New here? Start with [installing and setting up the plugin](#install-and-set-up-the-plugin), then pick a recipe from the [common use cases](#common-use-cases).
 
+## What's new in version 1.5.0
+
+**Turn off security data to use fewer credits.** On a Paid plan, a new **Include security data** setting under **Plan Type** controls whether lookups include proxy, VPN and Tor details. If you only need location, for redirects, country blocking or location shortcodes, turn it off and each new lookup costs 1 API credit instead of 3. Sites updating from an earlier version keep it on until they change it. See [location lookups and API credits](#location-lookups-and-api-credits).
+
+**Country access control keeps its countries.** Before this version, the first save of [country access control](#country-access-control) discarded its country list. If your blocked or allowed countries are empty, enter them again and save.
+
+**A new filter for developers.** `ipgeo_api_args` changes the request sent to the location API. See [for developers](#for-developers).
+
 ## What's new in version 1.4.0
 
 **Choose how often visitors are redirected.** Redirect the same visitor on every visit, once per browser session, once per hour or once per day. Set it once for the whole site and override it for any rule. New installs redirect on every visit, while sites updating from an earlier version keep redirecting once per hour until they change it. Read more about [how often visitors are redirected](#how-often-visitors-are-redirected).
@@ -34,16 +42,6 @@ IPGeolocation.io Geo Redirects & Content Control is a free WordPress plugin that
 **Cleaner addresses after a redirect.** The plugin's own parameters, such as `?ipgeo_from=1`, are removed from the address bar on any site running the plugin, and a new setting stops adding the marker for destinations that do not run it. See [redirect loop protection between your sites](#redirect-loop-protection-between-your-sites).
 
 **No bouncing between sites.** A visitor sent to your site by another site running this plugin stays for the rest of their browser session.
-
-## What's new in version 1.3.0
-
-**Redirects to another domain.** A redirect URL can be a full address such as `https://gr.example.com/`, not only a path on your site. One rule can also cover several countries, for example `GR, CY`.
-
-**Page caching support.** Country redirects, popups, conditional content and blocking work correctly with page caching plugins and CDNs. See [page caching, CDNs and performance](#page-caching-cdns-and-performance).
-
-**Test a visitor.** Check what a visitor from any country or IP address would see, straight from the settings page. See [how to test a visitor from any country](#test-a-visitor-from-any-country).
-
-**Safer crawler handling.** A browser that only claims to be a search engine no longer gets past country blocking. See [search engine crawlers and link previews](#search-engine-crawlers-and-link-previews).
 
 Every change is listed in the [changelog](#changelog).
 
@@ -67,9 +65,9 @@ In your WordPress dashboard go to **Plugins → Add New**, search for **IPGeoloc
 
 ### Enter your API key and plan
 
-Paste the key into the plugin settings and select your plan type: **Developer** (free) or **Paid**.
+Paste the key into the plugin settings and select your plan type: **Developer** (free) or **Paid**. On a Paid plan, also choose whether to **Include security data**. Leave it on only if you use the proxy, VPN or Tor shortcode fields. Turn it off to fetch location only, which costs 1 API credit per lookup instead of 3. Country redirects and country access control work either way. On the Developer plan the option is greyed out, because the free plan does not include security data.
 
-![API key and plan type settings in the IPGeolocation.io WordPress plugin](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/api-config-1.1.0.png)
+![API key and plan type settings in the IPGeolocation.io WordPress plugin](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/api-config-1.5.0.png)
 
 > [!IMPORTANT]
 > Select the plan type that matches your account. Choosing the wrong one can stop location lookups from working.
@@ -349,7 +347,7 @@ One match is enough to exclude a page. Matching ignores case and trailing slashe
 
 Available fields: `ip`, `city`, `state`, `country`, `country_code`, `zipcode`, `continent`, `latitude`, `longitude`, `currency`, `currency_name`, `currency_symbol`, `calling_code`, `languages`.
 
-Paid plans add: `is_proxy`, `is_tor`, `is_anonymous`, `is_cloud_provider`, `cloud_provider`, `threat_score`.
+On a Paid plan with **Include security data** turned on: `is_proxy`, `is_tor`, `is_anonymous`, `is_cloud_provider`, `cloud_provider`, `threat_score`.
 
 > [!TIP]
 > If you only need to change a banner, a price or a notice, reach for a shortcode instead of a redirect. The visitor stays on one URL, search engines index one version of the page, and nothing breaks if the location lookup fails.
@@ -373,6 +371,8 @@ Welcome, California visitors. Check out our local deals.
 ```
 
 Attributes: `country`, `country_code`, `state`, `city`, `continent`, `is_proxy`, `is_tor`, `is_cloud_provider`, `is_anonymous`.
+
+`is_proxy`, `is_tor`, `is_cloud_provider` and `is_anonymous` need a Paid plan with **Include security data** turned on.
 
 Use `logic="AND"` (the default) to require every condition, or `logic="OR"` to accept any one of them. Within a single attribute, comma separated values always mean "any of these". For yes or no attributes such as `is_tor`, the values `yes`, `true` and `1` mean yes, and `no`, `false` and `0` mean no. Without location data, neither `[ipgeo_if]` nor `[ipgeo_if_not]` content is shown.
 
@@ -415,7 +415,8 @@ The cached page script is marked so that optimization features leave it alone, i
 
 ### Location lookups and API credits
 
-- Each visitor's location is looked up once and cached for 24 hours per IP address.
+- A lookup costs 1 API credit, or 3 with **Include security data** turned on. Turn it off under **Plan Type** if you do not use the proxy, VPN or Tor fields.
+- Each visitor's location is looked up once and cached for 24 hours per IP address. A longer cache time (`ipgeo_cache_ttl`) helps returning visitors, but every new visitor still needs one lookup.
 - Private and local IP addresses are never sent to the API.
 - A failed lookup is retried after five minutes, so an outage is never stored as a real result.
 - If the API key is invalid or your limit is reached, lookups pause for five minutes instead of failing on every page view, and the [API status](#check-the-api-status) shows the error.
@@ -509,7 +510,11 @@ Verified crawlers pass [country access control](#search-engine-crawlers-and-link
 
 ### A shortcode prints nothing
 
-`[ipgeo ...]` returns an empty string when no location data is available: a missing or invalid key, or a field your plan does not include. Check the [API status](#check-the-api-status). `is_proxy`, `is_tor`, `is_anonymous`, `is_cloud_provider`, `cloud_provider` and `threat_score` need a paid plan.
+`[ipgeo ...]` returns an empty string when no location data is available: a missing or invalid key, or a field your plan does not include. Check the [API status](#check-the-api-status). `is_proxy`, `is_tor`, `is_anonymous`, `is_cloud_provider`, `cloud_provider` and `threat_score` need a Paid plan with **Include security data** turned on.
+
+### My blocked or allowed countries disappeared after saving
+
+Before version 1.5.0, the first save of [country access control](#country-access-control) discarded the country list. Update the plugin, enter the countries again and save.
 
 ## For developers
 
@@ -533,6 +538,7 @@ Verified crawlers pass [country access control](#search-engine-crawlers-and-link
 | `ipgeo_resolved_ip` | filter | Change the visitor IP address the plugin uses |
 | `ipgeo_api_timeout` | filter | Location API timeout, in seconds |
 | `ipgeo_cache_ttl` | filter | How long a location lookup is cached, 24 hours by default |
+| `ipgeo_api_args` | filter | Change the query sent to the location API, for example to add or remove modules. `apiKey` and `ip` are always set by the plugin |
 | `ipgeo_ip_access_bypass` | filter | Skip the IP gate entirely for a request |
 | `ipgeo_ip_access_blocked` | filter | Override the IP block decision |
 | `ipgeo_ip_access_denied` | action | Fires before a request is denied, useful for logging |
@@ -540,6 +546,13 @@ Verified crawlers pass [country access control](#search-engine-crawlers-and-link
 | `IPGEO_DISABLE_IP_ACCESS` | constant | Turns off IP rules, for [lockout recovery](#lockout-protection) |
 
 ## Changelog
+
+### 1.5.0
+
+- New: an Include security data setting for Paid plans. Turn it off to fetch location data only and use fewer API credits per lookup. Sites updating from 1.4.0 keep it on until they change it
+- New: `ipgeo_api_args` filter to change the query sent to the location API
+- Fixed: the first time Country access control was saved, its country list was discarded
+- Cached location lookups are kept when you update
 
 ### 1.4.0
 
@@ -663,7 +676,12 @@ Country redirects, country access control and the shortcodes stop working, becau
 
 <details>
 <summary><strong>Can I detect VPN, proxy or Tor users?</strong></summary>
-Yes, on a paid plan. Use `is_proxy`, `is_tor`, `is_anonymous`, `is_cloud_provider` or `cloud_provider` in the display or the conditional shortcodes.
+Yes, on a Paid plan with **Include security data** turned on under **Plan Type**. Use `is_proxy`, `is_tor`, `is_anonymous`, `is_cloud_provider` or `cloud_provider` in the display or the conditional shortcodes.
+</details>
+
+<details>
+<summary><strong>How can I lower the API credits the plugin uses?</strong></summary>
+If you only need location, turn off **Include security data** under **Plan Type**, so each lookup costs 1 credit instead of 3. Lookups are cached per IP address, private IP addresses are never sent to the API, and visitors blocked by IP rules are stopped before any lookup.
 </details>
 
 <details>
