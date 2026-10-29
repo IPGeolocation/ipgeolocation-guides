@@ -55,7 +55,7 @@ Every change is listed in the [changelog](#changelog).
 
 ### Get a free IPGeolocation.io API key
 
-Sign up at [ipgeolocation.io](https://app.ipgeolocation.io/sign-up), then copy the API key from your account dashboard. The free Developer plan is enough to get started.
+Sign up at [IPGeolocation.io](https://app.ipgeolocation.io/sign-up), then copy the API key from your account dashboard. The free Developer plan is enough to get started.
 
 ### Install the plugin from WordPress.org
 

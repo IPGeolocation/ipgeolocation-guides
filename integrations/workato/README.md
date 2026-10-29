@@ -1,4 +1,4 @@
-# IPGeolocation Workato Integration
+# IPGeolocation.io Workato Integration
 
 ## Overview
 

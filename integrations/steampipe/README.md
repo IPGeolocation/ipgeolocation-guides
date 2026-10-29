@@ -771,13 +771,13 @@ Steampipe does not support batch IP lookups directly. To query multiple IPs, com
 </details>
 
 <details>
-<summary><strong>Can I join IPGeolocation data with my own database tables?</strong></summary>
+<summary><strong>Can I join IPGeolocation.io data with my own database tables?</strong></summary>
 Yes. Steampipe provides a PostgreSQL-compatible query engine, allowing you to join IP geolocation data with your own tables or with data from other Steampipe plugins, such as AWS, GCP, or GitHub, using standard SQL.
 </details>
 
 <details>
 <summary><strong>Does this plugin support IPv6?</strong></summary>
-Yes. You can query any valid IPv6 address by specifying it in the `WHERE ip = '...'` clause. Coverage depends on the availability of data for the requested IPv6 prefix in the IPGeolocation database.
+Yes. You can query any valid IPv6 address by specifying it in the `WHERE ip = '...'` clause. Coverage depends on the availability of data for the requested IPv6 prefix in the IPGeolocation.io database.
 </details>
 
 <details>
@@ -787,5 +787,5 @@ Complete documentation for all available tables and columns is available in the 
 
 <details>
 <summary><strong>How do I get an API key?</strong></summary>
-Create an account through the IPGeolocation dashboard and retrieve your API key from your account dashboard. A free plan is available and does not require a credit card.
+Create an account through the IPGeolocation.io dashboard and retrieve your API key from your account dashboard. A free plan is available and does not require a credit card.
 </details>
