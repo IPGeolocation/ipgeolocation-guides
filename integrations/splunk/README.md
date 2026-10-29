@@ -268,8 +268,8 @@ Full enrichment for a threat-hunting search:
 index=sysmon EventCode=3
 | rename SourceIp as src_ip
 | ipgeolocation src_ip allinfo=true
-| where security.is_tor=true OR security.is_known_attacker=true
-| table _time, src_ip, location.country_name, security.is_tor, security.is_known_attacker, security.threat_score, abuse.email
+| where 'security.is_tor'=1 OR 'security.is_known_attacker'=1
+| table _time, src_ip, location.country_name, security.is_tor, security.is_known_attacker, security.threat_score, abuse.emails
 ```
 
 Localized response in French:
@@ -367,7 +367,7 @@ Identify VPN/proxy users in your authentication logs:
 ```spl
 index=auth sourcetype=okta action=success
 | ipsecurity src_ip
-| where security.is_vpn=true OR security.is_proxy=true
+| where 'security.is_vpn'=1 OR 'security.is_proxy'=1
 | stats count by user, src_ip, security.is_vpn, security.is_proxy, location.country_name
 | sort -count
 ```
@@ -377,7 +377,7 @@ Alert on logins from Tor exit nodes:
 ```spl
 index=auth action=login
 | ipsecurity client_ip
-| where security.is_tor=true
+| where 'security.is_tor'=1
 | eval alert_message="Tor login attempt from " . client_ip
 | table _time, user, client_ip, alert_message
 ```
@@ -388,7 +388,7 @@ Score incoming webhook requests by threat level:
 index=api_gateway path="/webhook/payment"
 | rex field=_raw "\"x-forwarded-for\":\"(?<req_ip>[^\"]+)\""
 | ipsecurity req_ip
-| where security.threat_score > 70
+| where 'security.threat_score' > 70
 | table _time, req_ip, security.threat_score, security.is_bot, security.is_spam
 ```
 
@@ -426,7 +426,7 @@ index=firewall earliest=-7d@d
 | rename src_ip as ip
 | table ip
 | map search="| ipsecuritybatch ips=\"$ip$\""
-| where security.threat_score > 50
+| where 'security.threat_score' > 50
 | outputlookup high_risk_ips.csv
 ```
 
@@ -464,7 +464,7 @@ index=auth action=success
 index=api_gateway method=POST uri="/api/v1/checkout" status=200 earliest=-24h
 | stats count as requests, sum(response_bytes) as bytes_transferred by src_ip
 | ipsecurity src_ip
-| where security.threat_score > 60 OR security.is_proxy=true OR security.is_vpn=true
+| where 'security.threat_score' > 60 OR 'security.is_proxy'=1 OR 'security.is_vpn'=1
 | table src_ip, requests, bytes_transferred, security.threat_score, security.is_vpn, security.is_proxy, security.is_tor
 | sort -security.threat_score
 ```
@@ -495,15 +495,15 @@ index=nginx status=429 earliest=-15m
 ```spl
 | inputlookup threat_intel_ips.csv where is_active=true
 | rename ip_indicator as ip
-| ipgeolocationbatch ips=ip allinfo=true
+| ipgeolocation ip allinfo=true
 | eval risk_label=case(
-    security.is_known_attacker=="true", "High - Known Attacker",
-    security.is_tor=="true", "High - Tor",
-    security.threat_score > 70, "High - Threat Score",
-    security.is_vpn=="true" OR security.is_proxy=="true", "Medium - Anonymizer",
+    'security.is_known_attacker'==1, "High - Known Attacker",
+    'security.is_tor'==1, "High - Tor",
+    'security.threat_score' > 70, "High - Threat Score",
+    'security.is_vpn'==1 OR 'security.is_proxy'==1, "Medium - Anonymizer",
     true(), "Low"
   )
-| table ip, location.country_name, isp, asn.as_number, security.threat_score, risk_label, abuse.email
+| table ip, location.country_name, isp, asn.as_number, security.threat_score, risk_label, abuse.emails
 | sort risk_label
 ```
 
@@ -512,10 +512,10 @@ index=nginx status=429 earliest=-15m
 ```spl
 index=auth action=success earliest=-1h
 | ipgeolocation src_ip
-| eval local_hour=strftime(now() + (time_zone.offset_with_dst * 3600), "%H")
+| eval local_hour=strftime(now() + ('timezone.offset_with_dst' * 3600), "%H")
 | where local_hour < 6 OR local_hour > 22
-| eval after_hours_login="Login at local time " . local_hour . ":00 in " . time_zone.name
-| table _time, user, src_ip, location.city, location.country_name, time_zone.name, after_hours_login
+| eval after_hours_login="Login at local time " . local_hour . ":00 in " . 'timezone.name'
+| table _time, user, src_ip, location.city, location.country_name, timezone.name, after_hours_login
 ```
 
 ---
@@ -588,11 +588,7 @@ To trigger a manual refresh of a single database immediately:
 
 Replace `db_advanced_ip_city_company_asn` with the database ID you want to refresh. Run this from the Splunk Search bar.
 
-To refresh all enabled databases in one go:
-
-```spl
-| refreshmmdb
-```
+To refresh several databases, run `refreshsinglemmdb` once for each enabled database ID.
 
 ---
 
