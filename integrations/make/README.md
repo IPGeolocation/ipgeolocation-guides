@@ -1,4 +1,4 @@
-# IPGeolocation MAKE Integration
+# IPGeolocation.io MAKE Integration
 
 ## Overview
 

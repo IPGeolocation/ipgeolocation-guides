@@ -1,8 +1,8 @@
-# **IPGeolocation + viaSocket Integration**
+# **IPGeolocation.io + viaSocket Integration**
 
 ## **Overview**
 
-The [**viaSocket + IPGeolocation**](https://viasocket.com/integrations/ipgeolocation) **integration** allows you to use the full power of IPGeolocation.io APIs directly inside your viaSocket workflows \- **without writing any code**. You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
+The [**viaSocket + IPGeolocation.io**](https://viasocket.com/integrations/ipgeolocation) **integration** allows you to use the full power of IPGeolocation.io APIs directly inside your viaSocket workflows \- **without writing any code**. You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
 
 With this integration, you can automate retrieval of valuable IP intelligence data such as:
 
@@ -32,7 +32,7 @@ The integration includes **12 actions**, grouped into 6 main categories:
 
 ## **API Key & Connection Setup**
 
-To connect IPGeolocation with viaSocket, you need a valid API Key. Follow these steps carefully:
+To connect IPGeolocation.io with viaSocket, you need a valid API Key. Follow these steps carefully:
 
 ### **Create or log in to your IPGeolocation.io account**
 
@@ -78,7 +78,7 @@ To connect IPGeolocation with viaSocket, you need a valid API Key. Follow these 
 
 ### **Use your connection**
 
-* Once connected, this API Key is available for all IPGeolocation modules in your Workflows.  
+* Once connected, this API Key is available for all IPGeolocation.io modules in your Workflows.  
 * You can now use it to perform actions like Find Geolocation Information, Find User Agent, or Find Bulk IP Geolocation, depending on your API plan.
 
 ## **Modules**
@@ -102,7 +102,7 @@ Retrieves geolocation for up to 50,000 IPs per request.
 * Input: Array of IPs  
 * Outputs: Collection of geolocation objects
 
-![IPGeolocation API](https://static.ipgeolocation.io/web-assets/images/integrations/viasocket/ip-geolocation.png)
+![IP Geolocation API](https://static.ipgeolocation.io/web-assets/images/integrations/viasocket/ip-geolocation.png)
 
 ### **Security**
 

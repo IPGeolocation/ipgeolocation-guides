@@ -4,7 +4,7 @@ The **IPGeolocation.io App for Splunk** enriches your Splunk events with real-ti
 
 The app ships with four custom SPL commands (`ipgeolocation`, `ipgeolocationbatch`, `ipsecurity`, `ipsecuritybatch`) and supports two complementary lookup methods:
 
-- **API mode** -- queries the [ipgeolocation.io REST API](https://ipgeolocation.io/documentation/ip-location-api.html) over HTTPS in real time, batching up to 750 IPs per request automatically.
+- **API mode** -- queries the [IPGeolocation.io REST API](https://ipgeolocation.io/documentation/ip-location-api.html) over HTTPS in real time, batching up to 750 IPs per request automatically.
 - **MMDB mode** -- reads from locally downloaded MaxMind-format `.mmdb` database files, which means zero external network calls per search and sub-millisecond per-IP latency. Databases are refreshed on a configurable schedule.
 
 Both modes are configured from a single setup UI inside Splunk. No Python scripting is required after installation.
@@ -35,9 +35,9 @@ Before installing the app, make sure you have the following:
 
 - A running **Splunk Enterprise** or **Splunk Cloud** instance (version 8.x or later recommended).
 - **Python 3.13** or later available in your Splunk environment (Splunk 9.x ships with Python 3.9 -- verify your version with `splunk cmd python3 --version`).
-- An active **ipgeolocation.io account**. [Sign up free](https://app.ipgeolocation.io/signup) -- no credit card required for the Free plan.
-- Your **API key** from the [ipgeolocation.io dashboard](https://app.ipgeolocation.io).
-- If using **MMDB mode**, a **Bearer token** (database access key) available from your ipgeolocation.io account under the Databases section.
+- An active **IPGeolocation.io account**. [Sign up free](https://app.ipgeolocation.io/signup) -- no credit card required for the Free plan.
+- Your **API key** from the [IPGeolocation.io dashboard](https://app.ipgeolocation.io).
+- If using **MMDB mode**, a **Bearer token** (database access key) available from your IPGeolocation.io account under the Databases section.
 
 
 ## Installation
@@ -109,7 +109,7 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
     
 ![Install_App_From_File.png](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/install_app_from_file.png)
     
-3. Select path for ipgeolocation.io Splunk app .tar.gz file and Click “Upload”
+3. Select path for IPGeolocation.io Splunk app .tar.gz file and Click “Upload”
     
 ![Upload_App](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/upload_app.png)
     
@@ -120,7 +120,7 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
 1. After installation and restart, log in to Splunk Web.
 2. Go to 'Manage' under Apps in the left bar.
 2. It will list out all the installed applications and the options to configure these apps.
-3. Look for 'ipgeolocation.io' and click on the 'Set up' link to configure the app.
+3. Look for 'IPGeolocation.io' and click on the 'Set up' link to configure the app.
 4. Make Sure to restart Splunk Instance after setting up the app. In case of a Search Head Cluster, each search head needs to be restarted or a rolling restart must be initiated to make all changes work properly.
 
 ![Manage_Set_up](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/manage_setup.png)
@@ -128,11 +128,11 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
 
 ### API Configuration
 
-Select _Fetch Details via Rest API_ in the Lookup Method to use your API subscription in the ipgeolocation.io App for Splunk, provide the API Key for your API subscription in the **Key for API Subscription**, and select the plan for your API subscription. These are only 3 inputs required to use ipgeolocation.io API with Splunk.
+Select _Fetch Details via Rest API_ in the Lookup Method to use your API subscription in the IPGeolocation.io App for Splunk, provide the API Key for your API subscription in the **Key for API Subscription**, and select the plan for your API subscription. These are only 3 inputs required to use IPGeolocation.io API with Splunk.
 
 ![Lookup_Method_API](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/lookup_method_api.png)
 
-Rest of the fields are optional in case of using the API. However, to access ipgeolocation.io API through a proxy, you can select _Yes_ against **Enable Proxy** and provide proxy settings.
+Rest of the fields are optional in case of using the API. However, to access IPGeolocation.io API through a proxy, you can select _Yes_ against **Enable Proxy** and provide proxy settings.
 
 Here are the required proxy configuration details:
 
@@ -142,26 +142,26 @@ Finally, click **Submit**.
 
 ### MMDB Configuration
 
-Select _Use MMDB_ option in the Lookup Method to use your database subscription on ipgeolocation.io with Splunk.
+Select _Use MMDB_ option in the Lookup Method to use your database subscription on IPGeolocation.io with Splunk.
 
-You have the following choices to set up the app for ipgeolocation.io databases:
+You have the following choices to set up the app for IPGeolocation.io databases:
 
 #### Download MMDB on each Search Head (Used for Search Head Cluster Only)
 
 If you have a search head cluster deployed:
 
-- select "**No**" if you want to download MMDB from ipgeolocation.io on only one Search Head and sync on other search heads.
-- select "**Yes**" (default one) to let each Search Head download its MMDB copy from ipgeolocation.io.
+- select "**No**" if you want to download MMDB from IPGeolocation.io on only one Search Head and sync on other search heads.
+- select "**Yes**" (default one) to let each Search Head download its MMDB copy from IPGeolocation.io.
 
 Syncing will be a bit slow as compared to separate download as it has to copy MMDBs to all search heads.
 
 #### Replicate MMDB on Indexers
 
-Select `Yes` against `Replicate MMDB on Indexers` to enable replication on MMDB bundle. This will also make a bunch of changes in the code that will enable *ipgeolocation* & *ipsecurity* to work in streaming mode. This is expected to cause performance boost on the query at the expense of increase in bundle size. This setting is applicable if you're using ipgeolocation.io app on splunk search head cluster and you have indexer cluster.
+Select `Yes` against `Replicate MMDB on Indexers` to enable replication on MMDB bundle. This will also make a bunch of changes in the code that will enable *ipgeolocation* & *ipsecurity* to work in streaming mode. This is expected to cause performance boost on the query at the expense of increase in bundle size. This setting is applicable if you're using IPGeolocation.io app on splunk search head cluster and you have indexer cluster.
 
 #### MMDB Subscription Credentials
 
-Following ipgeolocation.io databases are supported in the ipgeolocation.io App for Splunk:
+Following IPGeolocation.io databases are supported in the IPGeolocation.io App for Splunk:
 
 > IP WHOIS row: the standard IP WHOIS download is Gzip-compressed NDJSON. To use it in this app, request the IP WHOIS MMDB format from support first.
 
@@ -188,7 +188,7 @@ Following ipgeolocation.io databases are supported in the ipgeolocation.io App f
 | Security Pro | IP to Security, City & ISP |
 
 
-For your subscribed database plan on ipgeolocation.io, provide the following configuration to enable the ipgeolocation.io app for MMDB lookup.
+For your subscribed database plan on IPGeolocation.io, provide the following configuration to enable the IPGeolocation.io app for MMDB lookup.
 
 ##### **Enable**
 
@@ -662,7 +662,7 @@ Check `ipgeolocation.log` for download errors. Verify your Bearer token is corre
 
 | Resource | Link |
 |---|---|
-| ipgeolocation.io Homepage | https://ipgeolocation.io |
+| IPGeolocation.io Homepage | https://ipgeolocation.io |
 | API Documentation | https://ipgeolocation.io/documentation/ip-location-api.html |
 | IP Security API Docs | https://ipgeolocation.io/documentation/ip-security-api.html |
 | Database Pricing | https://ipgeolocation.io/db-pricing.html |

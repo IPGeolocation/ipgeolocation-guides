@@ -1,8 +1,8 @@
-# IPGeolocation Zapier Integration
+# IPGeolocation.io Zapier Integration
 
 ## Overview
 
-The [Zapier + IPGeolocation](https://zapier.com/apps/ipgeolocationio/integrations) integration makes it simple to use the full [**IPGeolocation.io v3**](https://ipgeolocation.io) APIs inside your Zap workflows. You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
+The [Zapier + IPGeolocation.io](https://zapier.com/apps/ipgeolocationio/integrations) integration makes it simple to use the full [**IPGeolocation.io v3**](https://ipgeolocation.io) APIs inside your Zap workflows. You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
 
 With this integration, you can quickly get helpful information about any IP address. This includes location details, network ownership, security risk information, user agent data, time zone details, and even basic astronomy information. You can use this data to improve your workflows, personalize user experiences, and make your automations more secure.
 
@@ -73,7 +73,7 @@ To use IPGeolocation.io with **Zapier**, you need a valid **API Key**. Follow th
 
 ### Use your connection
 
-- Once connected, this API Key is available for **all IPGeolocation modules** in your Zaps.
+- Once connected, this API Key is available for **all IPGeolocation.io modules** in your Zaps.
 - You can now use it to perform actions like **Find Geolocation Information**, **Find User Agent**, or **Find** **Bulk IP Geolocation**, depending on your API plan.
 
 ---

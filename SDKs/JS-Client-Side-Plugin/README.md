@@ -101,7 +101,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 ### IPGeolocationAPI: include Options and Plan Availability
 | Option                        | Type    | Description                                                          | Free | Paid |
 |-------------------------------|---------|----------------------------------------------------------------------|:----:|:----:|
-| `includeHostname`             | boolean | Include hostname from IPGeolocation's IP-Hostname database.          |  ✖   |  ✔   |
+| `includeHostname`             | boolean | Include hostname from IPGeolocation.io's IP-Hostname database.          |  ✖   |  ✔   |
 | `includeLiveHostname`         | boolean | Use live DNS sources to resolve hostname.                            |  ✖   |  ✔   |
 | `includeHostnameFallbackLive` | boolean | Try database first, fall back to live sources if not found.          |  ✖   |  ✔   |
 | `includeUserAgent`            | boolean | Include parsed client browser and device info.                       |  ✖   |  ✔   |
@@ -537,7 +537,7 @@ Sample Response:
 
 > [!NOTE]
 > The three hostname options behave as follows:
-> - `includeHostname`: Returns hostname from IPGeolocation's local IP-Hostname database. Fastest option.
+> - `includeHostname`: Returns hostname from IPGeolocation.io's local IP-Hostname database. Fastest option.
 > - `includeLiveHostname`: Performs a live DNS lookup. More accurate but adds latency.
 > - `includeHostnameFallbackLive`: Checks the local database first; performs a live lookup only if no hostname is found. Best balance of speed and accuracy.
 >

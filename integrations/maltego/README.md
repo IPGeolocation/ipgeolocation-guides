@@ -2,13 +2,13 @@
 
 ## Overview
 
-IP addresses are often the first lead in an investigation — but Maltego's out-of-the-box data only gets you so far. The **ipgeolocation.io transform set** closes that gap by turning any IPv4 entity into a structured intelligence profile, directly inside your Maltego graph.
+IP addresses are often the first lead in an investigation — but Maltego's out-of-the-box data only gets you so far. The **IPGeolocation.io transform set** closes that gap by turning any IPv4 entity into a structured intelligence profile, directly inside your Maltego graph.
 
 Five transforms are included, covering threat scoring, VPN and proxy detection, geographic enrichment, ASN resolution, company ownership attribution, and abuse contact lookup. No external tooling required — everything runs from within the Maltego UI and pipes results back into your graph as linked entities.
 
 It includes a complete setup and workflow guide for security analysts, threat hunters, and OSINT investigators.
 
-Transforms are powered by the [ipgeolocation.io API v3](https://ipgeolocation.io).
+Transforms are powered by the [IPGeolocation.io API v3](https://ipgeolocation.io).
 
 ---
 
@@ -25,7 +25,7 @@ Five transforms are registered against IPv4 entities. Each maps to a specific st
 | IP to Abuse Contact | Abuse email, phone, org, registered address | Incident reporting |
 
 > [!NOTE]
-> All transforms call the ipgeolocation.io API v3. An active API key is required. You can get one for free from the [ipgeolocation.io dashboard](https://app.ipgeolocation.io/dashboard).
+> All transforms call the IPGeolocation.io API v3. An active API key is required. You can get one for free from the [IPGeolocation.io dashboard](https://app.ipgeolocation.io/dashboard).
 
 ---
 
@@ -93,7 +93,7 @@ We offer a **free Developer plan** and **paid plans**. The transform availabilit
 | **IP to ASN** | ✖ | ✔ |
 | **IP to Abuse Contact** | ✖ | ✔ |
 
-If you attempt to use a transform that is not available in your plan, the transform will fail silently and no results will be returned in the Maltego graph for that entity. You can always upgrade or switch plans from the [ipgeolocation.io dashboard](https://app.ipgeolocation.io/dashboard).
+If you attempt to use a transform that is not available in your plan, the transform will fail silently and no results will be returned in the Maltego graph for that entity. You can always upgrade or switch plans from the [IPGeolocation.io dashboard](https://app.ipgeolocation.io/dashboard).
 
 ![Transform unavailability](https://static.ipgeolocation.io/web-assets/images/integrations/maltego/transform-unavailability.png)
 
@@ -204,7 +204,7 @@ These workflows show how to chain transforms together for real investigative sce
 
 1. **Run IP to ASN** – Identify the autonomous system
 2. **Copy the ASN** – Use it as a new entity
-3. **Enrich the ASN** – Run ASN transforms (available separately in the ipgeolocation.io suite) to find other IPs in the same network
+3. **Enrich the ASN** – Run ASN transforms (available separately in the IPGeolocation.io suite) to find other IPs in the same network
 4. **Run IP to Company Intel** – Identify the organization controlling the ASN
 5. **Pivot to domains** – Use company information to search for associated domains
 
@@ -263,7 +263,7 @@ If you see an explicit error (red icon or transform failure notification), check
 
 ### Transforms not appearing on IPv4 entities
 
-If you right-click an IPv4 entity and the ipgeolocation.io transforms are not listed, the installation did not complete successfully.
+If you right-click an IPv4 entity and the IPGeolocation.io transforms are not listed, the installation did not complete successfully.
 
 1. Go to **Transforms → Maltego Data Hub → Internal Hub Items**
 2. Confirm the seed URL is listed and shows a green status
@@ -301,7 +301,7 @@ Threat intelligence data is time-sensitive. An IP that was flagged last week may
 
 <details>
 <summary><strong>How do I update the transforms after a new version is released?</strong></summary>
-Open <strong>Maltego Data Hub → Internal Hub Items</strong>, locate the ipgeolocation.io seed entry, and click <strong>Refresh</strong> if available. If no update prompt appears, uninstall and reinstall using the same seed URL.
+Open <strong>Maltego Data Hub → Internal Hub Items</strong>, locate the IPGeolocation.io seed entry, and click <strong>Refresh</strong> if available. If no update prompt appears, uninstall and reinstall using the same seed URL.
 </details>
 
 <details>

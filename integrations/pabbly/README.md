@@ -1,10 +1,10 @@
-# IPGeolocation Pabbly Connect Integration
+# IPGeolocation.io Pabbly Connect Integration
 
 ## Overview
 
-The Pabbly Connect IPGeolocation Integration lets you use the full [IPGeolocation.io v3](https://ipgeolocation.io) APIs inside your Pabbly Connect workflows without writing code. You add an IPGeolocation.io action to a workflow, map an IP address or a list of IP addresses, and enriched data flows to the next step.
+The Pabbly Connect IPGeolocation.io Integration lets you use the full [IPGeolocation.io v3](https://ipgeolocation.io) APIs inside your Pabbly Connect workflows without writing code. You add an IPGeolocation.io action to a workflow, map an IP address or a list of IP addresses, and enriched data flows to the next step.
 
-With the Pabbly Connect IPGeolocation integration you can retrieve:
+With the Pabbly Connect IPGeolocation.io integration you can retrieve:
 
 - Geolocation details for any IPv4 or IPv6 address
 - Threat intelligence and security risk signals
@@ -53,7 +53,7 @@ Keep this key private. For more detail on authentication, see the [IPGeolocation
 
 ---
 
-## Connect IPGeolocation to Pabbly Connect
+## Connect IPGeolocation.io to Pabbly Connect
 
 Follow these steps to add IPGeolocation.io as an action in a Pabbly Connect workflow.
 
@@ -108,7 +108,7 @@ See [Troubleshooting](#troubleshooting) for how to resolve these.
 
 ---
 
-## Available Actions in the Pabbly Connect IPGeolocation Integration
+## Available Actions in the Pabbly Connect IPGeolocation.io Integration
 
 The integration provides 12 actions. Each action below lists its purpose, required input, optional inputs, and output, with a link to the official field reference for the returned data.
 

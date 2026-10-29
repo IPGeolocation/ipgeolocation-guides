@@ -12,7 +12,7 @@ Detect VPNs, proxies and residential proxies live in the browser, at the moment 
 
 The script carries no API key. Requests are authorized by origin, so register your domain before your first call.
 
-1. [Sign up](https://app.ipgeolocation.io/signup) for your IPGeolocation account.
+1. [Sign up](https://app.ipgeolocation.io/signup) for your IPGeolocation.io account.
 2. Add your origin as a [Request Origin](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use), for example `https://app.example.com`.
 3. Save.
 
