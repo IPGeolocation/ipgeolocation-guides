@@ -740,7 +740,7 @@ The test suite runs Go unit tests and validates that the tables and columns are 
 ## Related Resources
 
 - [IPGeolocation.io API Documentation](https://ipgeolocation.io/documentation.html)
-- [IP Location API Reference](https://ipgeolocation.io/documentation/ip-location-api.html)
+- [IP Geolocation API Reference](https://ipgeolocation.io/documentation/ip-location-api.html)
 - [IP Security API Reference](https://ipgeolocation.io/ip-security-api.html)
 - [ASN API Reference](https://ipgeolocation.io/asn-api.html)
 - [Steampipe Plugin Repository](https://github.com/IPGeolocation/steampipe-plugin-ipgeolocation)
