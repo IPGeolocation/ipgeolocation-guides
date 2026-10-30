@@ -685,7 +685,7 @@ The repository also ships eight example configs under `example/`, covering the f
 
 <details>
 <summary><strong>Do I need a paid plan to use this plugin?</strong></summary>
-No. The free Developer plan allows 1,000 credits per day and covers the `ipgeolocation_ip_geolocation` table with its base fields, which is enough for development and small syncs. The security, abuse, ASN and user agent tables need a paid plan, as do the optional modules such as `include_security` and `include_abuse`.
+No. The free Developer plan allows 1,000 credits per day and covers the `ipgeolocation_ip_geolocation` table with its base fields, and you can use it in production for syncs within that daily limit. The security, abuse, ASN and user agent tables need a paid plan, as do the optional modules such as `include_security` and `include_abuse`.
 </details>
 
 <details>

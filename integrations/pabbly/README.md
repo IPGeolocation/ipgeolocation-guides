@@ -35,7 +35,7 @@ Before you set up the integration, make sure you have the following:
 - An IPGeolocation.io API key from your account dashboard.
 - An active [Pabbly Connect](https://connect.pabbly.com/) account.
 
-A free IPGeolocation.io plan is enough to test the integration. Some actions require a paid plan, as described in the [action availability](#available-actions-in-the-pabbly-connect-ipgeolocation-integration) table below.
+The free Developer plan works with this integration, including in production, within 1,000 credits a day. Some actions require a paid plan, as described in the [action availability](#available-actions-in-the-pabbly-connect-ipgeolocation-integration) table below.
 
 ---
 
