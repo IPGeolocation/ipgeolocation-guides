@@ -698,7 +698,7 @@ Each query to the IPGeolocation.io API consumes credits from your plan. The numb
 
 When you join multiple tables in a single SQL query, Steampipe issues a separate API call for each table involved. A three-table join for a single IP costs the sum of the credits for each endpoint.
 
-The free plan includes 1,000 requests per day. For production use cases or batch processing, see the [IPGeolocation.io pricing page](https://ipgeolocation.io/pricing.html) for plan options.
+The free Developer plan includes 1,000 credits a day, and you can use it in production. For more than 1,000 credits a day or batch processing, see the [IPGeolocation.io pricing page](https://ipgeolocation.io/pricing.html) for plan options.
 
 ---
 
