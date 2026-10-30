@@ -633,7 +633,7 @@ Because of this, write filters positively. `WHERE is_vpn = true` works whether o
 | 403 | Key disabled or blocked origin |
 | 404 | No data for the queried resource |
 | 423 | Bogon address: private, loopback, reserved or multicast |
-| 429 | Rate limit or daily quota exhausted |
+| 429 | Credit allowance used up (there are no per-second or per-minute rate limits) |
 | 5xx | Server fault, retried automatically |
 
 429 and 5xx responses are retried with backoff of 1 second, then 2, then 4. Other 4xx responses are returned immediately.
