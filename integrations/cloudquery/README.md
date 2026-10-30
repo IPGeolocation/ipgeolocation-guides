@@ -668,7 +668,7 @@ The repository also ships eight example configs under `example/`, covering the f
 ## Related Resources
 
 - [IPGeolocation.io API Documentation](https://ipgeolocation.io/documentation.html)
-- [IP Geolocation API Reference](https://ipgeolocation.io/documentation/ip-geolocation-api.html)
+- [IP Geolocation API Reference](https://ipgeolocation.io/documentation/ip-location-api.html)
 - [IP Security API Reference](https://ipgeolocation.io/documentation/ip-security-api.html)
 - [IP Abuse Contact API Reference](https://ipgeolocation.io/documentation/ip-abuse-contact-api.html)
 - [ASN API Reference](https://ipgeolocation.io/documentation/asn-api.html)
