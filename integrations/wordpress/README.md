@@ -3,7 +3,7 @@
 IPGeolocation.io Geo Redirects & Content Control is a free WordPress plugin that redirects visitors by country, blocks countries and IP addresses, and shows geo-targeted content based on each visitor's IP address. Location data comes from the [IPGeolocation.io IP geolocation API](https://ipgeolocation.io/ip-location-api.html). The plugin works with page caching plugins and CDNs such as WP Rocket, LiteSpeed Cache and Cloudflare, and everything is set up from one settings screen, with no code.
 
 - [Download the geo redirect plugin from WordPress.org](https://wordpress.org/plugins/ipgeolocation-geo-redirects-content-control/)
-- [Create a free IPGeolocation.io API key](https://app.ipgeolocation.io/sign-up)
+- [Create a free IPGeolocation.io API key](https://app.ipgeolocation.io/signup)
 
 ## Features at a glance
 
@@ -55,7 +55,7 @@ Every change is listed in the [changelog](#changelog).
 
 ### Get a free IPGeolocation.io API key
 
-Sign up at [IPGeolocation.io](https://app.ipgeolocation.io/sign-up), then copy the API key from your account dashboard. The free Developer plan is enough to get started.
+Sign up at [IPGeolocation.io](https://app.ipgeolocation.io/signup), then copy the API key from your account dashboard. The free Developer plan gives you 1,000 credits a day, and you can use it on a live site.
 
 ### Install the plugin from WordPress.org
 

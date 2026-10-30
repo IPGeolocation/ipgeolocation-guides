@@ -633,7 +633,7 @@ Because of this, write filters positively. `WHERE is_vpn = true` works whether o
 | 403 | Key disabled or blocked origin |
 | 404 | No data for the queried resource |
 | 423 | Bogon address: private, loopback, reserved or multicast |
-| 429 | Rate limit or daily quota exhausted |
+| 429 | Credit allowance used up (there are no per-second or per-minute rate limits) |
 | 5xx | Server fault, retried automatically |
 
 429 and 5xx responses are retried with backoff of 1 second, then 2, then 4. Other 4xx responses are returned immediately.
@@ -685,7 +685,7 @@ The repository also ships eight example configs under `example/`, covering the f
 
 <details>
 <summary><strong>Do I need a paid plan to use this plugin?</strong></summary>
-No. The free Developer plan allows 1,000 credits per day and covers the `ipgeolocation_ip_geolocation` table with its base fields, which is enough for development and small syncs. The security, abuse, ASN and user agent tables need a paid plan, as do the optional modules such as `include_security` and `include_abuse`.
+No. The free Developer plan allows 1,000 credits per day and covers the `ipgeolocation_ip_geolocation` table with its base fields, and you can use it in production for syncs within that daily limit. The security, abuse, ASN and user agent tables need a paid plan, as do the optional modules such as `include_security` and `include_abuse`.
 </details>
 
 <details>
