@@ -2,7 +2,7 @@
 
 ## Overview
 
-Detect VPNs, proxies and residential proxies live in the browser, at the moment a user acts. See what the service does and try it on the [Real-Time Proxy & VPN Detection product page](https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html).
+Detect VPNs, proxies and residential proxies live in the browser, at the moment a user acts. Your backend can fetch each result by its `session_id`. See what the service does and try it on the [Real-Time Proxy & VPN Detection product page](https://ipgeolocation.io/real-time-proxy-and-vpn-detection.html).
 
 > **Note:** A lightweight client-side script, much like a CAPTCHA widget. A verdict takes a few seconds, so start it early, read it at your decision point, and never hold up your initial render.
 
@@ -48,11 +48,12 @@ Response for a clean connection:
     "actual_ip": "119.156.x.x",
     "actual_country_code": "PK",
     "confidence_score": 100
-  }
+  },
+  "session_id": "e3a17c5b8f2d4a6b9c0e1f7d2b5a8c4e"
 }
 ```
 
-In plain words: this connection is not anonymized, the service is certain about it, and the visitor is where the request says they are.
+In plain words: this connection is not anonymized, the service is certain about it, and the visitor is where the request says they are. The `session_id` identifies this check; your backend uses it to [fetch the result from our API](#fetching-results-from-your-backend).
 
 ### Optional objects
 
@@ -110,6 +111,16 @@ Where the user actually is, recovered by the live tests:
 | `actual_ip` | string | **The visitor's real IP address** behind the VPN or proxy. Falls back to `public_ip` when nothing is hidden, or when the real IP cannot be detected. |
 | `actual_country_code` | string | Two-letter ISO country code of the visitor's actual location. |
 | `confidence_score` | up to 100 | Certainty about that actual country. Gate on it before acting on a country mismatch. |
+
+### The check itself: `session_id`
+
+Top-level fields that identify the check. The browser result carries `session_id`; when your backend [fetches the session](#fetching-results-from-your-backend), the response adds `origin` and `session_ts`:
+
+| Field | Type | Returned in | Meaning |
+|---|---|---|---|
+| `session_id` | string | Browser and backend | **Unique ID of the check.** Use it to fetch the result from your backend. |
+| `origin` | string | Backend only | **Origin of the page that ran the check**, for example `https://app.example.com`. Confirm it matches your own domain. |
+| `session_ts` | number | Backend only | **Time of the session**, as Unix epoch time in milliseconds (UTC). |
 
 ### Optional objects about the public IP
 
@@ -205,7 +216,8 @@ Response with `include: "all"`:
     "name": "UpCloud Cloud Servers",
     "type": "HOSTING",
     "domain": "upcloud.com"
-  }
+  },
+  "session_id": "4f1c2a7e9d0b4e3a8c6f5b2d1e7a9c30"
 }
 ```
 
@@ -224,7 +236,56 @@ ipSecurity.threat_score;                                               // 50
 result.ip_location.city;                                               // "Frankfurt": the exit node, not the visitor
 result.ip_asn.organization;                                            // "UpCloud Ltd"
 result.ip_company.type;                                                // "HOSTING"
+result.session_id;                                                     // "4f1c2a7e9d0b4e3a8c6f5b2d1e7a9c30": send this to your backend
 ```
+
+---
+
+## Fetching results from your backend
+
+Send the `session_id` from the browser result to your backend, then fetch the session from our API:
+
+```
+GET https://api.ipgeolocation.io/session?sessionId=SESSION_ID
+```
+
+Authenticate with `apiKey=YOUR_API_KEY` in the query string, or with an `Origin` header set to a domain registered as a [Request Origin](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use) in your account.
+
+```bash
+# With an API key
+curl 'https://api.ipgeolocation.io/session?sessionId=9b49ebc2393e4f7d900938d5496c0963&apiKey=YOUR_API_KEY'
+
+# With Request Origin
+curl 'https://api.ipgeolocation.io/session?sessionId=9b49ebc2393e4f7d900938d5496c0963' \
+  --header 'Origin: https://app.example.com'
+```
+
+The response is the check's result plus [`origin` and `session_ts`](#the-check-itself-session_id):
+
+```json
+{
+  "public_ip": "203.0.x.x",
+  "public_ip_country_code": "PK",
+  "live_vpn_proxy_detection": {
+    "is_anonymous": false,
+    "confidence_score": 100,
+    "proxy_score": 0,
+    "vpn_score": 0
+  },
+  "visitor_actual_location": {
+    "actual_ip": "203.0.x.x",
+    "actual_country_code": "PK",
+    "confidence_score": 100
+  },
+  "session_id": "9b49ebc2393e4f7d900938d5496c0963",
+  "origin": "https://app.example.com",
+  "session_ts": 1793304897382
+}
+```
+
+Errors carry a `message`: `400` for a missing or malformed `sessionId`, `401` for an invalid API key, and `404` when the session has expired or belongs to another account.
+
+> **Note:** A session can be fetched for 30 minutes and costs no extra credits.
 
 ---
 
@@ -254,6 +315,8 @@ These bands apply only when `is_anonymous` is `true`. High confidence with `is_a
 
 The three objects `location`, `asn`, and `company` share a single credit, whether you include one or all of them. For example, `security` alone costs 5, `location,asn,company` costs 4, and `security,location` costs 6.
 
+Fetching a session from your backend costs no extra credits. Credits are charged once, for the check itself.
+
 > **Note:** Calls draw from your plan's shared credit pool. For how credits are counted and consumed across APIs, see the [credits usage guide](https://ipgeolocation.io/documentation/credits-usage.html); for plan allowances, see [pricing](https://ipgeolocation.io/pricing.html).
 
 ---
@@ -262,12 +325,17 @@ The three objects `location`, `asn`, and `company` share a single credit, whethe
 
 <details>
 <summary><strong>Do I need an API key in the frontend?</strong></summary>
-No. Authorization is by <a href="https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use">Request Origin</a>: register your domain once and requests from it and its subdomains authenticate automatically. No secret ships to the browser.
+No. Authorization is by <a href="https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use">Request Origin</a>: register your domain once and requests from it and its subdomains authenticate automatically. No secret ships to the browser. If your backend fetches sessions with an API key, that key stays on your server.
 </details>
 
 <details>
 <summary><strong>Can I use this from a backend or a mobile app?</strong></summary>
-No, the script is browser-only. For backend, mobile, or bulk checks, use the <a href="https://ipgeolocation.io/documentation/ip-security-api.html">IP Security API</a>, which returns only the reputation data through a key-authenticated API call.
+The check itself runs only in a browser. Your backend can then fetch its result by <code>session_id</code>; see <a href="#fetching-results-from-your-backend">Fetching results from your backend</a>. For backend-only, mobile, or bulk checks with no browser involved, use the <a href="https://ipgeolocation.io/documentation/ip-security-api.html">IP Security API</a>, which returns only the reputation data through a key-authenticated API call.
+</details>
+
+<details>
+<summary><strong>How long can my backend fetch a session?</strong></summary>
+For 30 minutes after it is created. After that, it can no longer be retrieved, and the session endpoint returns <code>404</code>.
 </details>
 
 <details>
@@ -327,7 +395,7 @@ Usually not. Many are ordinary privacy-conscious or corporate users. Work the co
 
 <details>
 <summary><strong>What does it cost?</strong></summary>
-3 credits per call, 5 with <code>security</code> included, and 1 more for any of <code>location</code>, <code>asn</code>, or <code>company</code>, so <code>all</code> costs 6. Credits come from your plan's normal credit pool. It is a paid plan feature; contact <a href="https://ipgeolocation.io/contact.html">our support team</a> for a free trial.
+3 credits per call, 5 with <code>security</code> included, and 1 more for any of <code>location</code>, <code>asn</code>, or <code>company</code>, so <code>all</code> costs 6. Fetching the result from your backend by <code>session_id</code> costs nothing extra. Credits come from your plan's normal credit pool. It is a paid plan feature; contact <a href="https://ipgeolocation.io/contact.html">our support team</a> for a free trial.
 </details>
 
 ---
