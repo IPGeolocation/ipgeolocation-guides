@@ -514,11 +514,13 @@ index=nginx status=429 earliest=-15m
 ```spl
 index=auth action=success earliest=-1h
 | ipgeolocation src_ip
-| eval local_hour=strftime(now() + ('timezone.offset_with_dst' * 3600), "%H")
-| where local_hour < 6 OR local_hour > 22
+| eval local_hour=floor(((_time + ('timezone.offset_with_dst' * 3600)) % 86400) / 3600)
+| where isnotnull(local_hour) AND (local_hour < 6 OR local_hour > 22)
 | eval after_hours_login="Login at local time " . local_hour . ":00 in " . 'timezone.name'
 | table _time, user, src_ip, location.city, location.country_name, timezone.name, after_hours_login
 ```
+
+The local hour is calculated from each event's `_time`, so the result does not depend on when the search runs or on your Splunk user time zone. `timezone.offset_with_dst` is the location's UTC offset in hours at lookup time, which is correct for recent events like the last hour searched here. For older events that span a daylight-saving change, use the offset for the event's date. The offset is returned in API mode; MMDB lookups return `timezone.name` only.
 
 ---
 

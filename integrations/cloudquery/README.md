@@ -109,10 +109,10 @@ cloudquery sync ipgeo.yml
 Check the result:
 
 ```bash
-sqlite3 ipgeo.db "SELECT ip, country_name, city, company_name FROM ipgeolocation_ip_geolocation;"
+sqlite3 ipgeo.db "SELECT ip, country_name, city, asn_organization FROM ipgeolocation_ip_geolocation;"
 ```
 
-Two rows naming the United States, Google and Cloudflare mean the key, the plugin and the destination are all working.
+Two rows, one for each IP, mean the key, the plugin and the destination are all working. Country and city values follow the current data. `asn_organization` is part of the free response and should name Google and Cloudflare. `company_name` needs a paid plan, so it is left out of this free plan check.
 
 ### Spec Reference
 
@@ -148,7 +148,7 @@ Reference an environment variable with `${VAR_NAME}` and export it at runtime. C
 
 ### `ipgeolocation_ip_geolocation`
 
-The main table. One row per entry in `ips`, or a single row for the caller's public IP when `ips` is empty. Works on the free plan.
+The main table. One row per entry in `ips`, or a single row for the caller's public IP when `ips` is empty. Works on the free plan. Columns marked Paid below need a paid plan.
 
 Key columns:
 
@@ -175,17 +175,17 @@ Key columns:
 | `currency_code` | text | ISO 4217 currency code |
 | `currency_name` | text | Currency name |
 | `currency_symbol` | text | Currency symbol |
-| `connection_type` | text | Connection type |
-| `route` | text | CIDR block containing the IP |
-| `is_anycast` | boolean | Anycast prefix |
-| `is_cdn` | boolean | CDN address |
-| `cdn_provider_name` | text | CDN operator |
+| `connection_type` | text | Connection type. Paid |
+| `route` | text | CIDR block containing the IP. Paid |
+| `is_anycast` | boolean | Anycast prefix. Paid |
+| `is_cdn` | boolean | CDN address. Paid |
+| `cdn_provider_name` | text | CDN operator. Paid |
 | `as_number` | text | AS number, for example `AS15169` |
 | `asn_organization` | text | Organization holding the ASN |
-| `asn_type` | text | ISP, HOSTING, EDUCATION, GOVERNMENT or BUSINESS |
-| `asn_rir` | text | ARIN, RIPE, APNIC, LACNIC or AFRINIC |
-| `company_name` | text | Company operating the IP |
-| `company_domain` | text | Company domain |
+| `asn_type` | text | ISP, HOSTING, EDUCATION, GOVERNMENT or BUSINESS. Paid |
+| `asn_rir` | text | ARIN, RIPE, APNIC, LACNIC or AFRINIC. Paid |
+| `company_name` | text | Company operating the IP. Paid |
+| `company_domain` | text | Company domain. Paid |
 | `timezone_name` | text | IANA timezone name |
 | `timezone_offset` | double | UTC offset in hours; fractional values are possible |
 | `timezone_offset_with_dst` | double | UTC offset in hours including DST; fractional values are possible |
@@ -552,11 +552,23 @@ The `route` column is the CIDR block the contact is registered for, which tells 
 
 Extract distinct user agent strings from your access logs, feed them through the user agent table, and you get a browser and bot breakdown without maintaining a parsing library.
 
+The table holds one row per distinct string, so this counts distinct user agent strings by browser and type, not requests:
+
 ```sql
-SELECT type, name, COUNT(*) AS hits
+SELECT type, name, COUNT(*) AS distinct_user_agents
 FROM ipgeolocation_user_agent
 GROUP BY type, name
-ORDER BY hits DESC;
+ORDER BY distinct_user_agents DESC;
+```
+
+For traffic volume, join the parsed strings back to the access log table they came from, so every request counts:
+
+```sql
+SELECT u.type, u.name, COUNT(*) AS requests
+FROM access_logs l
+JOIN ipgeolocation_user_agent u ON l.user_agent = u.user_agent_string
+GROUP BY u.type, u.name
+ORDER BY requests DESC;
 ```
 
 ### Timezone Aware Scheduling

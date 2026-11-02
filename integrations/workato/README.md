@@ -131,7 +131,7 @@ Retrieves geolocation data for a single IPv4 or IPv6 address.
 
 **Outputs**
 
-Returns location, country metadata, currency, ASN, and time zone data, along with additional data available to the request. See the [IP Geolocation response fields](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
+Returns location, country metadata, currency, ASN, and time zone data, along with additional data available to the request. See the [IP Geolocation response fields](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ip-geolocation-api-response).
 
 ![Get IP Geolocation in Workato](https://static.ipgeolocation.io/web-assets/images/integrations/workato/ipgeo.png)
 
@@ -148,7 +148,7 @@ Retrieves geolocation data for up to 50,000 IP addresses in a single request.
 
 **Outputs**
 
-Returns a collection of geolocation objects, one for each submitted address. See the [IP Geolocation API response reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
+Returns a collection of geolocation objects, one for each submitted address. See the [IP Geolocation API response reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ip-geolocation-api-response).
 
 ![Get Bulk IP Geolocation in Workato](https://static.ipgeolocation.io/web-assets/images/integrations/workato/ipgeo-bulk.png)
 

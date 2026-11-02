@@ -65,7 +65,7 @@ In your WordPress dashboard go to **Plugins → Add New**, search for **IPGeoloc
 
 ### Enter your API key and plan
 
-Paste the key into the plugin settings and select your plan type: **Developer** (free) or **Paid**. On a Paid plan, also choose whether to **Include security data**. Leave it on only if you use the proxy, VPN or Tor shortcode fields. Turn it off to fetch location only, which costs 1 API credit per lookup instead of 3. Country redirects and country access control work either way. On the Developer plan the option is greyed out, because the free plan does not include security data.
+Paste the key into the plugin settings and select your plan type: **Developer** (free) or **Paid**. On a Paid plan, also choose whether to **Include security data**. Leave it on only if you use the proxy, VPN or Tor shortcode fields. Turn it off to fetch location only, which costs 1 API credit per lookup instead of 3. Country redirects and country access control work either way. On the Developer plan the option is grayed out, because the free plan does not include security data.
 
 ![API key and plan type settings in the IPGeolocation.io WordPress plugin](https://static.ipgeolocation.io/web-assets/images/integrations/wordpress/api-config-1.5.0.png)
 
@@ -218,7 +218,7 @@ Block visitors from some countries, or allow visitors from only a few, across yo
 - **Block mode**: visitors from the listed countries are blocked
 - **Allow mode**: only visitors from the listed countries get in
 
-Country codes are two-letters and case-insensitive. Blocked visitors see a 403 page, or you can send them to a page on your site, for example `/not-available`, or to a full address on another site.
+Country codes contain two letters and are case-insensitive. Blocked visitors see a 403 page, or you can send them to a page on your site, for example `/not-available`, or to a full address on another site.
 
 Country access control runs on front end pages only. The admin area, the REST API and AJAX requests are skipped, and administrators are never blocked. If a visitor's country cannot be determined, for example during an API outage, the visitor is let in rather than your site going offline.
 
