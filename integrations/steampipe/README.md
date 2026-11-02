@@ -273,7 +273,7 @@ select
 from
   ipgeolocation_abuse
 where
-  ip = '192.0.2.1';
+  ip = '8.8.8.8';
 ```
 
 ---
@@ -378,7 +378,7 @@ select
 from
   ipgeolocation_ip
 where
-  ip = '203.0.113.10';
+  ip = '8.8.8.8';
 ```
 
 ---
@@ -395,7 +395,7 @@ select
 from
   ipgeolocation_abuse
 where
-  ip = '198.51.100.5';
+  ip = '8.8.8.8';
 ```
 
 ---
@@ -590,7 +590,7 @@ where
   ip = '104.21.0.1';
 ```
 
-Use the `type` field to distinguish between hosting provider IPs (`HOSTING`), ISP IPs (`ISP`), education networks (`EDUCATION`), and enterprise allocations (`ENTERPRISE`).
+Use the `type` field to distinguish between hosting provider IPs (`HOSTING`), ISP IPs (`ISP`), education networks (`EDUCATION`), government networks (`GOVERNMENT`), and business networks (`BUSINESS`).
 
 ---
 

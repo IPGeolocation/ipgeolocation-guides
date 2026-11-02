@@ -35,7 +35,7 @@ Before you set up the integration, make sure you have the following:
 - An IPGeolocation.io API key from your account dashboard.
 - An active [Pabbly Connect](https://connect.pabbly.com/) account.
 
-The free Developer plan works with this integration, including in production, within 1,000 credits a day. Some actions require a paid plan, as described in the [action availability](#available-actions-in-the-pabbly-connect-ipgeolocation-integration) table below.
+The free Developer plan works with this integration, including in production, within 1,000 credits a day. Some actions require a paid plan, as described in the [action availability](#available-actions-in-the-pabbly-connect-ipgeolocation-io-integration) table below.
 
 ---
 
@@ -152,7 +152,7 @@ Retrieves geolocation, country metadata and currency related information for a s
   - **Fields**: return only the objects or fields you name.
   - **Excludes**: remove objects or fields you do not need.
   - **Language** (paid only): return location text in a supported language, such as German (`de`), Japanese (`ja`), or Spanish (`es`). English is the default.
-- Output: the `location`, `country_metadata`, `currency`, `asn`, and `time_zone` objects, plus additional objects on paid plans as described below. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
+- Output: the `location`, `country_metadata`, `currency`, `asn`, and `time_zone` objects, plus additional objects on paid plans as described below. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ip-geolocation-api-response).
 
 **What Get IP Geolocation returns by plan:**
 
@@ -185,7 +185,7 @@ Retrieves geolocation and related data for multiple IPv4/IPv6 addresses or Domai
 
 - Required input: IP Addresses, a list of up to 50,000 IPv4 or IPv6 addresses, or Domains, for example `["2.2.2.2","3.3.3.3", "8.8.8.8", "example.com"]`.
 - Optional inputs: **Include** (same module values as Get IP Geolocation), **Fields**, and **Excludes**.
-- Output: an array of geolocation objects, one entry per submitted address. Invalid or private addresses return a descriptive `message` entry instead. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ipgeolocation-api-response).
+- Output: an array of geolocation objects, one entry per submitted address. Invalid or private addresses return a descriptive `message` entry instead. See the [IP Geolocation field reference](https://ipgeolocation.io/documentation/ip-location-api.html#reference-to-ip-geolocation-api-response).
 
 ![Pabbly Connect Find Bulk IP Geolocation action setup with input fields](https://static.ipgeolocation.io/web-assets/images/integrations/pabbly/bulk-ipgeo.png)
 
