@@ -251,14 +251,20 @@ GET https://api.ipgeolocation.io/session?sessionId=SESSION_ID
 
 Authenticate with `apiKey=YOUR_API_KEY` in the query string, or with an `Origin` header set to a domain registered as a [Request Origin](https://ipgeolocation.io/tutorials/secure-api-key-before-production#set-up-request-origin-cors-for-client-side-use) in your account.
 
-```bash
-# With an API key
-curl 'https://api.ipgeolocation.io/session?sessionId=9b49ebc2393e4f7d900938d5496c0963&apiKey=YOUR_API_KEY'
+### With an API key
 
-# With Request Origin
-curl 'https://api.ipgeolocation.io/session?sessionId=9b49ebc2393e4f7d900938d5496c0963' \
+```bash
+curl 'https://api.ipgeolocation.io/session?sessionId=SESSION_ID&apiKey=YOUR_API_KEY'
+```
+
+### With Request Origin
+
+```bash
+curl 'https://api.ipgeolocation.io/session?sessionId=SESSION_ID' \
   --header 'Origin: https://app.example.com'
 ```
+
+### Response
 
 The response is the check's result plus [`origin` and `session_ts`](#the-check-itself-session_id):
 
