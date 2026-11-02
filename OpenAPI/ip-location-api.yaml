@@ -993,6 +993,7 @@ components:
           - ko
           - fa
           - pt
+          - ar
 
     Include:
       name: include
