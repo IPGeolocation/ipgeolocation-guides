@@ -980,6 +980,7 @@ components:
           - ko
           - fa
           - pt
+          - ar
 
   responses:
     NotFound:

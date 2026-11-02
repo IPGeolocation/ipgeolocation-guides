@@ -96,7 +96,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 |------------|--------|---------------------------------------------------------------------------------------|
 | `fields`   | string | Comma-separated list of fields to include in the response. Available on all plans.    |
 | `excludes` | string | Comma-separated list of fields to exclude from the response. Available on all plans.  |
-| `lang`     | string | Language code for translated fields (default: `en`). Requires a paid plan. Supported values: `de`, `ru`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `ko`, `fa`, `pt`. |
+| `lang`     | string | Language code for translated fields (default: `en`). Requires a paid plan. Supported values: `de`, `ru`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `ko`, `fa`, `pt`, `ar`. |
 
 ### IPGeolocationAPI: include Options and Plan Availability
 | Option                        | Type    | Description                                                          | Free | Paid |

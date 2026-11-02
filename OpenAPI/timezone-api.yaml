@@ -879,6 +879,7 @@ components:
           - ko
           - fa
           - pt
+          - ar
 
     Fields:
       name: fields
