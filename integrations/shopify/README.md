@@ -1,7 +1,7 @@
 # IPGeolocation Shopify Integration Guide
 ## Overview
 
-**IPGeolocation** is a free, powerful Shopify app by [**IPGeolocation.io**](https://ipgeolocation.io) that sends each visitor to the store, language and currency for their country. Whether you manage multiple markets within one Shopify store or operate separate stores, It automatically detects your visitors' locations and guides them to the right storefront, in their preferred language and with the correct experience.
+**IPGeolocation** is a free, powerful Shopify app by [**IPGeolocation.io**](https://ipgeolocation.io) that sends each visitor to the store, language and currency for their country. Whether you manage multiple markets within one Shopify store or operate separate stores, it automatically detects your visitors' locations and guides them to the right storefront, in their preferred language and with the correct experience.
 
 ### Who Is This App For?
 Our app is ideal for Shopify merchants who:
