@@ -120,7 +120,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 ### IPGeolocationAPI: Storage Option
 | Option                 | Type    | Description                                                                                                                                                                  |
 |------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `saveToSessionStorage` | boolean | If enabled, stores the geolocation response in `sessionStorage` to avoid repeated API calls during the same browser session, improving performance and reducing API usage. |
+| `saveToSessionStorage` | boolean | Caches successful responses for the same endpoint, request options and API key. API keys are hashed in cache identifiers. Requests continue without caching if browser storage is unavailable, or if an API key is used and Web Crypto is unavailable. |
 
 ---
 
@@ -139,7 +139,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 ### IPSecurityAPI: Storage Option
 | Option                 | Type    | Description                                                                                                                                                               |
 |------------------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `saveToSessionStorage` | boolean | If enabled, stores the security response in `sessionStorage` to avoid repeated API calls during the same browser session, improving performance and reducing API usage. |
+| `saveToSessionStorage` | boolean | Caches successful responses for the same endpoint, request options and API key. API keys are hashed in cache identifiers. Requests continue without caching if browser storage is unavailable, or if an API key is used and Web Crypto is unavailable. |
 
 > [!NOTE]
 > The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only the `security` object. It does not support geolocation, timezone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
@@ -150,7 +150,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 To access this service, add the following JavaScript tag (usually within the `<head>` block of your pages).
 
 ```html
-<script src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v3.0.0.js"></script>
+<script src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v3.0.2.js"></script>
 ```
 
 ---
