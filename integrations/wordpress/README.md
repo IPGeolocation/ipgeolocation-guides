@@ -193,7 +193,7 @@ To forget everything the plugin remembers about a visitor, including earlier red
 
 When a rule sends a visitor to another site, the plugin adds `?ipgeo_from=1` to the address, for example `https://gr.example.com/?ipgeo_from=1`. If that site also runs this plugin, the marker stops it from sending the visitor straight back, and the visitor stays there for the rest of their browser session. The plugin on the receiving site then removes the marker from the address bar, even when that site has no redirect rules of its own.
 
-If the other site does not run this plugin, the marker has no use there and nothing can remove it. Untick **Add ?ipgeo_from=1 when sending visitors to another site** above the redirect rules to keep its addresses clean. Keep it ticked when both sites run the plugin, because without it two sites with conflicting rules can send a visitor back and forth until the browser gives up.
+If the other site does not run this plugin, the marker has no use there and nothing can remove it. Uncheck **Add ?ipgeo_from=1 when sending visitors to another site** above the redirect rules to keep its addresses clean. Keep it ticked when both sites run the plugin, because without it two sites with conflicting rules can send a visitor back and forth until the browser gives up.
 
 Redirects to a page on your own site never carry the marker.
 

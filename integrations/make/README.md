@@ -167,7 +167,7 @@ Includes details such as the role, handle, organization name, kind (e.g., group 
 
 ### **Time Services**
 
-The free **Time Zone API** and **Time Conversion API** provide date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from timezone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
+The free **Time Zone API** and **Time Conversion API** provide date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from time zone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
 
 **Get Timezone Info**
 
@@ -313,7 +313,7 @@ Some of the most common use cases are provided as following.
 **Scenario:** Send newsletter at **10 AM local time**.
 
 - Step 1: Geolocation: Get currency + country.
-- Step 2: Timezone Info: Get exact timezone.
+- Step 2: Timezone Info: Get exact time zone.
 - Step 3: Time Conversion: Convert 10:00 on the intended send date from the recipient's IANA time zone to the scheduler's time zone (UTC in this example).
 - Step 4: Email tool: Schedule the message for that converted time.
 

@@ -1,6 +1,6 @@
 # IPGeolocation.io Splunk App 
 
-The **IPGeolocation.io App for Splunk** enriches your Splunk events with real-time IP intelligence directly inside the Search Processing Language (SPL). Instead of sending raw IP addresses to an external dashboard and cross-referencing results manually, you pipe events through custom Splunk commands and get geolocation, ISP, ASN, security, abuse, and timezone data joined back to each record in a single search.
+The **IPGeolocation.io App for Splunk** enriches your Splunk events with real-time IP intelligence directly inside the Search Processing Language (SPL). Instead of sending raw IP addresses to an external dashboard and cross-referencing results manually, you pipe events through custom Splunk commands and get geolocation, ISP, ASN, security, abuse, and time zone data joined back to each record in a single search.
 
 The app ships with four custom SPL commands (`ipgeolocation`, `ipgeolocationbatch`, `ipsecurity`, `ipsecuritybatch`) and supports two complementary lookup methods:
 

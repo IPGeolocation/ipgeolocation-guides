@@ -10,7 +10,7 @@ With this integration, every recipe you build can pull real-time intelligence on
 - Security and threat intelligence, including proxy, VPN, Tor, and cloud provider detection with a threat score
 - Network ownership and ASN details
 - Abuse contact information for the organization behind an IP
-- Timezone data and time conversion across time zones, coordinates, IATA, ICAO, and UN/LOCODE inputs
+- Time zone data and time conversion across time zones, coordinates, IATA, ICAO, and UN/LOCODE inputs
 - Astronomy data, including sunrise, sunset, and moon phase, for a single day or a date range
 - User agent parsing for browser, operating system, and device detection
 
@@ -438,8 +438,8 @@ Check that your <strong>API key is correct and active</strong>. Also check that 
 </details>
 
 <details>
-<summary><strong>Does the Workato integration support timezone conversion?</strong></summary>
-Yes. <strong>Find Timezone Information</strong> retrieves timezone data, including the current time and offset, for supported locations. <strong>Convert Timezone</strong> converts a specific date and time using time zone names, locations, coordinates, IATA codes, ICAO codes, or UN/LOCODEs. To convert using an IP address, first look up that IP's IANA time zone with <strong>Find Timezone Information</strong>, then pass the returned zone to <strong>Convert Timezone</strong>. The conversion action itself does not accept an IP-address parameter.
+<summary><strong>Does the Workato integration support time zone conversion?</strong></summary>
+Yes. <strong>Find Timezone Information</strong> retrieves time zone data, including the current time and offset, for supported locations. <strong>Convert Timezone</strong> converts a specific date and time using time zone names, locations, coordinates, IATA codes, ICAO codes, or UN/LOCODEs. To convert using an IP address, first look up that IP's IANA time zone with <strong>Find Timezone Information</strong>, then pass the returned zone to <strong>Convert Timezone</strong>. The conversion action itself does not accept an IP-address parameter.
 </details>
 
 ---

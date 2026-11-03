@@ -165,7 +165,7 @@ Includes details such as the role, handle, organization name, kind (e.g., group 
 
 ### **Time Services**
 
-The free **Time Zone API** and **Time Conversion API** provide date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from timezone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
+The free **Time Zone API** and **Time Conversion API** provide date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from time zone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
 
 **Get Timezone Info**
 
@@ -278,9 +278,9 @@ Provides detailed client system information, allowing for the detection of bots,
 
 **Modules:** IP Geolocation, Timezone Info, CRM/Support Tool (Zendesk, Freshdesk)
 
-**Scenario:** Assign tickets to agents in the customer’s local timezone.
+**Scenario:** Assign tickets to agents in the customer’s local time zone.
 
 - **Trigger:** New support ticket submitted online.
 - **Step 1:** IP Geolocation: Identify customer location.
 - **Step 2:** Timezone Info: Determine their local time.
-- **Step 3:** Action: Assign ticket to agent currently working in that timezone or auto-schedule reply.
+- **Step 3:** Action: Assign ticket to agent currently working in that time zone or auto-schedule reply.

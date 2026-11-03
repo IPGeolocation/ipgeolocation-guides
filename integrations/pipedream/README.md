@@ -4,7 +4,7 @@
 
 Automate IP intelligence workflows using IPGeolocation.io's full suite of APIs directly inside [Pipedream](https://pipedream.com/apps/ipgeolocation). No custom HTTP requests, no glue code — just configure an action and go.
 
-[IPGeolocation.io](https://ipgeolocation.io) is an enterprise-grade IP intelligence platform trusted by thousands of companies worldwide. It provides real-time data on geolocation, security threats, ASN details, timezone, astronomy, abuse contacts, and user-agent parsing — all through a single, fast API with a 99.99% uptime SLA.
+[IPGeolocation.io](https://ipgeolocation.io) is an enterprise-grade IP intelligence platform trusted by thousands of companies worldwide. It provides real-time data on geolocation, security threats, ASN details, time zone, astronomy, abuse contacts, and user-agent parsing — all through a single, fast API with a 99.99% uptime SLA.
 
 The Pipedream integration exposes **12 ready-to-use actions** that map directly to IPGeolocation.io's API v3 endpoints. You can drop these actions into any Pipedream workflow to enrich data, detect fraud, personalize experiences, automate security responses, and more.
 
@@ -72,7 +72,7 @@ For full pricing details and to choose your plan, see the [pricing page](https:/
 
 - **Endpoint:** `GET /v3/ipgeo`
 
-Looks up geolocation data for a single IPv4 or IPv6 address (or domain). Returns country, city, state, coordinates, timezone, currency, ASN, and more depending on your plan.
+Looks up geolocation data for a single IPv4 or IPv6 address (or domain). Returns country, city, state, coordinates, time zone, currency, ASN, and more depending on your plan.
 
 **Inputs**
 
@@ -89,7 +89,7 @@ Looks up geolocation data for a single IPv4 or IPv6 address (or domain). Returns
 > [!NOTE]
 > For more information, see [IP Geolocation API Documentation](https://ipgeolocation.io/documentation/ip-location-api.html).
 
-**Example use case:** Enrich a new sign-up event with the user's country and timezone before writing to your CRM.
+**Example use case:** Enrich a new sign-up event with the user's country and time zone before writing to your CRM.
 
 ```javascript
 // Reference the result in a downstream step
@@ -242,13 +242,13 @@ const abuse = steps.get_abuse_contact.$return_value.abuse;
 
 - **Endpoint:** `GET /v3/timezone`
 
-Looks up timezone data for a location specified by IP address, coordinates, timezone name, city name, IATA airport code, ICAO code, or UN/LOCODE. Returns current time, UTC offset, DST status, and more.
+Looks up time zone data for a location specified by IP address, coordinates, time zone name, city name, IATA airport code, ICAO code, or UN/LOCODE. Returns current time, UTC offset, DST status, and more.
 
 **Inputs**
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| IP Address | No | IP to resolve timezone for |
+| IP Address | No | IP to resolve time zone for |
 | Timezone Name | No | e.g., `America/New_York` |
 | Latitude | No | Must be paired with Longitude |
 | Longitude | No | Must be paired with Latitude |
@@ -262,7 +262,7 @@ Looks up timezone data for a location specified by IP address, coordinates, time
 > [!NOTE]
 > For more information, see [Time Zone API Documentation](https://ipgeolocation.io/documentation/timezone-api.html). 
 
-**Example use case:** Detect a user's local timezone from their IP on sign-up and pre-fill it in their account preferences.
+**Example use case:** Detect a user's local time zone from their IP on sign-up and pre-fill it in their account preferences.
 
 ---
 
@@ -270,7 +270,7 @@ Looks up timezone data for a location specified by IP address, coordinates, time
 
 - **Endpoint:** `GET /v3/timezone/convert`
 
-Converts a date/time from one timezone (or location) to another. Accepts timezone names, coordinates, city names, IATA codes, ICAO codes, or UN/LOCODEs as selectors for both the source and destination.
+Converts a date/time from one time zone (or location) to another. Accepts time zone names, coordinates, city names, IATA codes, ICAO codes, or UN/LOCODEs as selectors for both the source and destination.
 
 **Inputs**
 
@@ -278,8 +278,8 @@ Converts a date/time from one timezone (or location) to another. Accepts timezon
 |-------|--------------|----------|-------------|
 | Time to Convert | `time` | No | Datetime to convert, in `yyyy-MM-dd HH:mm` or `yyyy-MM-dd HH:mm:ss` format. Omit to convert the current time |
 | **Mode 1 — Timezone Names** | | | |
-| From Timezone | `tz_from` | Conditional | Source IANA timezone name (e.g., `America/Argentina/Catamarca`) |
-| To Timezone | `tz_to` | Conditional | Destination IANA timezone name (e.g., `Asia/Kabul`) |
+| From Timezone | `tz_from` | Conditional | Source IANA time zone name (e.g., `America/Argentina/Catamarca`) |
+| To Timezone | `tz_to` | Conditional | Destination IANA time zone name (e.g., `Asia/Kabul`) |
 | **Mode 2 — Coordinates** | | | |
 | From Latitude | `lat_from` | Conditional | Source latitude (-90 to 90) |
 | From Longitude | `long_from` | Conditional | Source longitude (-180 to 180) |
@@ -308,7 +308,7 @@ Converts a date/time from one timezone (or location) to another. Accepts timezon
 > [!NOTE]
 > For more information, see [Timezone Conversion API Documentation](https://ipgeolocation.io/documentation/timezone-api.html#convert-time-between-time-zones).
 
-**Example use case:** Schedule a meeting notification by converting HQ local time to each participant's timezone before sending calendar invites.
+**Example use case:** Schedule a meeting notification by converting HQ local time to each participant's time zone before sending calendar invites.
 
 ---
 
@@ -481,7 +481,7 @@ Every action's JSON response is accessible in downstream steps via `steps.<actio
 - **Bulk actions** are capped at 50,000 entries per request. Pipedream will throw a validation error before the request is sent if this limit is exceeded.
 - Only paid plan subscriptions can receive responses in languages other than English. On the free plan, responses are in English only. If a language other than English is specified in the `Language` parameter while using an API key on the free plan, the request will result in a `401 (Unauthorized)` response.
 - When using coordinate-based lookups (Get Timezone, Get Astronomy), always provide **both** Latitude and Longitude together.
-- For Convert Timezone, use the **same selector type** for source and destination (e.g., both as timezone names or both as coordinates) to avoid validation errors.
+- For Convert Timezone, use the **same selector type** for source and destination (e.g., both as time zone names or both as coordinates) to avoid validation errors.
 - For best performance and lower latency, use the **Fields** parameter to request only the data fields your workflow actually needs.
 
 ---
