@@ -33,8 +33,8 @@ Both modes are configured from a single setup UI inside Splunk. No Python script
 
 Before installing the app, make sure you have the following:
 
-- A running **Splunk Enterprise** or **Splunk Cloud** instance (version 8.x or later recommended).
-- **Python 3.13** or later available in your Splunk environment (Splunk 9.x ships with Python 3.9 -- verify your version with `splunk cmd python3 --version`).
+- A running **Splunk Enterprise** or **Splunk Cloud** instance on a version listed in the table above.
+- Use an app release tested for your Splunk version. Run `splunk cmd python3 --version` to check the Python runtime your Splunk instance uses.
 - An active **IPGeolocation.io account**. [Sign up free](https://app.ipgeolocation.io/signup) -- no credit card required for the Free plan.
 - Your **API key** from the [IPGeolocation.io dashboard](https://app.ipgeolocation.io).
 - If using **MMDB mode**, a **Bearer token** (database access key) available from your IPGeolocation.io account under the Databases section.
@@ -128,7 +128,7 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
 
 ### API Configuration
 
-Select _Fetch Details via Rest API_ in the Lookup Method to use your API subscription in the IPGeolocation.io App for Splunk, provide the API Key for your API subscription in the **Key for API Subscription**, and select the plan for your API subscription. These are only 3 inputs required to use IPGeolocation.io API with Splunk.
+Select _Fetch Details via Rest API_ in the Lookup Method to use your API subscription in the IPGeolocation.io App for Splunk, provide the API Key for your API subscription in the **Key for API Subscription**, and select the plan for your API subscription. These are the only three inputs required to use the IPGeolocation.io API with Splunk.
 
 ![Lookup_Method_API](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/lookup_method_api.png)
 
@@ -157,7 +157,7 @@ Syncing will be a bit slow as compared to separate download as it has to copy MM
 
 #### Replicate MMDB on Indexers
 
-Select `Yes` against `Replicate MMDB on Indexers` to enable replication on MMDB bundle. This will also make a bunch of changes in the code that will enable *ipgeolocation* & *ipsecurity* to work in streaming mode. This is expected to cause performance boost on the query at the expense of increase in bundle size. This setting is applicable if you're using IPGeolocation.io app on splunk search head cluster and you have indexer cluster.
+Select `Yes` against `Replicate MMDB on Indexers` to enable replication on MMDB bundle. Replication makes the selected MMDB files available on the indexers for streaming lookups with `ipgeolocation`. For local security lookups, use `ipgeolocation <ip_field> security=true` with a database that contains security fields. `ipsecurity` uses the API and does not support MMDB. Replication can improve search performance, but increases the search bundle size. This setting is applicable if you're using IPGeolocation.io app on splunk search head cluster and you have indexer cluster.
 
 #### MMDB Subscription Credentials
 
@@ -317,16 +317,18 @@ The `ipgeolocationbatch` command is used when you have a static list of IPs and 
 Quick ad-hoc lookup for a known list of suspicious IPs from a threat intel report:
 
 ```spl
-| ipgeolocationbatch ips="185.220.101.1, 162.247.72.199, 198.98.54.11, 45.142.212.100"
+| ipgeolocationbatch ips="185.220.101.1, 162.247.72.199, 198.98.54.11, 45.142.212.100" security=true
 | table ip, location.country_name, location.city, isp, security.is_tor, security.is_proxy
 ```
+
+Security data in API mode requires a paid API plan.
 
 Combine with a lookup table of IOCs:
 
 ```spl
 | inputlookup threat_iocs.csv
 | fields ip_address
-| map search="| ipgeolocationbatch ips=\"$ip_address$\" security=true"
+| ipgeolocation ip_address security=true
 | table ip, location.country_name, security.is_known_attacker, security.threat_score
 ```
 
@@ -427,7 +429,7 @@ index=firewall earliest=-7d@d
 | top limit=50 src_ip
 | rename src_ip as ip
 | table ip
-| map search="| ipsecuritybatch ips=\"$ip$\""
+| map maxsearches=50 search="| ipsecuritybatch ips=\"$ip$\""
 | where 'security.threat_score' > 50
 | outputlookup high_risk_ips.csv
 ```
@@ -441,9 +443,9 @@ index=firewall earliest=-7d@d
 
 ```spl
 index=firewall action=blocked earliest=-1h
-| stats count by src_ip
+| stats count as blocked_events by src_ip
 | ipgeolocation src_ip
-| geostats latfield=location.latitude longfield=location.longitude count by location.country_name
+| geostats latfield=location.latitude longfield=location.longitude sum(blocked_events) by location.country_name
 ```
 
 This feeds directly into Splunk's Cluster Map visualization. The result shows blocked connection volume by geographic origin.
