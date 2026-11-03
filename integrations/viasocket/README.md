@@ -9,7 +9,7 @@ With this integration, you can automate retrieval of valuable IP intelligence da
 * Geolocation details (country, city, coordinates)  
 * Security & threat intelligence (VPN, proxy, Tor detection)  
 * Network ownership and ASN details  
-* Timezone and time conversion data  
+* Time zone and time conversion data  
 * Astronomy data (sunrise, sunset, moon phase)  
 * User-agent insights (browser, OS, device)
 
@@ -144,7 +144,7 @@ Includes details such as the role, handle, organization name, kind (e.g., group 
 
 ### **Time Services**
 
-The free Time Zone API and Time Conversion API provide date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from timezone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
+The free Time Zone API and Time Conversion API provide date and time related information such as current time, date in various formats, week, month, year, Unix timestamps, UTC/GMT offset and daylight saving time from time zone name, any IPv4 or IPv6 address or geolocation coordinates, IATA code, ICAO code, or UN/LOCODE.
 
 **Get Timezone Info**
 

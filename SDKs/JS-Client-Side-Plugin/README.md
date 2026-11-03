@@ -7,11 +7,11 @@ This plugin provides accurate geolocation details for any IPv4 or IPv6 address. 
 
 Along with location data, the plugin also includes security lookup capability if you have a paid plan subscription. It can detect VPNs, proxy usage, residential proxies, Tor connections, relay networks, anonymous activity, known attackers, bots, spam sources, and cloud hosting providers, and also provides a threat score to assess risk.
 
-The plugin further offers extra features like timezone details, currency information, and device data parsed from the User-Agent string. These details help you customize content, set the correct time zone, or display prices in the user's local currency.
+The plugin further offers extra features like time zone details, currency information, and device data parsed from the User-Agent string. These details help you customize content, set the correct time zone, or display prices in the user's local currency.
 
 ## Client-Side Plugin Purpose
 
-With our **Free plan**, you get basic location details like country, state, city, ZIP code, currency, basic ASN, and timezone. Paid plans include the same features and add network details (ASN type, domain, RIR, company), user-agent parsing, hostname resolution, security threat detection, abuse contact data, geo accuracy fields, and DMA codes.
+With our **Free plan**, you get basic location details like country, state, city, ZIP code, currency, basic ASN, and time zone. Paid plans include the same features and add network details (ASN type, domain, RIR, company), user-agent parsing, hostname resolution, security threat detection, abuse contact data, geo accuracy fields, and DMA codes.
 
 > [!IMPORTANT]
 > For a side-by-side comparison of features in each plan, please see the table on our [Pricing page](https://ipgeolocation.io/pricing.html).
@@ -29,7 +29,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 9. **Access Control:** Block or restrict access from specific countries to comply with export controls or to reduce fraud and abuse.
 10. **Hostname Resolution (DB, Live, Fallback):** Retrieve the hostname of an IP using a fast internal database, live DNS lookup, or a fallback of both. Useful for reverse DNS auditing and attribution.
 11. **Client Environment Profiling:** Gain insights into the client's device, browser, and operating system to support adaptive UI/UX and environment-specific optimizations.
-12. **Timezone Synchronization:** Display times and dates in the local timezone for events, posts, or deadlines, ensuring clarity and consistency for global users.
+12. **Timezone Synchronization:** Display times and dates in the local time zone for events, posts, or deadlines, ensuring clarity and consistency for global users.
 13. **Language and Currency Customization:** Automatically display content in the user's language and currency based on their geographic location.
 
 > [!TIP]
@@ -142,7 +142,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 | `saveToSessionStorage` | boolean | Caches successful responses for the same endpoint, request options and API key. API keys are hashed in cache identifiers. Requests continue without caching if browser storage is unavailable, or if an API key is used and Web Crypto is unavailable. |
 
 > [!NOTE]
-> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only the `security` object. It does not support geolocation, timezone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
+> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only the `security` object. It does not support geolocation, time zone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
 
 ---
 

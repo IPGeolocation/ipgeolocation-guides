@@ -1,4 +1,4 @@
-# Astronomy API Client Side Plugin 
+# Astronomy API Client-Side Plugin 
 
 ## Overview
 Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period times in combination with location information. One can get the [astronomy information](https://ipgeolocation.io/astronomy-api.html) from any IP address, geo-coordinates, or street address right in your web application. It is recommended to use the request origin feature (available only in paid plans) to ensure your API key is not exposed publicly. You can add your request origin (your website domain) by logging into your account at [IPGeolocation.io](https://app.ipgeolocation.io/login).

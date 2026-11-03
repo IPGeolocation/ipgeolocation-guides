@@ -29,7 +29,7 @@ It exposes five tables mapped to the IPGeolocation.io v3 endpoints.
 
 | Table | API Endpoint | What It Returns |
 |---|---|---|
-| `ipgeolocation_ip_geolocation` | `/v3/ipgeo` | Country, state, city, coordinates, timezone, currency, ASN, company, network and CDN data, with optional security, abuse, accuracy, DMA code and hostname |
+| `ipgeolocation_ip_geolocation` | `/v3/ipgeo` | Country, state, city, coordinates, time zone, currency, ASN, company, network and CDN data, with optional security, abuse, accuracy, DMA code and hostname |
 | `ipgeolocation_ip_security` | `/v3/security` | Threat score, VPN, proxy, residential proxy, Tor, relay, bot, spam, cloud and corporate gateway detection |
 | `ipgeolocation_abuse_contact` | `/v3/abuse` | Abuse team name, emails, phone numbers and postal address for the network block |
 | `ipgeolocation_asn` | `/v3/asn` | AS name, organization, RIR, allocation status, route counts, with peers, upstreams, downstreams, routes and WHOIS on request |
@@ -186,7 +186,7 @@ Key columns:
 | `asn_rir` | text | ARIN, RIPE, APNIC, LACNIC or AFRINIC. Paid |
 | `company_name` | text | Company operating the IP. Paid |
 | `company_domain` | text | Company domain. Paid |
-| `timezone_name` | text | IANA timezone name |
+| `timezone_name` | text | IANA time zone name |
 | `timezone_offset` | double | UTC offset in hours; fractional values are possible |
 | `timezone_offset_with_dst` | double | UTC offset in hours including DST; fractional values are possible |
 | `timezone_is_dst` | boolean | DST currently in effect |
@@ -234,7 +234,7 @@ Threat intelligence for each IP in `ips`. Requires a paid plan and costs 2 credi
 | `bot_confidence_score` | integer | Bot detection confidence |
 | `bot_operator_name` | text | Who runs the bot |
 | `bot_type` | text | Bot classification |
-| `is_known_good_bot` | boolean | Declared, well behaved crawler |
+| `is_known_good_bot` | boolean | Declared, well-behaved crawler |
 | `bot_last_seen` | text | Date last seen as a bot |
 | `is_spam` | boolean | On spam block lists |
 | `is_cloud_provider` | boolean | Cloud or hosting infrastructure |
@@ -673,7 +673,7 @@ go test ./... -v
 
 The suite runs against a stub HTTP server, so it needs no API key, works offline and spends no credits. It covers spec validation, retry and rate limiting behavior, response flattening for all five tables, and a check that every documented API field reaches a column.
 
-The repository also ships eight example configs under `example/`, covering the free plan, security focused syncs, ASN topology, user agent parsing, edge cases such as IPv6 and bogons, a PostgreSQL destination, and caller IP auto detection.
+The repository also ships eight example configs under `example/`, covering the free plan, security-focused syncs, ASN topology, user agent parsing, edge cases such as IPv6 and bogons, a PostgreSQL destination, and caller IP auto-detection.
 
 ---
 

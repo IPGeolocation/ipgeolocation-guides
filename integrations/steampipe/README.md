@@ -29,7 +29,7 @@ The plugin exposes four tables that map to IPGeolocation.io's core API endpoints
 
 | Table | API Endpoint | What It Returns |
 |---|---|---|
-| `ipgeolocation_ip` | `/v3/ipgeo` | Country, city, ISP, timezone, company, security flags, hostname, abuse contact |
+| `ipgeolocation_ip` | `/v3/ipgeo` | Country, city, ISP, time zone, company, security flags, hostname, abuse contact |
 | `ipgeolocation_security` | `/v3/security` | VPN, proxy, Tor, relay, bot, spam detection, and threat score |
 | `ipgeolocation_abuse` | `/v3/abuse` | Abuse contact emails, phone, organization, CIDR route |
 | `ipgeolocation_asn` | `/v3/asn` | AS number, routes, peers, upstreams, downstreams, WHOIS |
@@ -113,7 +113,7 @@ If you see a row for 8.8.8.8 containing its geolocation and company information,
 
 ### `ipgeolocation_ip`
 
-This is the main table. It returns geolocation, network, timezone, company, security, abuse, and hostname data for any IP address.
+This is the main table. It returns geolocation, network, time zone, company, security, abuse, and hostname data for any IP address.
 
 **Required filter:** `WHERE ip = '<address>'`
 
@@ -148,7 +148,7 @@ This is the main table. It returns geolocation, network, timezone, company, secu
 | asn | text | Autonomous System Number |
 | organization | text | ASN organization |
 | connection_type | text | Connection type |
-| timezone_name | text | IANA timezone name |
+| timezone_name | text | IANA time zone name |
 | timezone_offset | bigint | UTC offset (seconds) |
 | timezone_offset_with_dst | bigint | UTC offset incl. DST |
 | timezone_current_time | text | Current local time |
@@ -618,7 +618,7 @@ The `route` column returns the CIDR block that the IP belongs to, which is usefu
 
 ### Timezone Routing for Scheduled Jobs
 
-If you are building a scheduling system that needs to assign jobs based on a user's timezone, you can query the timezone data for their IP.
+If you are building a scheduling system that needs to assign jobs based on a user's time zone, you can query the time zone data for their IP.
 
 ```sql
 select
@@ -634,7 +634,7 @@ where
   ip = '202.12.29.1';
 ```
 
-The `timezone_name` column returns a valid IANA timezone string that you can pass directly to your application's time handling library.
+The `timezone_name` column returns a valid IANA time zone string that you can pass directly to your application's time handling library.
 
 ---
 
