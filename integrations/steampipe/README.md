@@ -44,7 +44,7 @@ Before you start, you need:
 
 - [Steampipe](https://steampipe.io/downloads) version 0.20 or higher
 - [Go](https://golang.org/dl/) 1.21 or higher (only if building from source)
-- An IPGeolocation.io API key. Get a free key at [app.ipgeolocation.io/dashboard](https://app.ipgeolocation.io/dashboard). The free plan supports up to 1,000 requests per day.
+- An IPGeolocation.io API key. Get a free key at [app.ipgeolocation.io/dashboard](https://app.ipgeolocation.io/dashboard). The free plan includes 1,000 credits a day, reset at 00:00 UTC.
 
 ---
 
