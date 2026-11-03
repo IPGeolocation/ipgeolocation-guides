@@ -329,7 +329,7 @@ Parses each string in `user_agents`. The table is skipped when the list is empty
 |---|---|---|
 | `user_agent_string` | text | The raw string that was parsed |
 | `name` | text | Client name, such as Chrome or Googlebot |
-| `type` | text | Client type: browser, bot, library |
+| `type` | text | User-agent classification returned by the API, such as Browser, Robot Mobile, or Hacker. Values are preserved exactly; see the User Agent API's [type reference](https://ipgeolocation.io/documentation/user-agent-api.html#possible-values-of-the-user-agent-type) for the full list. |
 | `version` | text | Full version |
 | `version_major` | text | Major version |
 | `device_name` | text | Device model |
