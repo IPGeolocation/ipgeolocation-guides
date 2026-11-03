@@ -16,7 +16,7 @@ The Pipedream integration exposes **12 ready-to-use actions** that map directly 
 
 ### Get your API key
 
-1. Sign up at [IPGeolocation.io](https://app.ipgeolocation.io/signup). A free plan is available with 1,000 lookups per day.
+1. Sign up at [IPGeolocation.io](https://app.ipgeolocation.io/signup). A free plan is available with 1,000 credits a day, reset at 00:00 UTC.
 2. After logging in, copy your **API Key** from the dashboard.
 
 ### Connect IPGeolocation.io to Pipedream
