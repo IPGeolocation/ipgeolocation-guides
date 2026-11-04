@@ -171,16 +171,16 @@ Following IPGeolocation.io databases are supported in the IPGeolocation.io App f
 | Standard | IP to City |
 | Standard | IP to ISP |
 | Standard | IP to City & ISP |
-| Advance | IP to City |
-| Advance | IP Abuse Contact |
-| Advance | IP to ASN |
-| Advance | IP to ASN (Extended) |
-| Advance | IP to Company |
-| Advance | IP WHOIS |
-| Advance | IP to City, Company & ASN |
-| Advance | IP to ASN & Company |
-| Advance | IP to City, ASN, Company & Abuse |
-| Advance | IP to City, Company, ASN, Abuse & Security |
+| Advanced | IP to City |
+| Advanced | IP Abuse Contact |
+| Advanced | IP to ASN |
+| Advanced | IP to ASN (Extended) |
+| Advanced | IP to Company |
+| Advanced | IP WHOIS |
+| Advanced | IP to City, Company & ASN |
+| Advanced | IP to ASN & Company |
+| Advanced | IP to City, ASN, Company & Abuse |
+| Advanced | IP to City, Company, ASN, Abuse & Security |
 | Security Pro | IP Security |
 | Security Pro | IP Residential Proxy |
 | Security Pro | IP Hosting Provider |
