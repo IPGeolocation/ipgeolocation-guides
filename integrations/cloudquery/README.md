@@ -42,7 +42,7 @@ Nested API responses are flattened into columns, so `security.vpn_provider_names
 ## Prerequisites
 
 - [CloudQuery CLI](https://docs.cloudquery.io/docs/quickstart) v5 or later
-- [Go 1.22.7](https://go.dev/dl/) or later, to build the plugin binary
+- [Go 1.27.3](https://go.dev/dl/) or Go 1.26.10, to build the plugin binary
 - An IPGeolocation.io API key. The free Developer plan allows 1,000 credits per day and covers the geolocation table. Get one from [signing up here](https://app.ipgeolocation.io/signup), no card required.
 - A destination you can write to. SQLite needs nothing beyond a file path, which makes it the easiest way to try this out.
 
@@ -130,7 +130,8 @@ Two rows, one for each IP, mean the key, the plugin and the destination are all 
 | `hostname_lookup` | string | `fallback_live` | Resolution mode: `database`, `live` or `fallback_live` |
 | `asn_include` | list of strings | `[]` | Optional ASN modules: `peers`, `upstreams`, `downstreams`, `routes`, `whois_response`, or `"*"` |
 | `endpoint` | string | `https://api.ipgeolocation.io` | API base URL |
-| `timeout` | string | `30s` | Per request HTTP timeout |
+| `timeout` | string | `30s` | How long to wait for one API request, such as `30s` or `1m`. Must be greater than zero. |
+| `max_response_mb` | integer | `256` | Largest response to read, in MB. Increase this for large ASN results. Must be a positive whole number. |
 | `retry_attempts` | int | `3` | Retries for 429 and 5xx responses |
 | `concurrency` | int | `10` | Tables synced in parallel |
 | `rate_limit` | int | `15` | Maximum API requests per second |
@@ -757,5 +758,5 @@ No. Every sync makes fresh API calls. To spend less, sync less often or shorten 
 
 <details>
 <summary><strong>Which Go version do I need?</strong></summary>
-Go 1.22.7 or later, matching the `go` directive in `go.mod`.
+Use Go 1.27.3 or Go 1.26.10.
 </details>
