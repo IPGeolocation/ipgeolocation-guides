@@ -1,7 +1,7 @@
-# IPGeolocation Shopify Integration Guide
+# IPGeolocation.io Shopify Integration Guide
 ## Overview
 
-**IPGeolocation** is a free, powerful Shopify app by [**IPGeolocation.io**](https://ipgeolocation.io) that sends each visitor to the store, language and currency for their country. Whether you manage multiple markets within one Shopify store or operate separate stores, it automatically detects your visitors' locations and guides them to the right storefront, in their preferred language and with the correct experience.
+[**IPGeolocation.io**](https://ipgeolocation.io) is a free Shopify app that sends each visitor to the store, language and currency for their country. Whether you manage multiple markets within one Shopify store or operate separate stores, it automatically detects your visitors' locations and guides them to the right storefront, in their preferred language and with the correct experience.
 
 ### Who Is This App For?
 Our app is ideal for Shopify merchants who:
@@ -11,7 +11,7 @@ Our app is ideal for Shopify merchants who:
 *   Run multiple Shopify stores (EU, US, UK, etc.).
 *   Use Shopify Markets and want smarter geolocation handling.
 
-Whether you're a small business testing new regions or an established brand with global operations, IPGeolocation makes cross-border shopping feel natural and intuitive.
+Whether you're a small business testing new regions or an established brand with global operations, IPGeolocation.io makes cross-border shopping feel natural and intuitive.
 
 ---
 
@@ -27,20 +27,20 @@ Whether you're a small business testing new regions or an established brand with
 *   **UTM Tracking Support:** Preserve marketing attribution across redirects for accurate campaign tracking.
 
 > [!NOTE] 
-> Unlike other apps that charge for store connections and translations, IPGeolocation offers these features completely free (up to 3 connected stores).
+> Unlike other apps that charge for store connections and translations, IPGeolocation.io offers these features completely free (up to 3 connected stores).
 
 ---
 
 ## Getting Started
 
-This guide will walk you through installing IPGeolocation shopify app and completing your initial setup. The entire process takes just a few minutes.
+This guide will walk you through installing the IPGeolocation.io Shopify app and completing your initial setup. The entire process takes just a few minutes.
 
 ### Installation
-**1**.  **Install from Shopify App Store:** You can install the app directly from the Shopify App Store by visiting [IPGeolocation](https://apps.shopify.com/ipgeolocation-1) and clicking **Install**. You'll be redirected to your Shopify admin to approve permissions.
+**1**.  **Install from Shopify App Store:** You can install the app directly from the Shopify App Store by visiting [IPGeolocation.io](https://apps.shopify.com/ipgeolocation-1) and clicking **Install**. You'll be redirected to your Shopify admin to approve permissions.
 
-![IPGeolocation Shopify App](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/app_store.png)
+![IPGeolocation.io Shopify App](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/app_store.png)
     
-**2.**  **Access the Dashboard:** Once installed, open the app from your Shopify admin under **Apps > IPGeolocation**.
+**2.**  **Access the Dashboard:** Once installed, open the app from your Shopify admin under **Apps > IPGeolocation.io**.
 
 ### Initial Setup Checklist
 When you first open the app, a progress bar at the top of your dashboard will track three essential tasks:
@@ -68,7 +68,7 @@ The popup and market selector are configured through Shopify's **Theme Editor**,
 
 ## Dashboard & Analytics
 
-The IPGeolocation shopify app dashboard is your command center for monitoring visitor activity and market settings.
+The IPGeolocation.io Shopify app dashboard is your command center for monitoring visitor activity and market settings.
 
 ### Key Metrics
 *   **Geolocation Lookups:** Total times the app has detected a visitor's location. This indicates your total traffic volume processed by the app.
@@ -168,7 +168,7 @@ These stores are linked together. You can disconnect a store at any time to retu
 
 > [!IMPORTANT] 
 > - `Limit`: You can connect up to **3 stores** for free.
-> - `App Requirement`: IPGeolocation must be installed on *all* participating stores.
+> - `App Requirement`: IPGeolocation.io must be installed on *all* participating stores.
 > - `Disconnection`: Disconnecting removes the link but deletes no data.
 
 ---
@@ -194,7 +194,7 @@ The selector allows users to manually switch markets (e.g., in the Footer or Hea
 *   **Modal Selector:** A floating button or link that opens a popup window when clicked.
     *   *Easier Setup:* Does not require finding CSS classes.
 
-![IPGeolocation app embeds](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/app_embeds.png)
+![IPGeolocation.io app embeds](https://static.ipgeolocation.io/web-assets/images/integrations/shopify/app_embeds.png)
 
 ---
 
@@ -222,17 +222,17 @@ The selector allows users to manually switch markets (e.g., in the Footer or Hea
 ## Frequently Asked Questions
 
 <details>
-<summary><strong>Is the IPGeolocation shopify app really free?</strong></summary>
+<summary><strong>Is the IPGeolocation.io Shopify app really free?</strong></summary>
 Yes, it is completely free. You can connect up to three stores, create unlimited translations, and use all features at no cost. There are no hidden fees or premium tiers.
 </details>
 
 <details>
 <summary><strong>Does it work with Shopify Markets?</strong></summary>
-Yes, IPGeolocation is fully compatible with Shopify Markets. If you manage multiple markets within one store, the app detects them automatically and handles the redirection logic.
+Yes, IPGeolocation.io is fully compatible with Shopify Markets. If you manage multiple markets within one store, the app detects them automatically and handles the redirection logic.
 </details>
 
 <details>
-<summary><strong>Can I use IPGeolocation with separate Shopify stores?</strong></summary>
+<summary><strong>Can I use IPGeolocation.io with separate Shopify stores?</strong></summary>
 Yes, the Connect Stores feature allows you to link up to three separate Shopify stores together. Visitors are redirected to the connected store that serves their country.
 </details>
 

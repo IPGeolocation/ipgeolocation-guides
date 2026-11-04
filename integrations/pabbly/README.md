@@ -242,7 +242,7 @@ Retrieves abuse contact information for an IP address. Requires a `paid` plan.
 
 Returns time zone and related location/airport information. The action accepts several lookup inputs, so you provide whichever identifies your target.
 
-- Lookup inputs (provide one): Timezone name in IANA format (for example `America/Los_Angeles`), Location as a city or state level address, Latitude and Longitude together, IP address, IATA airport code, ICAO airport code, or UN/LOCODE. If none is provided, the caller IP is used. When more than one is supplied, the API resolves in this order: time zone name, coordinates, location, IP, IATA, ICAO, UN/LOCODE.
+- Lookup inputs (provide one): Time zone name in IANA format (for example `America/Los_Angeles`), Location as a city or state level address, Latitude and Longitude together, IP address, IATA airport code, ICAO airport code, or UN/LOCODE. If none is provided, the caller IP is used. When more than one is supplied, the API resolves in this order: time zone name, coordinates, location, IP, IATA, ICAO, UN/LOCODE.
 - Optional input: **Language** (paid only) for the location text.
 - Output: the `time_zone` object, including `name`, `offset`, `offset_with_dst`, `current_time`, `current_time_unix`, current and standard abbreviations and full names, `is_dst`, and the DST transition details. The response also includes enrichment based on the input type: geolocation for an IP, location metadata for an address, airport details for IATA or ICAO codes, and lo_code details for a UN/LOCODE. See the [Time Zone field reference](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response).
 

@@ -378,7 +378,7 @@ Returns sunrise, sunset, moonrise, moonset, solar noon, and moon phase for a giv
 | Latitude | No | Must be paired with Longitude |
 | Longitude | No | Must be paired with Latitude |
 | Location | No | City/country string |
-| Timezone | No | Timezone for result times |
+| Timezone | No | Time zone for result times |
 | Language | No | Response language (defaults to `en`) |
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/get-astronomy.png)
@@ -406,7 +406,7 @@ Returns astronomy data (sunrise, sunset, moonrise, moonset, moon phase) for ever
 | Latitude | No | Must be paired with Longitude |
 | Longitude | No | Must be paired with Latitude |
 | Location | No | City/country string |
-| Timezone | No | Timezone for result times |
+| Timezone | No | Time zone for result times |
 | Language | No | Response language |
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/pipedream/get-astronomy-timeseries.png)
@@ -426,7 +426,7 @@ Every action's JSON response is accessible in downstream steps via `steps.<actio
 |---|---|
 | Country name | `steps.get_geolocation.$return_value.location.country_name` |
 | City | `steps.get_geolocation.$return_value.location.city` |
-| Timezone name | `steps.get_geolocation.$return_value.time_zone.name` |
+| Time zone name | `steps.get_geolocation.$return_value.time_zone.name` |
 | Is EU visitor | `steps.get_geolocation.$return_value.location.is_eu` |
 | Currency code | `steps.get_geolocation.$return_value.currency.code` |
 | Calling code | `steps.get_geolocation.$return_value.country_metadata.calling_code` |
@@ -468,7 +468,7 @@ Every action's JSON response is accessible in downstream steps via `steps.<actio
 
 **Trigger:** New subscriber added to mailing list  
 **Steps:**
-1. **Get Timezone** (by IP) — detect subscriber's local timezone
+1. **Get Timezone** (by IP) — detect subscriber's local time zone
 2. **Convert Timezone** — convert your send time from UTC to local time
 3. Schedule the email send via your ESP (e.g., Mailchimp, SendGrid)
 
