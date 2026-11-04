@@ -1,4 +1,4 @@
-# Real-Time Proxy & VPN Detection
+# Real-Time Proxy & VPN Detection Documentation
 
 ## Overview
 
