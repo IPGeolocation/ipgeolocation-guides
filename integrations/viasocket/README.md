@@ -47,7 +47,7 @@ To connect IPGeolocation.io with viaSocket, you need a valid API Key. Follow the
 
 ### **Open viaSocket and create a Workflow**
 
-* Go to [viasocket.com](http://viasocket.com) and log in.  
+* Go to [viasocket.com](https://viasocket.com) and log in.  
 * Get into the created Workspace.  
 * Click **“Create new workflow”** from your dashboard.  
 * You will see a canvas where you can add Trigger and actions (actions that perform tasks).
