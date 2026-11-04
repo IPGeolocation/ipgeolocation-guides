@@ -132,7 +132,7 @@ Retrieves geolocation for up to 50,000 IPs per request.
 Security insights such as proxy, VPN, Tor, Relay, threat score, cloud and proxy providers.
 
 - **Input:** IP Address
-- **Outputs:** security.is_proxy, security.is_vpn, security.is_relay, security.is_tor, security.threat_score, security.is_cloud_provider and [more](https://ipgeolocation.io/documentation/ip-security-api.html#security-json-object-reference)
+- **Outputs:** security.is_proxy, security.is_vpn, security.is_relay, security.is_tor, security.threat_score, security.is_cloud_provider and [more security fields](https://ipgeolocation.io/documentation/ip-security-api.html#security-json-object-reference)
 
 **Bulk IP Security Lookup**
 
@@ -150,7 +150,7 @@ Security assessment for multiple IPs.
 Provides a simple way to retrieve accurate information about an Autonomous System Number (ASN) and its associated IPv4 and IPv6 address ranges.
 
 - **Input:** IP or ASN number
-- **Outputs:** asn.as_number, asn.organization and [more](https://ipgeolocation.io/documentation/asn-api.html#reference-to-asn-api-response)
+- **Outputs:** asn.as_number, asn.organization and [more ASN fields](https://ipgeolocation.io/documentation/asn-api.html#reference-to-asn-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/asn.png)
 
@@ -159,7 +159,7 @@ Provides a simple way to retrieve accurate information about an Autonomous Syste
 Includes details such as the role, handle, organization name, kind (e.g., group or individual), and postal address. This information helps identify the entity responsible for handling abuse reports.
 
 - **Input:** IP Address
-- **Outputs:** abuse.emails, abuse.kind and [more](https://ipgeolocation.io/documentation/ip-abuse-contact-api.html#reference-to-abuse-contact-api-response)
+- **Outputs:** abuse.emails, abuse.kind and [more abuse contact fields](https://ipgeolocation.io/documentation/ip-abuse-contact-api.html#reference-to-abuse-contact-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/abuse.png)
 
@@ -178,7 +178,7 @@ It can be consumed with the following input variations:
 - For any IATA code
 - For any ICAO code
 - For any UN/LO Code
-- **Outputs:** time_zone.name, time_zone.current_time, time_zone.date_time_wti and [more](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response)
+- **Outputs:** time_zone.name, time_zone.current_time, time_zone.date_time_wti and [more time zone fields](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/timezone.png)
 
@@ -220,7 +220,7 @@ Provides detailed client system information, allowing for the detection of bots,
 **Parse User Agent String**
 
 - **Input:** User agent string
-- **Outputs:** provides name, device and operating system [information](https://ipgeolocation.io/documentation/user-agent-api.html#reference-to-user-agent-api-response).
+- **Outputs:** provides name, device and [operating system information](https://ipgeolocation.io/documentation/user-agent-api.html#reference-to-user-agent-api-response).
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/user-agent.png)
 
