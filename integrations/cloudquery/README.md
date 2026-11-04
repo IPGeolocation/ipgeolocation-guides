@@ -42,7 +42,7 @@ Nested API responses are flattened into columns, so `security.vpn_provider_names
 ## Prerequisites
 
 - [CloudQuery CLI](https://docs.cloudquery.io/docs/quickstart) v5 or later
-- [Go](https://go.dev/dl/) 1.22.7 or later, to build the plugin binary
+- [Go 1.22.7](https://go.dev/dl/) or later, to build the plugin binary
 - An IPGeolocation.io API key. The free Developer plan allows 1,000 credits per day and covers the geolocation table. Get one from [signing up here](https://app.ipgeolocation.io/signup), no card required.
 - A destination you can write to. SQLite needs nothing beyond a file path, which makes it the easiest way to try this out.
 

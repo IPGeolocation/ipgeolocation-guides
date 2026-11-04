@@ -43,7 +43,7 @@ Each table requires an `ip` filter in the `WHERE` clause. You pass an IPv4 or IP
 Before you start, you need:
 
 - [Steampipe](https://steampipe.io/downloads) version 0.20 or higher
-- [Go](https://golang.org/dl/) 1.21 or higher (only if building from source)
+- [Go 1.21](https://golang.org/dl/) or higher (only if building from source)
 - An IPGeolocation.io API key. Get a free key at [app.ipgeolocation.io/dashboard](https://app.ipgeolocation.io/dashboard). The free plan includes 1,000 credits a day, reset at 00:00 UTC.
 
 ---
@@ -709,7 +709,7 @@ If you want to develop the plugin or run the latest unreleased code, you can bui
 **Prerequisites:**
 
 - [Steampipe](https://steampipe.io/downloads) version 0.20 or higher
-- [Go](https://golang.org/dl/) 1.21 or higher
+- [Go 1.21](https://golang.org/dl/) or higher
 
 **Clone, build, and install:**
 
