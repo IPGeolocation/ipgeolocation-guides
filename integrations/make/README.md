@@ -58,7 +58,7 @@ To use IPGeolocation.io with **Make**, you need a valid **API Key**. Follow thes
 ### Set up the connection
 
 - In the module settings, find the **Connection** field and click **Add**.
-- Enter a descriptive **Connection Name** (for example, “IPGeolocation API”).
+- Enter a descriptive **Connection Name** (for example, “IPGeolocation.io”).
 - Paste the **API Key** you copied earlier into the required field.
 - Click **Save** to authenticate the connection.
 

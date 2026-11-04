@@ -947,6 +947,6 @@ Sample error response:
 
 
 > [!NOTE]
-> More information about error codes and messages can be found in the [error codes](https://ipgeolocation.io/documentation/ip-location-api.html#error-codes) section of our documentation. For detailed API documentation and additional features, please refer to the official [IPGeolocation API documentation](https://ipgeolocation.io/documentation.html).
+> More information about error codes and messages can be found in the [error codes](https://ipgeolocation.io/documentation/ip-location-api.html#error-codes) section of our documentation. For detailed API documentation and additional features, please refer to the official [IPGeolocation.io API documentation](https://ipgeolocation.io/documentation.html).
 >
 > For details specific to the IP Security API, including security checks and threat intelligence fields, please refer to the [IP Security API documentation](https://ipgeolocation.io/documentation/ip-security-api.html).
