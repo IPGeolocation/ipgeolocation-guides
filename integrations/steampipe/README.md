@@ -34,7 +34,7 @@ The plugin exposes four tables that map to IPGeolocation.io's core API endpoints
 | `ipgeolocation_abuse` | `/v3/abuse` | Abuse contact emails, phone, organization, CIDR route |
 | `ipgeolocation_asn` | `/v3/asn` | AS number, routes, peers, upstreams, downstreams, WHOIS |
 
-Each table requires an `ip` filter in the `WHERE` clause. You pass an IPv4 or IPv6 address, and the plugin fetches the data from the API and returns it as a row you can work with in SQL.
+Use an `ip` filter for an IP lookup. The `ipgeolocation_asn` table also accepts an `asn` filter, such as `WHERE asn = 'AS15169'`. You pass an IPv4 or IPv6 address, and the plugin fetches the data from the API and returns it as a row you can work with in SQL.
 
 ---
 
@@ -282,7 +282,7 @@ where
 
 Returns Autonomous System Number (ASN) details for an IP address, including routing information, peers, upstreams, downstreams, and WHOIS data.
 
-**Required filter:** `WHERE ip = '<address>'`
+**Lookup filters:** `WHERE ip = '<address>'` or `WHERE asn = '<AS number>'`
 
 **Key columns:**
 
@@ -762,7 +762,7 @@ No. The free Developer plan gives you 1,000 credits a day, and you can use it in
 
 <details>
 <summary><strong>Why does my query return no rows?</strong></summary>
-The most common cause is a missing `WHERE ip = '...'` filter or an incorrectly configured API key. Every table query requires an `ip` filter. Also verify that your API key is configured in `~/.steampipe/config/ipgeolocation.spc` or through the `IPGEOLOCATION_API_KEY` environment variable.
+The most common cause is a missing `WHERE ip = '...'` filter or an incorrectly configured API key. Every table query requires an `ip` filter (`ipgeolocation_asn` also accepts an `asn` filter). Also verify that your API key is configured in `~/.steampipe/config/ipgeolocation.spc` or through the `IPGEOLOCATION_API_KEY` environment variable.
 </details>
 
 <details>
