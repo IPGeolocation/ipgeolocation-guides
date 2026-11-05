@@ -372,7 +372,7 @@ Identify VPN/proxy users in your authentication logs:
 index=auth sourcetype=okta action=success
 | ipsecurity src_ip
 | where 'security.is_vpn'=1 OR 'security.is_proxy'=1
-| stats count by user, src_ip, security.is_vpn, security.is_proxy, location.country_name
+| stats count by user, src_ip, security.is_vpn, security.is_proxy
 | sort -count
 ```
 
