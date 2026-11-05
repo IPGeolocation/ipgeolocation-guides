@@ -95,7 +95,7 @@ export IPGEOLOCATION_API_KEY="your_api_key_here"
 steampipe query
 ```
 
-If both the config file and the environment variable are set, the environment variable takes precedence.
+If `api_key` is set to a nonempty value in the `.spc` connection file, it takes precedence. `IPGEOLOCATION_API_KEY` is used only when `api_key` is unset or empty.
 
 To verify your connection is working, run a test query:
 
