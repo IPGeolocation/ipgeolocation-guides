@@ -456,7 +456,7 @@ This feeds directly into Splunk's Cluster Map visualization. The result shows bl
 index=auth action=success
 | sort 0 _time
 | ipgeolocation src_ip
-| streamstats window=2 current=true by user values(location.country_name) as countries, values(src_ip) as ips, range(_time) as time_diff_secs
+| streamstats window=2 current=true global=false values(location.country_name) as countries values(src_ip) as ips range(_time) as time_diff_secs by user
 | where mvcount(countries) > 1 AND time_diff_secs < 3600
 | eval alert="Impossible travel: " . mvjoin(countries, " -> ") . " within " . round(time_diff_secs/60, 0) . " minutes"
 | table _time, user, ips, countries, time_diff_secs, alert
