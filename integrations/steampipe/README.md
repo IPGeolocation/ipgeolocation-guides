@@ -34,7 +34,7 @@ The plugin exposes four tables that map to IPGeolocation.io's core API endpoints
 | `ipgeolocation_abuse` | `/v3/abuse` | Abuse contact emails, phone, organization, CIDR route |
 | `ipgeolocation_asn` | `/v3/asn` | AS number, routes, peers, upstreams, downstreams, WHOIS |
 
-Each table requires an `ip` filter in the `WHERE` clause. You pass an IPv4 or IPv6 address, and the plugin fetches the data from the API and returns it as a row you can work with in SQL.
+Use an `ip` filter for an IP lookup. The `ipgeolocation_asn` table also accepts an `asn` filter, such as `WHERE asn = 'AS15169'`. You pass an IPv4 or IPv6 address, and the plugin fetches the data from the API and returns it as a row you can work with in SQL.
 
 ---
 
@@ -95,7 +95,7 @@ export IPGEOLOCATION_API_KEY="your_api_key_here"
 steampipe query
 ```
 
-If both the config file and the environment variable are set, the environment variable takes precedence.
+If `api_key` is set to a nonempty value in the `.spc` connection file, it takes precedence. `IPGEOLOCATION_API_KEY` is used only when `api_key` is unset or empty.
 
 To verify your connection is working, run a test query:
 
@@ -149,8 +149,8 @@ This is the main table. It returns geolocation, network, time zone, company, sec
 | organization | text | ASN organization |
 | connection_type | text | Connection type |
 | timezone_name | text | IANA time zone name |
-| timezone_offset | bigint | UTC offset (seconds) |
-| timezone_offset_with_dst | bigint | UTC offset incl. DST |
+| timezone_offset | bigint in v0.1.3; double precision in v0.1.5 | UTC offset in hours |
+| timezone_offset_with_dst | bigint in v0.1.3; double precision in v0.1.5 | UTC offset in hours, including daylight saving time |
 | timezone_current_time | text | Current local time |
 | timezone_is_dst | bool | DST active? |
 | threat_score | bigint | Threat score 0-100 (paid) |
@@ -282,7 +282,7 @@ where
 
 Returns Autonomous System Number (ASN) details for an IP address, including routing information, peers, upstreams, downstreams, and WHOIS data.
 
-**Required filter:** `WHERE ip = '<address>'`
+**Lookup filters:** `WHERE ip = '<address>'` or `WHERE asn = '<AS number>'`
 
 **Key columns:**
 
@@ -686,12 +686,11 @@ Note that each `JOIN` against a different table triggers an additional API call.
 
 ## API Credits Reference
 
-Each query to the IPGeolocation.io API consumes credits from your plan. The number of credits per query depends on which table you query and which data modules you request.
+Each query to the IPGeolocation.io API consumes credits from your plan. Credits depend on the actual API calls made by the plugin. In v0.1.3 and v0.1.5, `ipgeolocation_ip` always requests `include=*`. On a paid plan, this costs 4 credits per successful API call; on the free plan the same request returns the base fields and costs 1 credit. Selecting fewer SQL columns does not reduce that request's credit cost.
 
 | Table | Endpoint | Credits per Query |
 |---|---|---|
-| `ipgeolocation_ip` (base geolocation only) | `/v3/ipgeo` | 1 |
-| `ipgeolocation_ip` (with security module and/or abuse module) | `/v3/ipgeo` | Up to 4 |
+| `ipgeolocation_ip` (plugin always sends `include=*`) | `/v3/ipgeo` | 4 on a paid plan, 1 on the free plan |
 | `ipgeolocation_security` | `/v3/security` | 2 |
 | `ipgeolocation_abuse` | `/v3/abuse` | 1 |
 | `ipgeolocation_asn` | `/v3/asn` | 1 |
@@ -762,7 +761,7 @@ No. The free Developer plan gives you 1,000 credits a day, and you can use it in
 
 <details>
 <summary><strong>Why does my query return no rows?</strong></summary>
-The most common cause is a missing `WHERE ip = '...'` filter or an incorrectly configured API key. Every table query requires an `ip` filter. Also verify that your API key is configured in `~/.steampipe/config/ipgeolocation.spc` or through the `IPGEOLOCATION_API_KEY` environment variable.
+The most common cause is a missing `WHERE ip = '...'` filter or an incorrectly configured API key. Every table query requires an `ip` filter (`ipgeolocation_asn` also accepts an `asn` filter). Also verify that your API key is configured in `~/.steampipe/config/ipgeolocation.spc` or through the `IPGEOLOCATION_API_KEY` environment variable.
 </details>
 
 <details>
