@@ -149,8 +149,8 @@ This is the main table. It returns geolocation, network, time zone, company, sec
 | organization | text | ASN organization |
 | connection_type | text | Connection type |
 | timezone_name | text | IANA time zone name |
-| timezone_offset | bigint | UTC offset (seconds) |
-| timezone_offset_with_dst | bigint | UTC offset incl. DST |
+| timezone_offset | bigint in v0.1.3; double precision in v0.1.5 | UTC offset in hours |
+| timezone_offset_with_dst | bigint in v0.1.3; double precision in v0.1.5 | UTC offset in hours, including daylight saving time |
 | timezone_current_time | text | Current local time |
 | timezone_is_dst | bool | DST active? |
 | threat_score | bigint | Threat score 0-100 (paid) |
