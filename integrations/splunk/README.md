@@ -17,6 +17,9 @@ Both modes are configured from a single setup UI inside Splunk. No Python script
 
 | Splunk |
 | --- |
+| Splunk 10.7 |
+| Splunk 10.6 |
+| Splunk 10.5 |
 | Splunk 10.4 |
 | Splunk 10.3 |
 | Splunk 10.2 |
@@ -244,7 +247,7 @@ The `ipgeolocation` command is the primary lookup command. You pipe your search 
 | `security` | bool | `false` | Include security flags (VPN, proxy, Tor, bot, spam, known attacker). PAID API or security-capable MMDB. |
 | `allinfo` | bool | `false` | Shortcut that enables `liveHostname`, `abuseContact`, `dma`, `geoAccuracy`, and `security` simultaneously. |
 | `prefix` | bool | `false` | Prefix all output field names with the source field name. Automatically set to `true` when multiple IP fields are specified. |
-| `language` | string | `en` | Response language for place names. Supported: `en`, `de`, `ru`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `ko`, `fa`, `pt`. |
+| `language` | string | `en` | Response language for place names. Supported: `en`, `de`, `ru`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `ko`, `fa`, `pt`, `ar`. `ar` (Arabic) works in API mode only; in MMDB mode it falls back to English with a warning. |
 
 **Examples:**
 
