@@ -686,12 +686,11 @@ Note that each `JOIN` against a different table triggers an additional API call.
 
 ## API Credits Reference
 
-Each query to the IPGeolocation.io API consumes credits from your plan. The number of credits per query depends on which table you query and which data modules you request.
+Each query to the IPGeolocation.io API consumes credits from your plan. Credits depend on the actual API calls made by the plugin. In v0.1.3 and v0.1.5, `ipgeolocation_ip` always requests `include=*`. On a paid plan, this costs 4 credits per successful API call; on the free plan the same request returns the base fields and costs 1 credit. Selecting fewer SQL columns does not reduce that request's credit cost.
 
 | Table | Endpoint | Credits per Query |
 |---|---|---|
-| `ipgeolocation_ip` (base geolocation only) | `/v3/ipgeo` | 1 |
-| `ipgeolocation_ip` (with security module and/or abuse module) | `/v3/ipgeo` | Up to 4 |
+| `ipgeolocation_ip` (plugin always sends `include=*`) | `/v3/ipgeo` | 4 on a paid plan, 1 on the free plan |
 | `ipgeolocation_security` | `/v3/security` | 2 |
 | `ipgeolocation_abuse` | `/v3/abuse` | 1 |
 | `ipgeolocation_asn` | `/v3/asn` | 1 |
