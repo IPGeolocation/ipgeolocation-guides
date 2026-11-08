@@ -144,7 +144,7 @@ By default, the plugin waits up to 2 minutes for an API response and accepts res
 | `saveToSessionStorage` | boolean | Caches successful responses for the same endpoint, request options and API key. API keys are hashed in cache identifiers. Requests continue without caching if browser storage is unavailable, or if an API key is used and Web Crypto is unavailable. |
 
 > [!NOTE]
-> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only the `security` object. It does not support geolocation, time zone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
+> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint. `getSecurity()` returns the API response. By default, it includes `ip` and `security`. It does not support geolocation, time zone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
 
 ---
 
@@ -784,7 +784,7 @@ Pass `includeAll: true` to request every available optional module (`security`, 
 ---
 
 ## IPSecurityAPI Examples
-The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only IP threat signals. Use it when you need security data alone. To combine security data with geolocation, use `IPGeolocationAPI` with `includeSecurity: true` instead.
+The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint. `getSecurity()` returns the API response. By default, it includes `ip` and `security`. Use it when you need security data alone. To combine security data with geolocation, use `IPGeolocationAPI` with `includeSecurity: true` instead.
 
 ### Basic Security Lookup
 
