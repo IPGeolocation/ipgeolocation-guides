@@ -33,13 +33,15 @@ Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period
 ## Installation
 To access this service, add the following JavaScript call (usually within `head` block of your pages).
 ```html
-<script language="JavaScript" src="https://static.ipgeolocation.io/astronomy-api-plugin.v3.0.1.js" type="text/javascript"></script>
+<script language="JavaScript" src="https://static.ipgeolocation.io/astronomy-api-plugin.v3.0.2.js" type="text/javascript"></script>
 ```
 
 > [!NOTE]
 > This service will only work when embedded in web pages - no server-side calls will work.
 
 ## Plugin Configurations
+
+By default, the plugin waits up to 2 minutes for an API response and accepts responses up to 16 MiB. If you need a different limit, set `timeoutMs` (milliseconds) or `maxResponseBytes` (bytes) when you create the client. The plugin stops at redirects.
 To instantiate the AstronomyAPI, you can use the following configuration options:
 - `apiKey (optional: string)`: API key used for request authentication. This field is mandatory unless you have added your request origin in the dashboard, in which case it becomes optional.
 - `ipAddress (optional: string)`: Specify an IP address for which you want the astronomical information. If not provided, the client’s IP address is used by default.
@@ -52,7 +54,7 @@ To instantiate the AstronomyAPI, you can use the following configuration options
 - `dateStart (optional: string)`: Start date for a time-series lookup in YYYY-MM-DD format.
 - `dateEnd (optional: string)`: End date for a time-series lookup in YYYY-MM-DD format. The maximum time-series range is 90 days.
 - `lang (optional: string)`: Language of the response. Default is en. Supported languages include: ru, de, ja, fr, cn, es, cs, it, fa, ko, pt, ar.
-- `saveToSessionStorage (optional: boolean)`: Caches successful responses in session storage for the current browser tab. Cache entries are specific to the lookup parameters. Error responses, including network failures, are never cached.
+- `saveToSessionStorage (optional: boolean)`: With `saveToSessionStorage: true`, the plugin reuses a successful result only for the same lookup and API key in this tab. Lookups without a key have a separate cache. If the browser can’t store the result or protect the key, the lookup still works without caching.
 
 > [!TIP]
 > For detailed documentation for the Astronomy API, please visit [https://ipgeolocation.io/documentation/astronomy-api.html#overview](https://ipgeolocation.io/documentation/astronomy-api.html#overview).
@@ -144,7 +146,7 @@ Sample Response:
   }
 }
 ```
-If there is some error while fetching the response from the API, the following response will be returned, so handle it accordingly. `error_status` is the HTTP status code returned by the API, or `0` for network and response-parsing failures:
+If there is some error while fetching the response from the API, the following response will be returned, so handle it accordingly. If the API returns an HTTP error, you still get its status code even if the reply can’t be read. A network failure or an invalid success reply returns `error_status: 0`.
 ```json
 {
   "error_status": 400,
@@ -547,7 +549,9 @@ Sample Response (excerpt):
 ```
 
 ## Error Handling
-Inspect the `error_status` field in the response to detect any errors. A missing `error_status` field indicates a successful request, while its presence signals an issue. HTTP errors return the API status code. Network and response-parsing failures return `error_status: 0`.
+
+The plugin hides your API key when you print a client with `JSON.stringify()` or when an error message repeats it. You can still read the key from `client.apiKey`.
+Inspect the `error_status` field in the response to detect any errors. A missing `error_status` field indicates a successful request, while its presence signals an issue. If the API returns an HTTP error, you still get its status code even if the reply can’t be read. A network failure or an invalid success reply returns `error_status: 0`.
 
 Because `0` is falsy, do not test for success with `!resp.error_status`, as a network failure would pass that check. Check whether the `error_status` property exists instead:
 

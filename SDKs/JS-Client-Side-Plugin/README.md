@@ -85,6 +85,8 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 
 ## Configurations
 
+By default, the plugin waits up to 2 minutes for an API response and accepts responses up to 16 MiB. If you need a different limit, set `timeoutMs` (milliseconds) or `maxResponseBytes` (bytes) when you create the client. The plugin stops at redirects.
+
 ### IPGeolocationAPI: Authentication & Input
 | Option      | Type   | Description                                                                                  |
 |-------------|--------|----------------------------------------------------------------------------------------------|
@@ -142,7 +144,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 | `saveToSessionStorage` | boolean | Caches successful responses for the same endpoint, request options and API key. API keys are hashed in cache identifiers. Requests continue without caching if browser storage is unavailable, or if an API key is used and Web Crypto is unavailable. |
 
 > [!NOTE]
-> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only the `security` object. It does not support geolocation, time zone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
+> The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint. `getSecurity()` returns the API response. By default, it includes `ip` and `security`. It does not support geolocation, time zone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
 
 ---
 
@@ -150,7 +152,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
 To access this service, add the following JavaScript tag (usually within the `<head>` block of your pages).
 
 ```html
-<script src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v3.0.2.js"></script>
+<script src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v3.0.3.js"></script>
 ```
 
 ---
@@ -782,7 +784,7 @@ Pass `includeAll: true` to request every available optional module (`security`, 
 ---
 
 ## IPSecurityAPI Examples
-The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint and returns only IP threat signals. Use it when you need security data alone. To combine security data with geolocation, use `IPGeolocationAPI` with `includeSecurity: true` instead.
+The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint. `getSecurity()` returns the API response. By default, it includes `ip` and `security`. Use it when you need security data alone. To combine security data with geolocation, use `IPGeolocationAPI` with `includeSecurity: true` instead.
 
 ### Basic Security Lookup
 
@@ -917,6 +919,8 @@ Sample Response (`is_tor` and `is_cloud_provider` omitted):
 ---
 
 ## Error Handling
+
+The plugin hides your API key when you print a client with `JSON.stringify()` or when an error message repeats it. You can still read the key from `client.apiKey`.
 Inspect the `error_message` field in the response to detect any errors. A missing `error_message` typically indicates a successful request, while its presence signals an issue. For example, if you are using a free plan and trying to request security information, you will encounter an error as shown below:
 
 ```html
