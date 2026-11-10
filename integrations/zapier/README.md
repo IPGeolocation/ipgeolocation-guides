@@ -15,9 +15,9 @@ It allows you to automate retrieval of:
 - Astronomy information such as sunrise and sunset
 - User agent details including browser, operating system, and device type
 
-The integration includes **12 Action Modules**, grouped into 6 core categories:
+The integration includes **12 actions**, grouped into 6 core categories:
 
-| **Category** | **Modules** |
+| **Category** | **Actions** |
 | --- | --- |
 | **Geolocation** | Find Geolocation Information, Find Bulk IP Geolocation |
 | **IP Security** | Find IP Security, Find Bulk IP Security |
@@ -45,19 +45,19 @@ To use IPGeolocation.io with **Zapier**, you need a valid **API Key**. Follow th
 
 - Go to [zapier.com](https://www.zapier.com/) and log in.
 - Click **Create a new zap** from your dashboard.
-- You will see a canvas where you can add modules (actions that perform tasks).
+- You will see the Zap editor, where you add a trigger and the action steps that run after it.
 
-### Add an IPGeolocation.io module
+### Add an IPGeolocation.io action
 
-- Click the action button to add a module.
-- Search for **IPGeolocation** in the module search bar.
-- Select any action event (e.g., **Find Geolocation Information** or **Find IP Security**).
+- In the Zap editor, add an **Action** step.
+- Search for **IPGeolocation.io** and select the app.
+- Choose the action event you want to run (e.g., **Find Geolocation Information** or **Find IP Security**).
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/add-ipgeolocation.png)
 
 ### Set up the connection
 
-- In the module settings, find the **account** field and click **Sign in**.
+- In the **Account** field, sign in or select your connected IPGeolocation.io account.
 - Paste the **API Key** you copied earlier into the required field.
 - Click **Yes, Continue to IPGeolocation.io** to authenticate the connection.
 
@@ -73,7 +73,7 @@ To use IPGeolocation.io with **Zapier**, you need a valid **API Key**. Follow th
 
 ### Use your connection
 
-- Once connected, this API Key is available for **all IPGeolocation.io modules** in your Zaps.
+- Once connected, this API Key is available for **all IPGeolocation.io actions** in your Zaps.
 - You can now use it to perform actions like **Find Geolocation Information**, **Find User Agent**, or **Find** **Bulk IP Geolocation**, depending on your API plan.
 
 ---
@@ -103,9 +103,9 @@ For full pricing details and to choose your plan, see the [pricing page](https:/
 
 ---
 
-## Modules
+## Actions
 
-Below is a structured reference of all modules in this integration.
+Below is a structured reference of all actions in this integration.
 
 ### **Geolocation**
 
@@ -236,7 +236,7 @@ Provides detailed client system information, allowing for the detection of bots,
 
 ### **Geo‑Targeted Content Blocking**
 
-**Modules:** IP Geolocation, Filters, CMS Tool (WordPress, Webflow)
+**Steps:** IP Geolocation, Filters, CMS Tool (WordPress, Webflow)
 
 **Scenario:** Restrict certain content to specific countries.
 
@@ -249,7 +249,7 @@ Provides detailed client system information, allowing for the detection of bots,
 
 ### **Real-Time Analytics & Dashboard Enrichment**
 
-**Modules:** IP Geolocation, Google Sheets/Databases, Formatter
+**Steps:** IP Geolocation, Google Sheets/Databases, Formatter
 
 **Scenario:** Add location data for website visitors in analytics dashboards.
 
@@ -262,7 +262,7 @@ Provides detailed client system information, allowing for the detection of bots,
 
 ### **Automated Security Alerts for Suspicious Logins**
 
-**Modules:** IP Geolocation, Security Lookup, Slack/Email
+**Steps:** IP Geolocation, Security Lookup, Slack/Email
 
 **Scenario:** Detect logins from unusual locations and alert security team.
 
@@ -276,7 +276,7 @@ Provides detailed client system information, allowing for the detection of bots,
 
 ### **Time-Zone Aware Customer Support Routing**
 
-**Modules:** IP Geolocation, Timezone Info, CRM/Support Tool (Zendesk, Freshdesk)
+**Steps:** IP Geolocation, Timezone Info, CRM/Support Tool (Zendesk, Freshdesk)
 
 **Scenario:** Assign tickets to agents in the customer’s local time zone.
 
