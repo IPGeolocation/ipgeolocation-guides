@@ -86,7 +86,7 @@ Create a [country redirect rule](#country-redirect-rules) with **Country code** 
 
 ### Send shoppers to a regional page on the same site
 
-Set **Country code** to `CA`, **Apply to** to Entire site and **Redirect URL** to a path such as `/ca/`. The destination page itself is never redirected, so there is no loop, and WooCommerce cart, checkout and account pages are [never redirected](#pages-that-are-never-redirected), so nobody is bounced mid-purchase.
+Create a rule with **Country code** set to `CA`, **Apply to** set to Entire site and **Redirect URL** set to a path such as `/ca/`. The destination page itself is never redirected, so there is no loop, and WooCommerce cart, checkout and account pages are [never redirected](#pages-that-are-never-redirected), so nobody is bounced mid-purchase.
 
 ### Ask visitors before redirecting them
 
