@@ -225,7 +225,7 @@ These workflows show how to chain transforms together for real investigative sce
 
 This is the most common issue and has a few distinct causes.
 
-**Plan restriction** — Four transforms (IP to Threat Profile, IP to ASN, IP to Abuse Contact, IP to Company Intel ) are unavailable on the free plan. When called, they fail silently — no error is shown and no entities are added to the graph. Check the [plan comparison table](#transforms-availability-across-our-plans) and verify your subscription in the [dashboard](https://app.ipgeolocation.io/dashboard).
+**Plan restriction** — Four transforms (IP to Threat Profile, IP to ASN, IP to Abuse Contact, IP to Company Intel) are unavailable on the free plan. When called, they fail silently — no error is shown and no entities are added to the graph. Check the [plan comparison table](#transforms-availability-across-our-plans) and verify your subscription in the [dashboard](https://app.ipgeolocation.io/dashboard).
 
 **Invalid or missing API key** — If your API key is not configured correctly in Maltego's transform settings, all transforms will return empty results with 401 status code; you can see this in the output window of the transform.
 
