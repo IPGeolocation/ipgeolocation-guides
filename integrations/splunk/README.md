@@ -135,7 +135,7 @@ Select _Fetch Details via Rest API_ in the Lookup Method to use your API subscri
 
 ![Lookup_Method_API](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/lookup_method_api.png)
 
-Rest of the fields are optional in case of using the API. However, to access IPGeolocation.io API through a proxy, you can select _Yes_ against **Enable Proxy** and provide proxy settings.
+When you use the API, the remaining fields are optional. However, to access IPGeolocation.io API through a proxy, you can select _Yes_ against **Enable Proxy** and provide proxy settings.
 
 Here are the required proxy configuration details:
 
