@@ -42,7 +42,7 @@ Nested API responses are flattened into columns, so `security.vpn_provider_names
 ## Prerequisites
 
 - [CloudQuery CLI](https://docs.cloudquery.io/docs/quickstart) v5 or later
-- [Go 1.27.3](https://go.dev/dl/) or Go 1.26.10, to build the plugin binary
+- [Go 1.27.4](https://go.dev/dl/) or Go 1.26.11, to build the plugin binary
 - An IPGeolocation.io API key. The free Developer plan allows 1,000 credits per day and covers the geolocation table. Get one from [signing up here](https://app.ipgeolocation.io/signup), no card required.
 - A destination you can write to. SQLite needs nothing beyond a file path, which makes it the easiest way to try this out.
 
@@ -758,5 +758,5 @@ No. Every sync makes fresh API calls. To spend less, sync less often or shorten 
 
 <details>
 <summary><strong>Which Go version do I need?</strong></summary>
-Use Go 1.27.3 or Go 1.26.10.
+Use Go 1.27.4 or Go 1.26.11.
 </details>
