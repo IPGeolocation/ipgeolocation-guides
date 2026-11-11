@@ -490,7 +490,7 @@ Every action's JSON response is accessible in downstream steps via `steps.<actio
 
 **`401 Unauthorized`** — Your API key is invalid or missing. Re-connect your IPGeolocation.io account in Pipedream's credentials settings and verify the key is active in your [dashboard](https://app.ipgeolocation.io/dashboard).
 
-**`429 Too Many Requests`** — You have exceeded the API credits limit for the subscription/free plan. Upgrade your plan or wait until the next billing cycle. For more information, see [Pricing](https://ipgeolocation.io/pricing.html).
+**`429 Too Many Requests`** — Your credits are used up: the free plan's daily limit, or a paid plan's credits with overage off or its cap reached. Upgrade your plan or wait until the next billing cycle. For more information, see [Pricing](https://ipgeolocation.io/pricing.html).
 
 **`400 Bad Request`** — One or more inputs are invalid. Common causes include: providing only one of Latitude/Longitude, invalid IP address, specifying mismatched selector types in Convert Timezone, or passing an invalid date format (use `YYYY-MM-DD` where specified).
 
