@@ -11,8 +11,6 @@ Our app is ideal for Shopify merchants who:
 *   Run multiple Shopify stores (EU, US, UK, etc.).
 *   Use Shopify Markets and want smarter geolocation handling.
 
-Whether you're a small business testing new regions or an established brand with global operations, IPGeolocation.io makes cross-border shopping feel natural and intuitive.
-
 ---
 
 ## Key Features
@@ -52,7 +50,7 @@ When you first open the app, a progress bar at the top of your dashboard will tr
     *   This is optional. If skipped, the app uses the default text configured in the App Embed settings.
 
 
-### Enabling App Embeds (Crucial Step)
+### Enabling App Embeds (Required)
 The popup and market selector are configured through Shopify's **Theme Editor**, not the app dashboard.
 
 1.  Navigate to **Online Store > Themes**.
