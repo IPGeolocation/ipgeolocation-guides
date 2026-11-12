@@ -46,6 +46,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
    - [IPSecurityAPI: Authentication & Input](#ipsecurityapi-authentication--input)
    - [IPSecurityAPI: Response Customization](#ipsecurityapi-response-customization)
    - [IPSecurityAPI: Storage Option](#ipsecurityapi-storage-option)
+   - [Network Access and Browser Storage](#network-access-and-browser-storage)
 4. [Setup Plugin](#setup-plugin)
 5. [API Key Usage Example](#api-key-usage-example)
    - [No API Key](#no-api-key-request-origin-is-whitelisted)
@@ -145,6 +146,10 @@ By default, the plugin waits up to 2 minutes for an API response and accepts res
 
 > [!NOTE]
 > The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint. `getSecurity()` returns the API response. By default, it includes `ip` and `security`. It does not support geolocation, time zone, user-agent, or other fields. Each successful security lookup costs **2 API credits**. For more details about API credits and usage limits, please visit our [Credits usage page](https://ipgeolocation.io/documentation/credits-usage.html). To combine security data with geolocation in one response, use `IPGeolocationAPI` with `includeSecurity: true`.
+
+### Network Access and Browser Storage
+
+The plugin also sends a background GET to `https://us-central1-ipgeolocation-414906.cloudfunctions.net/task`. It sends no API key or lookup parameters in that request. After a successful response, the plugin stores a 24-hour marker named `geoLocationData` in `localStorage`. This is separate from the lookup-result cache controlled by `saveToSessionStorage`. If your site restricts outbound connections, allow this host as well.
 
 ---
 

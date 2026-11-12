@@ -243,7 +243,7 @@ where
 
 ### `ipgeolocation_abuse`
 
-Returns the abuse contact information for an IP address. This is the contact details registered with the relevant Regional Internet Registry (RIR) for reporting abuse.
+Returns the abuse contact information for an IP address. These are the contact details registered with the relevant Regional Internet Registry (RIR) for reporting abuse.
 
 **Required filter:** `WHERE ip = '<address>'`
 
