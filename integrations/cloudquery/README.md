@@ -132,7 +132,7 @@ Two rows, one for each IP, mean the key, the plugin and the destination are all 
 | `endpoint` | string | `https://api.ipgeolocation.io` | API base URL |
 | `timeout` | string | `30s` | How long to wait for one API request, such as `30s` or `1m`. Must be greater than zero. |
 | `max_response_mb` | integer | `256` | Largest response to read, in MB. Increase this for large ASN results. Must be a positive whole number. |
-| `retry_attempts` | int | `3` | Retries for 429 and 5xx responses |
+| `retry_attempts` | int | `3` | Retries for 5xx responses and network failures |
 | `concurrency` | int | `10` | Tables synced in parallel |
 | `rate_limit` | int | `15` | Maximum API requests per second |
 | `user_agent` | string | `cq-source-ipgeolocation/1.0` | User-Agent header sent with each request |
@@ -650,7 +650,7 @@ Because of this, write filters positively. `WHERE is_vpn = true` works whether o
 | 429 | No credits left: the free plan's daily credits, or a paid plan's credits with overage off or at its cap (there are no per-second or per-minute rate limits) |
 | 5xx | Server fault, retried automatically |
 
-429 and 5xx responses are retried with backoff of 1 second, then 2, then 4. Other 4xx responses are returned immediately.
+5xx responses are retried with backoff of 1 second, then 2, then 4. 4xx responses, including 429, are returned immediately, since a retry cannot add credits.
 
 ### Rate limits
 

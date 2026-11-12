@@ -229,7 +229,7 @@ This is the most common issue and has a few distinct causes.
 
 **Invalid or missing API key** — If your API key is not configured correctly in Maltego's transform settings, all transforms will return empty results with 401 status code; you can see this in the output window of the transform.
 
-**Daily credit quota exhausted** — The free Developer plan includes 1,000 credits per day. There are no per-second or per-minute rate limits; once the day's credits are used up, transforms return no data until the daily quota resets. Wait for the reset or move to a paid plan. See [Pricing](https://ipgeolocation.io/pricing.html) for quota details.
+**No credits left** — The free Developer plan includes 1,000 credits a day. Paid plans include monthly or annual credits, and overage is on by default on all paid plans, up to the plan's cap. There are no per-second or per-minute rate limits. When no credits are left (the free plan's daily credits, or a paid plan's credits with overage off or at its cap), transforms return no data. On the free plan, wait for the daily reset or move to a paid plan; on a paid plan, check the Allow Surcharge Usage toggle on your [dashboard](https://app.ipgeolocation.io/dashboard). See [Pricing](https://ipgeolocation.io/pricing.html) for credit details.
 
 **Private or reserved IP** — Transforms will return no results for private IP ranges (`10.x.x.x`, `192.168.x.x`, `172.16.x.x`) and other reserved addresses. These are not routable on the public internet and cannot be enriched.
 
@@ -257,7 +257,7 @@ If you see an explicit error (red icon or transform failure notification), check
 | `Connection refused` | Maltego cannot reach the transform server | Check your network and firewall. The transform server at `ptds.maltego.com` must be reachable on port 443. |
 | `Authentication failed` | API key rejected | Verify the key in Transform Settings. Ensure there are no leading/trailing spaces. |
 | `Transform not found` | Installation incomplete | Re-run the seed URL installation and confirm all five transforms appear under Internal Hub Items. |
-| `Rate limit exceeded` | Daily credit quota exhausted | Wait for the daily quota to reset or upgrade to a paid plan. See [Pricing](https://ipgeolocation.io/pricing.html) for quota details. |
+| `Rate limit exceeded` | No credits left: the free plan's daily credits, or a paid plan's credits with overage off or at its cap | Free plan: wait for the daily reset or upgrade. Paid plan: check the Allow Surcharge Usage toggle on your dashboard. See [Pricing](https://ipgeolocation.io/pricing.html) for credit details. |
 
 ---
 
