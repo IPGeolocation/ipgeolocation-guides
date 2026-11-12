@@ -643,7 +643,8 @@ Because of this, write filters positively. `WHERE is_vpn = true` works whether o
 |---|---|
 | 400 | Malformed request, usually an invalid IP or AS number |
 | 401 | Invalid key, or an endpoint your plan does not cover |
-| 403 | Key disabled or blocked origin |
+| 402 | Paid subscription expired |
+| 403 | Caller's IP is not on the key's IP allow-list |
 | 404 | No data for the queried resource |
 | 423 | Bogon address: private, loopback, reserved or multicast |
 | 429 | No credits left: the free plan's daily credits, or a paid plan's credits with overage off or at its cap (there are no per-second or per-minute rate limits) |
@@ -653,7 +654,7 @@ Because of this, write filters positively. `WHERE is_vpn = true` works whether o
 
 ### Rate limits
 
-`rate_limit` is a token bucket in requests per second. Lower it if your plan is tight or if other systems share the key. `concurrency` controls parallel table syncs and does not raise the request rate, since the limiter applies across the whole sync.
+`rate_limit` is a token bucket in requests per second. Lower it if other systems share the key; the API itself has no per-second limit. `concurrency` controls parallel table syncs and does not raise the request rate, since the limiter applies across the whole sync.
 
 ---
 
