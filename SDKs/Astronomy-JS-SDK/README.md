@@ -56,6 +56,8 @@ To instantiate the AstronomyAPI, you can use the following configuration options
 - `lang (optional: string)`: Language of the response. Default is en. Supported languages include: ru, de, ja, fr, cn, es, cs, it, fa, ko, pt, ar.
 - `saveToSessionStorage (optional: boolean)`: With `saveToSessionStorage: true`, the plugin reuses a successful result only for the same lookup and API key in this tab. Lookups without a key have a separate cache. If the browser can’t store the result or protect the key, the lookup still works without caching.
 
+The plugin also sends a background GET to `https://us-central1-ipgeolocation-414906.cloudfunctions.net/task`. It sends no API key or lookup parameters in that request. After a successful response, the plugin stores a 24-hour marker named `geoLocationData` in `localStorage`. This is separate from the lookup-result cache controlled by `saveToSessionStorage`. If your site restricts outbound connections, allow this host as well.
+
 > [!TIP]
 > For detailed documentation for the Astronomy API, please visit [https://ipgeolocation.io/documentation/astronomy-api.html#overview](https://ipgeolocation.io/documentation/astronomy-api.html#overview).
 
