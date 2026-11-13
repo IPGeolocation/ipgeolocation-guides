@@ -76,7 +76,7 @@ Analysis
     .then(result => console.log(result));
 ```
 
-Each extra object costs credits; see [Credits](#credits).
+A check costs 3 credits. Adding security costs 2 extra credits. Adding any combination of location, asn, and company costs 1 extra credit total. Including all four objects costs 6 credits. See [Credits](#credits).
 
 ---
 

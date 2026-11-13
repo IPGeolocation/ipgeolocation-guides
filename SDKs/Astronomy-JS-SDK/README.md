@@ -64,12 +64,13 @@ The plugin also sends a background GET to `https://us-central1-ipgeolocation-414
 Use `getAstronomy()` for a single-date lookup. Use `getAstronomyTimeSeries()` with `dateStart` and `dateEnd` for a date range.
 
 ## Code Examples
+On a paid plan, register your site as a Request Origin in the dashboard before using this example. On the Free plan, make the lookup on your server with a key stored in an environment variable.
+
 ### Get Astronomical Information for a specific location
 ```html
 <script>
     (async () => {
         const astronomyAPI = new AstronomyAPI({
-            apiKey: "YOUR_API_KEY",
             location: "New York, US"
         });
 
@@ -161,7 +162,6 @@ If there is some error while fetching the response from the API, the following r
 <script>
     (async () => {
         const astronomyAPI = new AstronomyAPI({
-            apiKey: "YOUR_API_KEY",
             lat: -27.4748,
             long: 153.017,
         });
@@ -246,7 +246,6 @@ Sample Response:
 <script>
     (async () => {
         const astronomyAPI = new AstronomyAPI({
-            apiKey: "YOUR_API_KEY",
             ipAddress: "8.8.8.8"
         });
 
@@ -340,7 +339,6 @@ Sample Response:
 <script>
     (async () => {
         const astronomyAPI = new AstronomyAPI({
-            apiKey: "YOUR_API_KEY",
             location: "New York, US",
             date: "2024-11-04"
         });
@@ -428,7 +426,6 @@ The API performs the astronomical calculation for the resolved location and conv
 <script>
     (async () => {
         const astronomyAPI = new AstronomyAPI({
-            apiKey: "YOUR_API_KEY",
             ipAddress: "115.186.118.130",
             date: "2026-03-07",
             timeZone: "Europe/London"
@@ -474,7 +471,6 @@ Use `getAstronomyTimeSeries()` to retrieve daily Sun and Moon events for up to 9
 <script>
     (async () => {
         const astronomyAPI = new AstronomyAPI({
-            apiKey: "YOUR_API_KEY",
             lat: 40.76473,
             long: -74.00084,
             dateStart: "2025-06-16",
@@ -567,7 +563,6 @@ For example, if you are trying to fetch data using invalid coordinates, you will
 <script>
     (async () => {
         const astronomyAPI = new AstronomyAPI({
-            apiKey: "YOUR_API_KEY",
             lat: -127.4748,
             long: 53.017,
             date: "2024-11-04"
