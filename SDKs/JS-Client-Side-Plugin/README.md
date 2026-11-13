@@ -165,6 +165,8 @@ To access this service, add the following JavaScript tag (usually within the `<h
 ## API Key Usage Example
 Demonstrates how to use the plugin with and without an API key. The API key is optional if the request originates from a whitelisted domain (available only on paid plans).
 
+On a paid plan, register your site as a Request Origin in the dashboard before using this example. On the Free plan, make the lookup on your server with a key stored in an environment variable.
+
 ### No API Key (Request Origin is Whitelisted)
 ```html
 <script>
@@ -183,6 +185,7 @@ Demonstrates how to use the plugin with and without an API key. The API key is o
 ```
 
 ### With API Key
+**Local testing only.** Anyone who opens the page can read a key placed in it.
 ```html
 <script>
     (async () => {
@@ -209,9 +212,7 @@ Demonstrates how to use the plugin with and without an API key. The API key is o
 ```html
 <script>
     (async () => {
-        const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
-        });
+        const ipGeoAPI = new IPGeolocationAPI();
 
         const resp = await ipGeoAPI.getGeolocation();
 
@@ -304,7 +305,6 @@ Use `fields` and `excludes` together to get the `location` object while omitting
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             fields: "location",
             excludes: "location.continent_code,location.continent_name",
         });
@@ -354,9 +354,7 @@ On a paid plan, the default response includes additional objects such as `networ
 ```html
 <script>
     (async () => {
-        const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
-        });
+        const ipGeoAPI = new IPGeolocationAPI();
 
         const resp = await ipGeoAPI.getGeolocation();
 
@@ -463,7 +461,6 @@ Here is an example to get the geolocation data for the client's IP address in Ru
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             lang: "ru",
         });
 
@@ -488,7 +485,6 @@ Here is an example to get the geolocation data for the client's IP address in Ru
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             fields: "location.country_name,location.country_capital",
             includeHostname: true,
             includeUserAgent: true,
@@ -557,7 +553,6 @@ Pass `includeGeoAccuracy: true` to add `accuracy_radius`, `confidence`, and `loc
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             fields: "location",
             includeGeoAccuracy: true,
         });
@@ -609,7 +604,6 @@ The DMA (Designated Market Area) code is a US-only field used for marketing and 
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             fields: "location",
             includeDmaCode: true,
         });
@@ -662,7 +656,6 @@ Pass `includeAbuse: true` to add the `abuse` object to the response.
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             fields: "location.city,location.country_name",
             includeAbuse: true,
         });
@@ -708,7 +701,6 @@ Pass `includeSecurity: true` to add the `security` object to the geolocation res
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             fields: "location.city,location.country_name",
             includeSecurity: true,
         });
@@ -765,7 +757,6 @@ Pass `includeAll: true` to request every available optional module (`security`, 
 <script>
     (async () => {
         const ipGeoAPI = new IPGeolocationAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             includeAll: true,
         });
 
@@ -797,7 +788,6 @@ The `IPSecurityAPI` class calls the dedicated `/v3/security` endpoint. `getSecur
 <script>
     (async () => {
         const ipSecAPI = new IPSecurityAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             ipAddress: "2.56.188.34",
         });
 
@@ -846,7 +836,6 @@ Use `fields` to limit the response to only the security properties you need.
 <script>
     (async () => {
         const ipSecAPI = new IPSecurityAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             ipAddress: "2.56.188.34",
             fields: "security.threat_score,security.is_vpn,security.is_proxy",
         });
@@ -880,7 +869,6 @@ Use `excludes` to return the full `security` object while omitting fields you do
 <script>
     (async () => {
         const ipSecAPI = new IPSecurityAPI({
-            apiKey: "YOUR_IPGEOLOCATION_API_KEY",
             ipAddress: "2.56.188.34",
             excludes: "security.is_tor,security.is_cloud_provider",
         });
@@ -927,6 +915,8 @@ Sample Response (`is_tor` and `is_cloud_provider` omitted):
 
 The plugin hides your API key when you print a client with `JSON.stringify()` or when an error message repeats it. You can still read the key from `client.apiKey`.
 Inspect the `error_message` field in the response to detect any errors. A missing `error_message` typically indicates a successful request, while its presence signals an issue. For example, if you are using a free plan and trying to request security information, you will encounter an error as shown below:
+
+**Local testing only.** Anyone who opens the page can read a key placed in it.
 
 ```html
 <script>
