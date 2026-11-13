@@ -208,6 +208,8 @@ On a paid plan, register your site as a Request Origin in the dashboard before u
 
 ## Free Plan Examples
 
+These examples request only fields that the Free plan returns. Without an API key, they run only from a registered Request Origin, which needs a paid plan.
+
 ### Get Default Geolocation Fields
 ```html
 <script>
