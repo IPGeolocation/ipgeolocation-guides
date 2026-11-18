@@ -109,12 +109,12 @@ If you attempt to use a transform that is not available in your plan, the transf
 The threat profile transform is your first line of defense during IP triage. It returns a composite risk score plus specific indicators about how the IP is being used.
 
 **Returned Data:**
-- **Threat score** – A 0–100 integer where higher values indicate higher risk. Scores above 70 typically warrant immediate investigation.
-- **VPN detection** – Provider name and confidence level (low/medium/high)
+- **Threat score** – A 0–100 integer where higher values indicate higher risk. Scores of 80 or more typically warrant blocking or manual review.
+- **VPN detection** – Provider name and a confidence score from 0 to 100
 - **Proxy detection** – Differentiates standard proxies from residential proxy networks
 - **Tor exit node** – Boolean flag indicating Tor network exit points
 - **Relay detection** – Identifies IPs acting as relays for anonymizing services
-- **Bot activity** – Flag for IPs associated with known botnet traffic
+- **Bot activity** – Flag for IPs associated with bot activity
 - **Spam activity** – Flag for IPs reported in spam campaigns
 - **Known attacker** – Flag for IPs with confirmed attack history
 - **Cloud/hosting provider** – Identifies whether the IP belongs to a cloud or hosting infrastructure
