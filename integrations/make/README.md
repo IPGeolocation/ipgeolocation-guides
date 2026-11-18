@@ -158,10 +158,10 @@ Provides a simple way to retrieve accurate information about an Autonomous Syste
 
 **Lookup Abuse Contact Information**
 
-Includes details such as the role, handle, organization name, kind (e.g., group or individual), and postal address. This information helps identify the entity responsible for handling abuse reports.
+Includes the contact's name, organization, kind (group or individual), postal address, emails and phone numbers. This information helps identify the entity responsible for handling abuse reports.
 
 - **Input:** IP Address
-- **Outputs:** abuse.emails, abuse.handle and [more abuse contact fields](https://ipgeolocation.io/documentation/ip-abuse-contact-api.html#reference-to-abuse-contact-api-response)
+- **Outputs:** abuse.emails, abuse.kind and [more abuse contact fields](https://ipgeolocation.io/documentation/ip-abuse-contact-api.html#reference-to-abuse-contact-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/abuse.png)
 
