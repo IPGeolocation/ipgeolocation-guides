@@ -616,7 +616,7 @@ The `route` column returns the CIDR block that the IP belongs to, which is usefu
 
 ---
 
-### Timezone Routing for Scheduled Jobs
+### Time Zone Routing for Scheduled Jobs
 
 If you are building a scheduling system that needs to assign jobs based on a user's time zone, you can query the time zone data for their IP.
 
