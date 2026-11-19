@@ -572,7 +572,7 @@ GROUP BY u.type, u.name
 ORDER BY requests DESC;
 ```
 
-### Timezone Aware Scheduling
+### Scheduling by Time Zone
 
 `timezone_name` returns an IANA identifier, which most date libraries accept directly.
 
