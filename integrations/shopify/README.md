@@ -256,7 +256,7 @@ Language-only translations match visitors based solely on their browser language
 
 <details>
 <summary><strong>Do all connected stores need to be owned by the same person?</strong></summary>
-Yes, connected stores can only be owned by 1 store.
+Yes. All connected stores must belong to the same owner.
 </details>
 
 <details>
