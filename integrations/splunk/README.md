@@ -47,7 +47,7 @@ Before installing the app, make sure you have the following:
 
 There are multiple ways of deploying apps to Splunk environment and in this document, we’ll cover installation through the CLI (Command Line Interface).
 
-### Single Stand Alone Splunk Installation (CLI)
+### Single Standalone Splunk Installation (CLI)
 
 Single standalone Splunk Enterprise Installation on Windows/*NIX
 
@@ -116,7 +116,7 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
     
 ![Upload_App](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/upload_app.png)
     
-4. It is a good practice to restart the Splunk, please restart
+4. It is a good practice to restart Splunk, so please restart it.
 
 ## Configuration
 
@@ -124,7 +124,7 @@ Single Site Clustered Indexer, Clustered Search Heads and Forwarder (Heavy or Un
 2. Go to 'Manage' under Apps in the left bar.
 2. It will list out all the installed applications and the options to configure these apps.
 3. Look for 'IPGeolocation.io' and click on the 'Set up' link to configure the app.
-4. Make Sure to restart Splunk Instance after setting up the app. In case of a Search Head Cluster, each search head needs to be restarted or a rolling restart must be initiated to make all changes work properly.
+4. Make sure to restart the Splunk instance after setting up the app. In case of a Search Head Cluster, each search head needs to be restarted or a rolling restart must be initiated to make all changes work properly.
 
 ![Manage_Set_up](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/manage_setup.png)
 
@@ -164,7 +164,7 @@ Select `Yes` against `Replicate MMDB on Indexers` to enable replication on MMDB 
 
 #### MMDB Subscription Credentials
 
-Following IPGeolocation.io databases are supported in the IPGeolocation.io App for Splunk:
+The following IPGeolocation.io databases are supported in the IPGeolocation.io App for Splunk:
 
 > IP WHOIS row: the standard IP WHOIS download is Gzip-compressed NDJSON. To use it in this app, request the IP WHOIS MMDB format from support first.
 
@@ -203,7 +203,7 @@ Provide the database subscription's API key in the `Key` box to authenticate dat
 
 ##### **Update Interval**
 
-Also select `Weekly` or `Daily` button *update interval* so that the app can correctly download database updates at right interval.
+Also select the `Weekly` or `Daily` button for the *update interval* so that the app can correctly download database updates at the right interval.
 
 That's all you need to configure MMDB lookups.
 
@@ -214,7 +214,7 @@ All the proxy related fields are optional as explained above.
 ![Proxy_Setting](https://static.ipgeolocation.io/web-assets/images/integrations/splunk/proxy_setting.png)
 
 > [!NOTE]    
-> MMDB is downloaded in `lookups` directory in **$SPLUNK_HOME/etc/apps/ipgeolocation_app** directory. And it does not overwrite the Splunk’s default MMDB.
+> MMDB is downloaded in `lookups` directory in **$SPLUNK_HOME/etc/apps/ipgeolocation_app** directory. And it does not overwrite Splunk’s default MMDB.
 
 ## Usage
 

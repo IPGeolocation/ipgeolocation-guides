@@ -94,11 +94,11 @@ The availability of actions depends on the plan you are subscribed to. The follo
 | Lookup ASN | ✖ | ✔ |
 | Lookup Abuse Contact | ✖ | ✔ |
 | Lookup Astronomy | ✔ | ✔ |
-| Lookup Astronomy Timeseries | ✔ | ✔ |
+| Lookup Astronomy Time Series | ✔ | ✔ |
 | Lookup Timezone Information | ✔ | ✔ |
 | Time Conversion | ✔ | ✔ |
-| Parse User Agent String | ✖ | ✔ |
-| Parse Bulk User Agent Strings | ✖ | ✔ |
+| Parse User Agent | ✖ | ✔ |
+| Parse Bulk User Agents | ✖ | ✔ |
 
 
 For full pricing details and to choose your plan, see the [pricing page](https://ipgeolocation.io/pricing.html).
@@ -179,14 +179,14 @@ It can be consumed with the following input variations:
 - For any IP address
 - For any IATA code
 - For any ICAO code
-- For any UN/LO Code
+- For any UN/LOCODE
 - **Outputs:** time_zone.name, time_zone.current_time, time_zone.date_time_wti and [more time zone fields](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/timezone.png)
 
 **Time Conversion**
 
-Converts a time from one of following options
+Converts a time from one of the following options:
 
 - Convert Time using Time Zone Names
 - Convert Time using Location
@@ -201,7 +201,7 @@ Converts a time from one of following options
 
 ### **Astronomy**
 
-Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimuth, sun altitude, moon altitude, sun distance from the earth and moon distance from the earth.
+Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimuth, sun altitude, moon altitude, sun distance from Earth and moon distance from Earth.
 
 **Get Astronomy Details**
 
@@ -219,14 +219,14 @@ Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimu
 
 Provides detailed client system information, allowing for the detection of bots, crawlers, and potential attackers.
 
-**Parse User Agent String**
+**Parse User Agent**
 
 - **Input:** User agent string
 - **Outputs:** provides name, device and [operating system information](https://ipgeolocation.io/documentation/user-agent-api.html#reference-to-user-agent-api-response).
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/make/user-agent.png)
 
-**Parse Bulk User Agent Strings**
+**Parse Bulk User Agents**
 - **Input:** Array of User agent strings
 - **Outputs:** Collection of parsed user agent objects
 
@@ -290,7 +290,7 @@ This [automation](https://www.make.com/en/templates/18227-get-email-alerts-for-h
 
 ## Use Cases
 
-Some of the most common use cases are provided as following.
+Some of the most common use cases are provided as follows.
 
 ### **E‑commerce Fraud & Network Vetting**
 

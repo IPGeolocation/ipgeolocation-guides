@@ -177,14 +177,14 @@ It can be consumed with the following input variations:
 - For any IP address
 - For any IATA code
 - For any ICAO code
-- For any UN/LO Code
+- For any UN/LOCODE
 - **Outputs:** time_zone.name, time_zone.current_time, time_zone.date_time_wti and [more time zone fields](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response)
 
 ![](https://static.ipgeolocation.io/web-assets/images/integrations/zapier/timezone.png)
 
 **Time Conversion**
 
-Converts a time from one of following options
+Converts a time from one of the following options:
 
 - Convert Time using Time Zone Names
 - Convert Time using Location
@@ -199,7 +199,7 @@ Converts a time from one of following options
 
 ### **Astronomy**
 
-Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimuth, sun altitude, moon altitude, sun distance from the earth and moon distance from the earth.
+Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimuth, sun altitude, moon altitude, sun distance from Earth and moon distance from Earth.
 
 **Get Astronomy Details**
 
