@@ -49,7 +49,7 @@ Every change is listed in the [changelog](#changelog).
 
 - WordPress 5.8 or newer, tested up to WordPress 7.1
 - PHP 7.4 or newer
-- An IPGeolocation.io API key for anything country based. [Blocking visitors by IP address](#block-visitors-by-ip-address) works without one.
+- An IPGeolocation.io API key for anything country-based. [Blocking visitors by IP address](#block-visitors-by-ip-address) works without one.
 
 ## Install and set up the plugin
 
@@ -94,7 +94,7 @@ Set **Redirect method** to Popup when a visitor might reasonably want to stay, s
 
 ### Stop brute force login attempts
 
-Under [question 2](#the-two-questions), choose **Only the addresses I list** and enter your office or home IP address. Password guessing bots never reach the login form, and your public pages stay open to everyone. If your IP address changes often, use **Anyone except the addresses I list** and block the offenders instead.
+Under [question 2](#the-two-questions), choose **Only the addresses I list** and enter your office or home IP address. Password-guessing bots never reach the login form, and your public pages stay open to everyone. If your IP address changes often, use **Anyone except the addresses I list** and block the offenders instead.
 
 ### Block a scraper or a spam source
 
@@ -181,7 +181,7 @@ The popup remembers the visitor's answer for 30 days:
 
 If you change the destination of a rule, its visitors are asked again. The popup is an accessible dialog: keyboard focus starts on the first button and stays inside the popup, and Escape closes it.
 
-Use a popup when a visitor might reasonably want to decline, such as a currency or storefront switch. Use automatic for country specific pages where staying makes no sense.
+Use a popup when a visitor might reasonably want to decline, such as a currency or storefront switch. Use automatic for country-specific pages where staying makes no sense.
 
 ### Let visitors choose to stay on your site
 
@@ -220,7 +220,7 @@ Block visitors from some countries, or allow visitors from only a few, across yo
 
 Country codes contain two letters and are case-insensitive. Blocked visitors see a 403 page, or you can send them to a page on your site, for example `/not-available`, or to a full address on another site.
 
-Country access control runs on front end pages only. The admin area, the REST API and AJAX requests are skipped, and administrators are never blocked. If a visitor's country cannot be determined, for example during an API outage, the visitor is let in rather than your site going offline.
+Country access control runs on front-end pages only. The admin area, the REST API and AJAX requests are skipped, and administrators are never blocked. If a visitor's country cannot be determined, for example during an API outage, the visitor is let in rather than your site going offline.
 
 On a site with page caching, also [keep country and IP blocking effective on cached pages](#keep-country-and-ip-blocking-effective-on-cached-sites).
 
@@ -260,7 +260,7 @@ Each question has the same three answers:
 
 An empty list blocks nobody, in either mode. That stops a half-finished allow list from taking your site down.
 
-Locking the login page to your office IP address is the strongest option here. Password guessing bots never reach the form, and ordinary visitors are unaffected.
+Locking the login page to your office IP address is the strongest option here. Password-guessing bots never reach the form, and ordinary visitors are unaffected.
 
 ### IP address formats
 
@@ -393,7 +393,7 @@ A page cache serves a stored copy of a page without running WordPress, so anythi
 
 ### How cached page support works
 
-With **Cached page support** turned on, which is the default, every page carries a small script. On a cached page it asks your site what to do for this visitor, then redirects them, shows the popup, or does nothing. The answer is remembered, so a visitor that no rule applies to is not checked again on every page. Visitors on uncached pages are still redirected instantly by the server. Popups and country specific content are never stored in the cache, so one visitor's popup is never shown to another.
+With **Cached page support** turned on, which is the default, every page carries a small script. On a cached page it asks your site what to do for this visitor, then redirects them, shows the popup, or does nothing. The answer is remembered, so a visitor that no rule applies to is not checked again on every page. Visitors on uncached pages are still redirected instantly by the server. Popups and country-specific content are never stored in the cache, so one visitor's popup is never shown to another.
 
 ### Hide cached pages until the location is checked
 
@@ -424,7 +424,7 @@ The cached page script is marked so that optimization features leave it alone, i
 
 ## Geo redirects and SEO
 
-Location based redirects can hurt search rankings when they are set up badly. These practices keep your country pages visible, and match Google's advice for sites with country versions:
+Location-based redirects can hurt search rankings when they are set up badly. These practices keep your country pages visible, and match Google's advice for sites with country versions:
 
 - **Crawlers are never redirected.** Search engines crawl mostly from the United States, so redirecting them would hide your country pages. The plugin leaves known crawlers on the page they asked for, so every version of your site can be indexed.
 - **Use 302 redirects.** A country redirect is temporary by nature, because the same address serves different visitors. A 301 tells browsers and search engines that the move is permanent.

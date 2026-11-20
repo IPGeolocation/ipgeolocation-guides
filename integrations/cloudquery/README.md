@@ -10,7 +10,7 @@ There is no pipeline code to write. You list the IP addresses, AS numbers or use
 
 ## What is CloudQuery?
 
-[CloudQuery](https://cloudquery.io) is an open source data movement tool. It reads from APIs through source plugins and writes to databases and object stores through destination plugins, handling schema creation, batching, retries and incremental state along the way.
+[CloudQuery](https://cloudquery.io) is an open-source data movement tool. It reads from APIs through source plugins and writes to databases and object stores through destination plugins, handling schema creation, batching, retries and incremental state along the way.
 
 The split matters in practice: the same source plugin feeds SQLite on a laptop and Snowflake in production, and switching between them is a change to one block of YAML.
 
@@ -35,7 +35,7 @@ It exposes five tables mapped to the IPGeolocation.io v3 endpoints.
 | `ipgeolocation_asn` | `/v3/asn` | AS name, organization, RIR, allocation status, route counts, with peers, upstreams, downstreams, routes and WHOIS on request |
 | `ipgeolocation_user_agent` | `/v3/user-agent` | Browser, version, device, brand, rendering engine and operating system |
 
-Nested API responses are flattened into columns, so `security.vpn_provider_names` becomes `vpn_provider_names` and you never write a JSON path in a query. Array values are stored as comma separated text, which every destination handles the same way.
+Nested API responses are flattened into columns, so `security.vpn_provider_names` becomes `vpn_provider_names` and you never write a JSON path in a query. Array values are stored as comma-separated text, which every destination handles the same way.
 
 ---
 
@@ -43,7 +43,7 @@ Nested API responses are flattened into columns, so `security.vpn_provider_names
 
 - [CloudQuery CLI](https://docs.cloudquery.io/docs/quickstart) v5 or later
 - [Go 1.27.4](https://go.dev/dl/) or Go 1.26.11, to build the plugin binary
-- An IPGeolocation.io API key. The free Developer plan allows 1,000 credits per day and covers the geolocation table. Get one from [signing up here](https://app.ipgeolocation.io/signup), no card required.
+- An IPGeolocation.io API key. The free Developer plan allows 1,000 credits per day and covers the geolocation table. Get one by [signing up here](https://app.ipgeolocation.io/signup), no card required.
 - A destination you can write to. SQLite needs nothing beyond a file path, which makes it the easiest way to try this out.
 
 The security, abuse, ASN and user agent endpoints require a paid plan. See the [pricing page](https://ipgeolocation.io/pricing.html) for current limits.
@@ -156,7 +156,7 @@ Key columns:
 | Column | Type | Description |
 |---|---|---|
 | `ip` | text | The IP that was looked up |
-| `continent_code` | text | Two-letters continent code |
+| `continent_code` | text | Two-letter continent code |
 | `country_code2` | text | ISO alpha-2 country code |
 | `country_code3` | text | ISO alpha-3 country code |
 | `country_name` | text | Country name |
@@ -171,7 +171,7 @@ Key columns:
 | `is_eu` | boolean | True for EU member states |
 | `geoname_id` | text | GeoNames identifier |
 | `calling_code` | text | International dialing prefix |
-| `tld` | text | Country code top level domain |
+| `tld` | text | Country code top-level domain |
 | `languages` | text | Official languages, comma separated |
 | `currency_code` | text | ISO 4217 currency code |
 | `currency_name` | text | Currency name |
@@ -485,7 +485,7 @@ Boolean literals above follow PostgreSQL. SQLite stores booleans as 0 and 1, so 
 
 ---
 
-## Real World Use Cases
+## Real-World Use Cases
 
 ### Building a Security Enrichment Table
 
@@ -510,7 +510,7 @@ spec:
     rate_limit: 5
 ```
 
-Run it on a schedule, point your detection rules at the resulting tables, and the enrichment happens at query time with no per event API cost.
+Run it on a schedule, point your detection rules at the resulting tables, and the enrichment happens at query time with no per-event API cost.
 
 ### Compliance Reporting on Geographic Access
 
@@ -524,7 +524,7 @@ WHERE country_code2 IN ('RU', 'KP', 'IR', 'SY', 'CU');
 
 Keeping historical snapshots also lets you show what was known at the time rather than what is true now, which is usually what an auditor is asking for.
 
-### Vendor and Third Party Network Inventory
+### Vendor and Third-Party Network Inventory
 
 Platform teams often hold a list of vendor IP ranges in a spreadsheet nobody has checked in two years. Syncing them produces a table you can diff against the previous run.
 

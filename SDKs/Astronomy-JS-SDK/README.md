@@ -31,13 +31,13 @@ Get sunrise, sunset, moonrise, moonset, moon phases with precise twilight period
 4. After logging in, navigate to your **Dashboard** to find your API key: [https://app.ipgeolocation.io/dashboard](https://app.ipgeolocation.io/dashboard)
 
 ## Installation
-To access this service, add the following JavaScript call (usually within `head` block of your pages).
+To access this service, add the following JavaScript call (usually within the `head` block of your pages).
 ```html
 <script language="JavaScript" src="https://static.ipgeolocation.io/astronomy-api-plugin.v3.0.2.js" type="text/javascript"></script>
 ```
 
 > [!NOTE]
-> This service will only work when embedded in web pages - no server-side calls will work.
+> This service will only work when embedded in web pages. No server-side calls will work.
 
 ## Plugin Configurations
 
