@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-The [**viaSocket + IPGeolocation.io**](https://viasocket.com/integrations/ipgeolocation) **integration** allows you to use the full power of IPGeolocation.io APIs directly inside your viaSocket workflows \- **without writing any code**. You do not need to write code or handle API requests because everything can be automated through clear and simple actions.
+The [**viaSocket + IPGeolocation.io**](https://viasocket.com/integrations/ipgeolocation) **integration** allows you to use the full power of IPGeolocation.io APIs directly inside your viaSocket workflows, **without writing any code**. You do not need to handle API requests because everything can be automated through clear and simple actions.
 
 With this integration, you can automate retrieval of valuable IP intelligence data such as:
 
@@ -43,7 +43,7 @@ To connect IPGeolocation.io with viaSocket, you need a valid API Key. Follow the
 ### **Obtain your API Key**
 
 * After logging in, go to your [dashboard](https://app.ipgeolocation.io/dashboard).  
-* Copy your API Key \- you’ll need it to connect viaSocket with IPGeolocation.io.
+* Copy your API Key. You’ll need it to connect viaSocket with IPGeolocation.io.
 
 ### **Open viaSocket and create a Workflow**
 
@@ -55,14 +55,14 @@ To connect IPGeolocation.io with viaSocket, you need a valid API Key. Follow the
 ### **Add an IPGeolocation.io action**
 
 * Click the action button to add an action.  
-* Search for **IPGeolocation** in the module search bar.  
+* Search for **IPGeolocation** in the search bar.  
 * Select any action event (e.g., Find Geolocation Information or Find IP Security).
 
 ![Search IPGeolocation](https://static.ipgeolocation.io/web-assets/images/integrations/viasocket/search-ipgeo.png)
 
 ### **Set up the connection**
 
-* In the module settings, find the account field and click Sign in.  
+* In the action settings, find the account field and click Sign in.  
 * Paste the API Key you copied earlier into the required field.  
 * Click Yes, Continue to IPGeolocation.io to authenticate the connection.
 
@@ -78,12 +78,13 @@ To connect IPGeolocation.io with viaSocket, you need a valid API Key. Follow the
 
 ### **Use your connection**
 
-* Once connected, this API Key is available for all IPGeolocation.io modules in your Workflows.  
+* Once connected, this API Key is available for all IPGeolocation.io actions in your Workflows.  
 * You can now use it to perform actions like Find Geolocation Information, Find User Agent, or Find Bulk IP Geolocation, depending on your API plan.
 
-## **Modules**
+## **Action Reference**
 
-Below is a structured reference of all modules in this integration.  
+Below is a structured reference of all actions in this integration.
+
 ---
 
 ### **Geolocation**
@@ -156,14 +157,14 @@ It can be consumed with the following input variations:
 * For any IP address  
 * For any IATA code  
 * For any ICAO code  
-* For any UN/LO Code  
+* For any UN/LOCODE  
 * Outputs: time\_zone.name, time\_zone.current\_time, time\_zone.date\_time\_wti and [more time zone fields](https://ipgeolocation.io/documentation/timezone-api.html#reference-to-time-zone-api-response)
 
 ![Time Zone API](https://static.ipgeolocation.io/web-assets/images/integrations/viasocket/timezone.png)
 
 **Time Conversion**
 
-Converts a time from one of following options
+Converts a time from one of the following options:
 
 * Convert Time using Time Zone Names  
 * Convert Time using Location  
@@ -178,7 +179,7 @@ Output: Converted [date/time](https://ipgeolocation.io/documentation/timezone-ap
 
 ### **Astronomy**
 
-Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimuth, sun altitude, moon altitude, sun distance from the earth and moon distance from the earth.
+Provides timings for sunrise, sunset, moonrise, moonset, sun azimuth, moon azimuth, sun altitude, moon altitude, sun distance from Earth and moon distance from Earth.
 
 **Get Astronomy Details**
 
