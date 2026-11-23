@@ -287,7 +287,7 @@ Any IPGeolocation.io IP database can sit behind a `stage.geoip` block. Here is o
 | IP Abuse Contact Database | `"abuse_email" = "abuse.emails"` |
 | IP WHOIS Database | `"rir" = "whois.rir"` |
 | IP to Hosting Database | `"hosting_provider" = "hosting_provider"` |
-| Residential Proxy Database | `"proxy_provider" = "proxy_provider"` |
+| Residential Proxy Database | `"proxy_provider" = "proxy_providers[0]"`, `"last_seen" = "last_seen"`, `"proxy_days_seen_7d" = "proxy_days_seen_7d"`, `"proxy_days_seen_30d" = "proxy_days_seen_30d"` and `"proxy_provider_count_30d" = "proxy_provider_count_30d"` |
 
 ISP data differs from ASN data in two ways. In the IP to ISP Database, `asn` holds the number directly rather than a group of fields, and the country code is `country.code2` at the top level. For background, read [the difference between an ISP and an ASN](https://ipgeolocation.io/guides/what-is-an-isp-and-how-is-it-different-from-an-asn).
 

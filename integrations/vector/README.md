@@ -281,7 +281,7 @@ Every IPGeolocation.io IP database can be an enrichment table. With the record s
 | IP Abuse Contact Database | `rec.abuse.emails`, `rec.abuse.name.en` |
 | IP WHOIS Database | `rec.whois.organization.name`, `rec.whois.rir` |
 | IP to Hosting Database | `rec.hosting_provider` |
-| Residential Proxy Database | `rec.proxy_provider`, `rec.last_seen` |
+| Residential Proxy Database | `rec.proxy_providers`, `rec.last_seen`, `rec.proxy_days_seen_7d`, `rec.proxy_days_seen_30d`, `rec.proxy_provider_count_30d` |
 
 In the IP to ISP Database, `rec.asn` is the AS number itself rather than a group, and the country sits at the top level instead of under `location`. The two datasets answer different questions; see [how an ISP differs from an ASN](https://ipgeolocation.io/guides/what-is-an-isp-and-how-is-it-different-from-an-asn).
 

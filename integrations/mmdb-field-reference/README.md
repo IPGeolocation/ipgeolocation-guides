@@ -105,6 +105,9 @@ Reference: [IP Security Database documentation](https://ipgeolocation.io/documen
 | `proxy_provider_names` | list of text | `[]` | Proxy services seen on the range |
 | `proxy_confidence_score` | integer | `99` | Confidence in the proxy result, 0 to 100 |
 | `proxy_last_seen` | text | `2026-09-08` | Last date proxy use was observed |
+| `proxy_days_seen_7d` | integer | `0` | Days in the last 7 days the range was seen acting as a proxy |
+| `proxy_days_seen_30d` | integer | `0` | Days in the last 30 days the range was seen acting as a proxy |
+| `proxy_provider_count_30d` | integer | `0` | Distinct proxy providers seen on the range in the last 30 days |
 | `is_residential_proxy` | text flag | `false` | Proxy that routes through home connections |
 | `is_tor` | text flag | `false` | Tor exit node |
 | `is_relay` | text flag | `false` | Relay service, such as iCloud Private Relay |
@@ -225,12 +228,17 @@ Reference: [IP to Hosting Database documentation](https://ipgeolocation.io/docum
 
 ## Residential Proxy Database
 
-Reference: [Residential Proxy Database documentation](https://ipgeolocation.io/documentation/residential-proxy-database.html). Example from `1.0.141.172`.
+Reference: [Residential Proxy Database documentation](https://ipgeolocation.io/documentation/residential-proxy-database.html). Example from `1.0.210.236`.
 
 | Path | Type | Example | Meaning |
 | --- | --- | --- | --- |
-| `proxy_provider` | text | `ProxyShare` | Residential proxy service using the address |
-| `last_seen` | text | `2026-08-19` | Last date the address was seen in use |
+| `proxy_providers` | list of text | `["BestProxy", "ProxyCC", "AProxy", "Evomi Proxy", "NaProxy"]` | Residential proxy services seen on the address |
+| `last_seen` | text | `2026-11-07` | Last date the address was seen in use |
+| `proxy_days_seen_7d` | integer | `0` | Days in the last 7 days the address was seen acting as a proxy |
+| `proxy_days_seen_30d` | integer | `3` | Days in the last 30 days the address was seen acting as a proxy |
+| `proxy_provider_count_30d` | integer | `2` | Distinct proxy providers seen on the address in the last 30 days |
+
+Version 1 of this database has a single `proxy_provider` text field in place of `proxy_providers`, and no counts.
 
 ---
 
@@ -253,9 +261,9 @@ In a City and ISP file, `asn` is the AS number itself, as in the IP to ISP Datab
 | Stored as | Fields | Notes |
 | --- | --- | --- |
 | Text flag | Every `is_*` field | The text `true` or `false`, not a boolean. Compare with the string `"true"`, or convert. |
-| Integer | `threat_score` and the `*_confidence_score` fields | Real numbers in the file. |
+| Integer | `threat_score`, the `*_confidence_score` fields and the proxy activity counts (`proxy_days_seen_7d`, `proxy_days_seen_30d`, `proxy_provider_count_30d`) | Real numbers in the file. |
 | Text holding a number | Coordinates, `accuracy_radius`, `geoname_id`, `dma_code`, AS numbers | Convert before numeric work, for example for a geo point. |
-| List of text | `vpn_provider_names`, `proxy_provider_names` | Often empty. Read one entry by index. |
+| List of text | `vpn_provider_names`, `proxy_provider_names`, `proxy_providers` | The two IP Security lists are often empty. Read one entry by index. |
 | List of groups | The WHOIS `*_handles` fields | Read one entry by index, then a key. |
 | Empty text | Any text field without data | The field exists, with nothing in it. |
 

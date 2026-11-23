@@ -191,7 +191,7 @@ Here `f` is the database file and `ip` the address column:
 | IP Abuse Contact Database | `mmdb_record(f, ip, 'abuse') ->> '$.abuse.emails'` |
 | IP WHOIS Database | `mmdb_record(f, ip, 'whois') ->> '$.whois.rir'` |
 | IP to Hosting Database | `mmdb_record(f, ip, 'hosting_provider') ->> '$.hosting_provider'` |
-| Residential Proxy Database | `mmdb_record(f, ip, 'proxy_provider') ->> '$.proxy_provider'` |
+| Residential Proxy Database | `mmdb_record(f, ip, 'proxy_providers') ->> '$.proxy_providers[0]'` for the first provider. `last_seen`, `proxy_days_seen_7d`, `proxy_days_seen_30d` and `proxy_provider_count_30d` are top-level keys too, such as `(mmdb_record(f, ip, 'proxy_days_seen_7d') ->> '$.proxy_days_seen_7d')::INTEGER` |
 
 In the IP to ISP Database, the AS number is a top-level key of its own (`mmdb_record(f, ip, 'asn') ->> '$.asn'`), and so is the country (`'country'`). An ISP and the AS that routes its traffic are not always the same organization; [how an ISP differs from an ASN](https://ipgeolocation.io/guides/what-is-an-isp-and-how-is-it-different-from-an-asn) explains the difference.
 

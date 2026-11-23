@@ -252,7 +252,7 @@ Every IPGeolocation.io IP database works with the filter. Each one stores its va
 | IP Abuse Contact Database | Under `abuse.`, such as `abuse.emails` |
 | IP WHOIS Database | Under `whois.`, such as `whois.organization.name` |
 | IP to Hosting Database | At the top level: `hosting_provider` |
-| Residential Proxy Database | At the top level: `proxy_provider` and `last_seen` |
+| Residential Proxy Database | At the top level: `proxy_providers.0` (the first provider), `last_seen`, `proxy_days_seen_7d`, `proxy_days_seen_30d` and `proxy_provider_count_30d` |
 
 Two details to watch with ISP data:
 

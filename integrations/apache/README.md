@@ -247,7 +247,7 @@ Every IPGeolocation.io IP database can be opened with `MaxMindDBFile`. This tabl
 | IP Abuse Contact Database | `ABUSE/abuse/emails` |
 | IP WHOIS Database | `WHOIS/whois/rir` |
 | IP to Hosting Database | `HOSTING/hosting_provider` |
-| Residential Proxy Database | `RESIDENTIAL_PROXY/proxy_provider` |
+| Residential Proxy Database | `RESIDENTIAL_PROXY/proxy_providers/0` (the first provider), `RESIDENTIAL_PROXY/last_seen`, `RESIDENTIAL_PROXY/proxy_days_seen_7d`, `RESIDENTIAL_PROXY/proxy_days_seen_30d` and `RESIDENTIAL_PROXY/proxy_provider_count_30d` |
 
 The IP to ISP Database is laid out flat: `ISP/asn` is the AS number itself, and the country code sits at `ISP/country/code2`. ISP names and AS owners can differ for the same address; [ISP versus ASN explained](https://ipgeolocation.io/guides/what-is-an-isp-and-how-is-it-different-from-an-asn) covers why.
 
