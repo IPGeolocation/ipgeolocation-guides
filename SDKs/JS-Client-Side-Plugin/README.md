@@ -49,7 +49,7 @@ This plugin lets developers integrate and use IP geolocation data in their web p
    - [Network Access and Browser Storage](#network-access-and-browser-storage)
 4. [Setup Plugin](#setup-plugin)
 5. [API Key Usage Example](#api-key-usage-example)
-   - [No API Key](#no-api-key-request-origin-is-whitelisted)
+   - [No API Key](#no-api-key-registered-request-origin)
    - [With API Key](#with-api-key)
 6. [Free Plan Examples](#free-plan-examples)
    - [Get Default Geolocation Fields](#get-default-geolocation-fields)
@@ -91,7 +91,7 @@ By default, the plugin waits up to 2 minutes for an API response and accepts res
 ### IPGeolocationAPI: Authentication & Input
 | Option      | Type   | Description                                                                                  |
 |-------------|--------|----------------------------------------------------------------------------------------------|
-| `apiKey`    | string | Your API key. Required unless the request origin is whitelisted (available only on paid plans).  |
+| `apiKey`    | string | Your API key. Required unless the request comes from a registered Request Origin (available only on paid plans).  |
 | `ipAddress` | string | IPv4, IPv6, or domain name to query. If omitted, the plugin auto-detects the user's IP.      |
 
 ### IPGeolocationAPI: Basic Response Customization
@@ -130,7 +130,7 @@ By default, the plugin waits up to 2 minutes for an API response and accepts res
 ### IPSecurityAPI: Authentication & Input
 | Option      | Type   | Description                                                                                 |
 |-------------|--------|---------------------------------------------------------------------------------------------|
-| `apiKey`    | string | Your API key. Required unless the request origin is whitelisted (available only on paid plans). |
+| `apiKey`    | string | Your API key. Required unless the request comes from a registered Request Origin (available only on paid plans). |
 | `ipAddress` | string | IPv4 or IPv6 address to query. If omitted, the plugin auto-detects the user's IP.           |
 
 ### IPSecurityAPI: Response Customization
@@ -163,11 +163,11 @@ To access this service, add the following JavaScript tag (usually within the `<h
 ---
 
 ## API Key Usage Example
-Demonstrates how to use the plugin with and without an API key. The API key is optional if the request originates from a whitelisted domain (available only on paid plans).
+Demonstrates how to use the plugin with and without an API key. The API key is optional if the request comes from a registered Request Origin (available only on paid plans).
 
 On a paid plan, register your site as a Request Origin in the dashboard before using this example. On the Free plan, make the lookup on your server with a key stored in an environment variable.
 
-### No API Key (Request Origin is Whitelisted)
+### No API Key (Registered Request Origin)
 ```html
 <script>
     (async () => {
