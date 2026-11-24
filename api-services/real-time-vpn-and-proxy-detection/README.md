@@ -381,7 +381,7 @@ Yes. No offline database has complete coverage: new VPN endpoints, private proxi
 
 <details>
 <summary><strong>How accurate is it?</strong></summary>
-In our testing, classification accuracy is around 98%. In the remaining cases, <code>confidence_score</code> was below 35, so gating on confidence gives you an extra signal on the sessions most likely to be misread.
+Every verdict reports its own certainty in <code>confidence_score</code>, so you can judge each result individually. A high value is strong evidence; a low value is weak evidence either way, so log those sessions rather than acting on them alone. Results also depend on your traffic, so treat the bands under "Acting on the verdict" as a starting point and tune the cutoffs against your own confirmed cases.
 </details>
 
 <details>
