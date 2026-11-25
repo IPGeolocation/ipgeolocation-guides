@@ -53,7 +53,7 @@ When you first open the app, a progress bar at the top of your dashboard will tr
 ### Enabling App Embeds (Required)
 The popup and market selector are configured through Shopify's **Theme Editor**, not the app dashboard.
 
-1.  Navigate to **Online Store > Themes**.
+1.  In your Shopify admin, go to **Online Store > Themes**.
 2.  Click **Customize** on your active theme.
 3.  Click the **App embeds** icon (left sidebar).
 4.  Toggle **ON** for `Geo Redirect Popup` and `Geo Market Selector`.
@@ -88,7 +88,7 @@ The app automatically syncs markets configured in your Shopify settings (Setting
 
 ## Configuring Redirect Rules
 
-Navigate to the **Rules** page to control logic. This determines *who* sees the popup.
+Open the **Rules** page in the app. These settings determine *who* sees the popup.
 
 ### Visitor Targeting
 *   **Show to All Visitors:** The popup appears for everyone. (Safest option to ensure no one is missed).
