@@ -34,7 +34,7 @@ The databases sit on your server, so lookups make no API calls, cost nothing per
 
 1. You copy the `.mmdb` files into one folder on the Velociraptor server and enter that folder in one setting.
 2. When the artifact runs, Velociraptor's `geoip()` function looks up each IP in every `.mmdb` file in the folder.
-3. The artifact recognises what each file contains (location, ASN, company, abuse contact, security, residential proxy or hosting) and turns the results into one row per IP. Columns stay empty when no file has that data for the IP.
+3. The artifact recognizes what each file contains (location, ASN, company, abuse contact, security, residential proxy or hosting) and turns the results into one row per IP. Columns stay empty when no file has that data for the IP.
 
 `geoip()` memory-maps the files instead of loading them, so even the full IP Security Database works with little memory. See [Large databases](#large-databases).
 
