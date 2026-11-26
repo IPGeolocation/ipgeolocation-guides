@@ -23,9 +23,10 @@ description: |
   database version work without more setup. Instead of a folder, you can
   give a list of .mmdb files, separated by commas or new lines.
 
-  Keep only your current IPGeolocation.io files in the folder. When two
-  files hold the same kind of data, the first one in alphabetical order
-  is used.
+  Keep only your current IPGeolocation.io files in the folder. For a
+  folder, files are read in alphabetical order. For a list of files,
+  paths are read in the order you enter them. If two files supply the
+  same field, the first one is used, so put the preferred file first.
 
   When you collect the artifact, the IPGeolocationDatabases parameter is
   filled from the server metadata. A value you type there takes precedence.

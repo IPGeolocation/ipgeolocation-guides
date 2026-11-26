@@ -104,7 +104,7 @@ SELECT server_set_metadata(metadata=dict(IPGeolocationDatabases="/opt/ipgeolocat
 FROM scope()
 ```
 
-Instead of a folder, the value can be a list of `.mmdb` files, separated by commas or new lines. If two files contain the same kind of data, for example the IP Geolocation Database and a combined database, the artifact uses the first one in alphabetical order.
+Instead of a folder, the value can be a list of `.mmdb` files, separated by commas or new lines. For a folder, files are read in alphabetical order. For a list of files, paths are read in the order you enter them. If two files supply the same field, put the preferred file first.
 
 ---
 
