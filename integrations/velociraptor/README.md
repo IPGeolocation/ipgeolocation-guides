@@ -55,11 +55,14 @@ Download the MMDB archives of your databases from IPGeolocation.io. Each archive
 Unpack each archive, check the files, and copy all `.mmdb` files into one folder the Velociraptor service can read, for example `/opt/ipgeolocation`:
 
 ```sh
-unzip security-pro-ip-security-v4-weekly.zip -d /tmp/ipgeo-release
-(cd /tmp/ipgeo-release && sha256sum -c checksum.txt)
-sudo mkdir -p /opt/ipgeolocation
-sudo mv /tmp/ipgeo-release/*.mmdb /opt/ipgeolocation/
+STAGING_DIR=$(mktemp -d) &&
+unzip security-pro-ip-security-v4-weekly.zip -d "$STAGING_DIR" &&
+(cd "$STAGING_DIR" && sha256sum -c checksum.txt) &&
+sudo mkdir -p /opt/ipgeolocation &&
+sudo mv "$STAGING_DIR"/*.mmdb /opt/ipgeolocation/
 ```
+
+Each step runs only if the one before it succeeded, so a failed checksum leaves `/opt/ipgeolocation` untouched.
 
 Do the same for each database you have. Separate and combined databases all go into the same folder. Keep only your current IPGeolocation.io files there: the artifact reads every `.mmdb` file in the folder.
 
@@ -101,7 +104,7 @@ SELECT server_set_metadata(metadata=dict(IPGeolocationDatabases="/opt/ipgeolocat
 FROM scope()
 ```
 
-Instead of a folder, the value can be a list of `.mmdb` files, separated by commas or new lines. If two files contain the same kind of data, for example the IP Geolocation Database and a combined database, the artifact uses the first one in alphabetical order.
+Instead of a folder, the value can be a list of `.mmdb` files, separated by commas or new lines. For a folder, files are read in alphabetical order. For a list of files, paths are read in the order you enter them. If two files supply the same field, put the preferred file first.
 
 ---
 
